@@ -113,8 +113,7 @@
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
 ;; Bind C-x C-b to a buffer menu (instead of list-buffers)
-(global-set-key (kbd "C-x C-b") 'bs-show)
-(global-set-key (kbd "C-x C-S-b") 'buffer-menu)
+(global-set-key (kbd "C-x C-b") 'buffer-menu)
 
 ;; Inhibit startup screen & splash screen
 (setq inhibit-startup-screen t)
