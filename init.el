@@ -159,7 +159,7 @@
   (cond
    ((string= "clj." (substring namespace-str 0 4)) (substring namespace-str 4))
    ((string= "cljs." (substring namespace-str 0 5)) (substring namespace-str 5))
-   (else namespace-str)))
+   (t namespace-str)))
 
 ;;; get the environment set up
 (defun switch-to-nrepl-in-current-ns ()
