@@ -30,27 +30,33 @@
 (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
 (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
 
+;; enter is reindent
+(define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key nrepl-interaction-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
+
 ;;; Enable eldoc in clojure buffers
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 
 ;;; Autocomplete mode
 (add-hook 'nrepl-mode-hook 'auto-complete-mode)
 (add-hook 'clojure-mode-hook 'auto-complete-mode)
+(add-hook 'emacs-lisp-mode-hook 'auto-complete-mode)
 
 ;;; hide special buffers *nrepl-connection* and *nrepl-server*
 (setq nrepl-hide-special-buffers t)
 
-;;; stop error buffer from popping up while working in buffers other than the nrepl
+;;; stop error buffer from popping up
 (setq nrepl-popup-stacktraces nil)
-
-;;; Enable error buffer popping also in the REPL:
-(setq nrepl-popup-stacktraces-in-repl t)
+(setq nrepl-popup-stacktraces-in-repl nil)
 
 ;;; RainbowDelimiters is a minor mode which highlights parentheses, brackets, and braces according to their depth. Each successive level is highlighted in a different color. This makes it easy to 
 ;;; spot matching delimiters, orient yourself in the code, and tell which statements are at a given depth. Assuming you've already installed RainbowDelimiters you can enable it in nREPL like this:
 (require 'rainbow-delimiters)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'nrepl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;;; Enabling CamelCase support for editing commands(like forward-word, backward-word, etc) in nREPL is quite useful since we often have to 
 ;;; deal with Java class and method names. The built-in Emacs minor mode subword-mode provides such functionality:
@@ -69,10 +75,10 @@
 ;;; enable clojure-test-mode
 (add-hook 'clojure-mode-hook 'clojure-test-mode)
 
-;;; enable nrepl-ritz functionality in nrepl connected clojure buffers
-(add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
-(defun my-nrepl-mode-setup ()
-	(require 'nrepl-ritz))
+;; ;;; enable nrepl-ritz functionality in nrepl connected clojure buffers
+;; (add-hook 'nrepl-interaction-mode-hook 'my-nrepl-mode-setup)
+;; (defun my-nrepl-mode-setup ()
+;; 	(require 'nrepl-ritz))
 	
 ;;; enable winner mode (Ctrl-C left to undo changes to window configuration)
 (winner-mode 1)
@@ -89,6 +95,7 @@
 
 ;;; always show line numbers
 (add-hook 'clojure-mode-hook 'linum-mode)
+(add-hook 'emacs-lisp-mode-hook 'linum-mode)
 
 ;;; Enable Global Auto-Revert Mode (automatically reloads files that have changed on disc)
 (global-auto-revert-mode t)
@@ -96,6 +103,9 @@
 ;;; enable global hi-line mode
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#FFF0F0")
+
+;;; ido mode
+(ido-mode 1)
 
 ;; better indenting for compojure stuff
 (require 'clojure-mode)
@@ -109,6 +119,25 @@
   (ANY 2)
   (context 2))
 
+;; esk-pretty-fn turns fn's to fancy f symbols. From emacs-starter-kit on github
+(defun esk-pretty-fn ()
+  (font-lock-add-keywords nil `(("(\\(\\<fn\\>\\)"
+				 (0 (progn (compose-region (match-beginning 1)
+							   (match-end 1)
+							   "\u0192"
+							   'decompose-region)))))))
+(add-hook 'clojure-mode-hook 'esk-pretty-fn)
+(add-hook 'nrepl-mode-hook 'esk-pretty-fn)
+
+;; same but for lambdas
+(defun esk-pretty-lambdas ()
+  (font-lock-add-keywords
+   nil `(("(?\\(lambda\\>\\)"
+          (0 (progn (compose-region (match-beginning 1) (match-end 1)
+                                    ,(make-char 'greek-iso8859-7 107))
+                    nil))))))
+(add-hook 'emacs-lisp-mode-hook 'esk-pretty-lambdas)
+
 ;; ClojureScript Files should be edited in Clojure-mode
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
@@ -118,6 +147,9 @@
 ;; Inhibit startup screen & splash screen
 (setq inhibit-startup-screen t)
 (setq inhibit-splash-screen t)
+
+;; show column numbers
+(column-number-mode 1)
 
 ;; Display recent files when typing C-x C-r (overrides open file in read-only mode)
 (require 'recentf)
@@ -132,6 +164,25 @@
 
 ;; Set Ctrl-Z to undo (instead of minimize emacs)
 (global-set-key (kbd "C-z") 'undo)
+
+;;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT. From
+;;; emacs starter kit
+(font-lock-add-keywords
+ nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+	1 font-lock-warning-face t)))
+
+;; insert some lorem-ipsum text
+(defun lorem-ipsum ()
+  "Insert a lorem ipsum."
+  (interactive)
+  (insert "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do "
+          "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim"
+          "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
+          "aliquip ex ea commodo consequat. Duis aute irure dolor in "
+          "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla "
+          "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
+          "culpa qui officia deserunt mollit anim id est laborum."))
+
 
 ;;; CAM STUFF!
 
@@ -247,9 +298,8 @@
       ["switch-to-nrepl-in-current-ns" switch-to-nrepl-in-current-ns]
       ["toggle tests / code" toggle-test-file]
       ["nrepl-jack-in" nrepl-jack-in]
-      ["nrepl-ritz-jack-in" nrepl-ritz-jack-in]
       ["clojure-jump-between-tests-and-code" clojure-jump-between-tests-and-code]
-      ["Toggle Line Numbers" linum-mode]
+      ["Insert Lorem Ipsum" lorem-ipsum]
       ["Edit Emacs Init File" edit-init-file])))
       
 ;;; keyboard shortcuts for stuff i use all the time
