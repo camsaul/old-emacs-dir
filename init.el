@@ -12,7 +12,7 @@
 	(package-refresh-contents))
 	
 (defvar my-packages '(clojure-mode clojure-test-mode nrepl paredit
-				   nrepl-ritz ac-nrepl highlight-parentheses))
+				   markdown-mode ac-nrepl highlight-parentheses))
 (dolist (p my-packages)
 	(when (not (package-installed-p p))
 		(package-install p)))
@@ -33,6 +33,7 @@
 ;; enter is reindent
 (define-key clojure-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
 (define-key nrepl-interaction-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
+(define-key emacs-lisp-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
 ;;; Enable eldoc in clojure buffers
@@ -83,6 +84,8 @@
 ;;; enable winner mode (Ctrl-C left to undo changes to window configuration)
 (winner-mode 1)
 
+(setq query-replace-interactive t) ; Use last incremental seach regexp for query in regexp-query-replace
+
 ;;; enable shift + arrow-keys to move between windows
 ;;;(windmove-default-keybindings)
 
@@ -96,6 +99,7 @@
 ;;; always show line numbers
 (add-hook 'clojure-mode-hook 'linum-mode)
 (add-hook 'emacs-lisp-mode-hook 'linum-mode)
+(add-hook 'js-mode-hook 'linum-mode)
 
 ;;; Enable Global Auto-Revert Mode (automatically reloads files that have changed on disc)
 (global-auto-revert-mode t)
@@ -119,24 +123,45 @@
   (ANY 2)
   (context 2))
 
-;; esk-pretty-fn turns fn's to fancy f symbols. From emacs-starter-kit on github
-(defun esk-pretty-fn ()
+;; pretty-fn turns fn's to fancy f symbols. From emacs-starter-kit on github
+(defun pretty-fn ()
   (font-lock-add-keywords nil `(("(\\(\\<fn\\>\\)"
 				 (0 (progn (compose-region (match-beginning 1)
 							   (match-end 1)
 							   "\u0192"
 							   'decompose-region)))))))
-(add-hook 'clojure-mode-hook 'esk-pretty-fn)
-(add-hook 'nrepl-mode-hook 'esk-pretty-fn)
+(add-hook 'clojure-mode-hook 'pretty-fn)
+(add-hook 'nrepl-mode-hook 'pretty-fn)
 
 ;; same but for lambdas
-(defun esk-pretty-lambdas ()
+(defun pretty-lambdas ()
   (font-lock-add-keywords
    nil `(("(?\\(lambda\\>\\)"
           (0 (progn (compose-region (match-beginning 1) (match-end 1)
                                     ,(make-char 'greek-iso8859-7 107))
                     nil))))))
-(add-hook 'emacs-lisp-mode-hook 'esk-pretty-lambdas)
+(add-hook 'emacs-lisp-mode-hook 'pretty-lambdas)
+
+;; same but for function in javascript
+(defun pretty-function ()
+  (font-lock-add-keywords
+           'js-mode `(("\\(function *\\)("
+                       (0 (progn (compose-region (match-beginning 1)
+                                                 (match-end 1) "\u0192")
+                                 nil))))))
+(add-hook 'js-mode-hook 'pretty-function)
+
+;; other js mode stuff
+(defun paredit-nonlisp ()
+  "Turn on paredit mode for non-lisps."
+  (interactive)
+  (set (make-local-variable 'paredit-space-for-delimiter-predicates)
+       '((lambda (endp delimiter) nil)))
+  (paredit-mode 1))
+
+(add-hook 'js-mode-hook 'paredit-nonlisp)
+(setq js-indent-level 2)
+()
 
 ;; ClojureScript Files should be edited in Clojure-mode
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
@@ -281,6 +306,14 @@
    (concat
     "http://javadocs.org/"
     (active-region-or-prompt "Search javadocs.org for: "))))
+
+(defun instant-clojure-cheatsheet-search ()
+  "Searches Instant Clojure Cheatsheet query or selected region if any."
+  (interactive)
+  (browse-url
+   (concat
+    "http://cammsaul.github.io/instant-clojure-cheatsheet/?"
+    (active-region-or-prompt "Search Instant Clojure Cheatsheet for: "))))
     
 ;;; put my custom stuff in a menu
 (defun cam-menu-setup ()
@@ -316,6 +349,7 @@
     (, (kbd "<C-x> w") . whitespace-mode)
     (, (kbd "<f12> b") . bing-search)
     (, (kbd "<f12> c") . clojure-docs-search)
+    (, (kbd "<f12> i") . instant-clojure-cheatsheet-search)
     (, (kbd "<f12> j") . javadocs-search)
     (, (kbd "<f12> s") . stackoverflow-search)
     (, (kbd "<f12> <f12> p") . paredit-cheatsheet)
@@ -331,3 +365,5 @@
   :global 1)
 (cam-mode 1)
 (cam-menu-setup)
+
+(define-key clojure-mode-map (kbd "<f12> i") 'instant-clojure-cheatsheet-search)
