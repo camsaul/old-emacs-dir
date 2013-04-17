@@ -36,6 +36,15 @@
 (define-key emacs-lisp-mode-map (kbd "RET") 'reindent-then-newline-and-indent)
 (define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
 
+;;; Org-mode
+;; set global agenda files
+(setq org-agenda-files (list "C:/Users/camms_000/SkyDrive/bookmarks.org"))
+(setq org-support-shift-select nil)
+(global-set-key (kbd "C-c l") 'org-insert-link-global)
+(global-set-key (kbd "C-c a t") 'org-todo-list)
+(global-set-key (kbd "C-c a a") 'org-agenda)
+(global-set-key (kbd "C-c a m") 'org-tags-view)
+
 ;;; Enable eldoc in clojure buffers
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
@@ -365,5 +374,3 @@
   :global 1)
 (cam-mode 1)
 (cam-menu-setup)
-
-(define-key clojure-mode-map (kbd "<f12> i") 'instant-clojure-cheatsheet-search)
