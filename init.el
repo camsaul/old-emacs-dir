@@ -175,6 +175,9 @@
 ;; ClojureScript Files should be edited in Clojure-mode
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
+;; LESS Files in CSS Mode
+(add-to-list 'auto-mode-alist '("\.less$" . css-mode))
+
 ;; Bind C-x C-b to a buffer menu (instead of list-buffers)
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
 
