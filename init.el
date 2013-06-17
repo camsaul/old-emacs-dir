@@ -201,7 +201,7 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;; Have C-x C-d run dired instead of list directory since I keep accidentally hitting it
-(global-set-key (kbd "C-x C-d" 'ido-dired))
+(global-set-key (kbd "C-x C-d") 'ido-dired)
 
 ;; Popup the Yank menu
 (global-set-key (kbd "C-M-y") '(lambda ()
