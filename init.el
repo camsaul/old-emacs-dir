@@ -11,8 +11,14 @@
 (when (not package-archive-contents)
 	(package-refresh-contents))
 	
-(defvar my-packages '(clojure-mode clojure-test-mode nrepl paredit
-				   markdown-mode ac-nrepl highlight-parentheses))
+(defvar my-packages '(clojure-mode
+		      clojure-test-mode
+		      nrepl
+		      ac-nrepl
+		      highlight-parentheses
+		      paredit
+		      markdown-mode
+		      less-css-mode))
 (dolist (p my-packages)
 	(when (not (package-installed-p p))
 		(package-install p)))
@@ -175,8 +181,8 @@
 ;; ClojureScript Files should be edited in Clojure-mode
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 
-;; LESS Files in CSS Mode
-(add-to-list 'auto-mode-alist '("\.less$" . css-mode))
+;; LESS files show line nums
+(add-hook 'less-css-mode-hook 'linum-mode)
 
 ;; Bind C-x C-b to a buffer menu (instead of list-buffers)
 (global-set-key (kbd "C-x C-b") 'buffer-menu)
@@ -193,6 +199,9 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 50)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+
+;; Have C-x C-d run dired instead of list directory since I keep accidentally hitting it
+(global-set-key (kbd "C-x C-d" 'ido-dired))
 
 ;; Popup the Yank menu
 (global-set-key (kbd "C-M-y") '(lambda ()
@@ -377,3 +386,15 @@
   :global 1)
 (cam-mode 1)
 (cam-menu-setup)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Source Code Pro" :foundry "outline" :slant normal :weight normal :height 98 :width normal)))))
