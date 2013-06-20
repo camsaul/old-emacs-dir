@@ -15,7 +15,7 @@
 	(when (not (package-installed-p package))
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
-		     less-css-mode diminish rainbow-delimiters rainbow-mode))
+		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp))
 
 (mapc 'require '(cl 
 		 cam-functions 

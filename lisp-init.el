@@ -1,6 +1,7 @@
 (provide 'lisp-init)
 (require 'highlight-parentheses)
 (require 'auto-complete)
+(require 'hl-sexp)
 
 (defun cam-lisp-mode-setup ()
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
@@ -12,7 +13,9 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
-  (set-buffer-file-coding-system 'utf-8-auto-unix))
+  (set-buffer-file-coding-system 'utf-8-auto-unix)
+  (hl-sexp-mode 1) ; hl-sexp-mode highlights the current sexp
+  (set-face-background 'hl-sexp-face "#EFFFFF"))
 
 (defun cam-define-lisp-keys (mode-map)
   (define-key mode-map (kbd "RET") 'reindent-then-newline-and-indent)
