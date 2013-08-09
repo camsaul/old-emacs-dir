@@ -43,7 +43,6 @@
 (setq inhibit-splash-screen t) ; inhibit splash screen
 (add-hook 'emacs-startup-hook (lambda () (kill-buffer "*scratch*")))
 (setq recentf-max-menu-items 20)
-(setq explicit-bash-args '("-i" "--noediting")) ; arguments sent to bash shell
 (set-frame-font "Source Code Pro-9") ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 
 ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.

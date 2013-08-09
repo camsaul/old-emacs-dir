@@ -23,10 +23,13 @@
       ("<C-M-S-return>" toggle-test-file)
       ("S-<f9>" clojure-test-run-tests)
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
-(define-keys nrepl-interaction-mode-map
-  '(("C-c C-d" ac-nrepl-popup-doc)))
 (cam-define-clojure-keys clojure-mode-map)
 (cam-define-clojure-keys nrepl-mode-map)
+
+;; custom keyboard shortcuts for NREPL only
+(define-keys nrepl-mode-map
+  '(("C-c C-d" ac-nrepl-popup-doc)
+    ("RET" nrepl-return)))
 
 ;; Auto-Complete for NREPL
 (defun set-auto-complete-as-completion-at-point-function ()
