@@ -3,9 +3,8 @@
 
 (defun cam-elisp-mode-setup ()
   (cam-lisp-mode-setup)
-  (add-hook (make-local-variable 'after-save-hook)
-	    (lambda ()
-	      (byte-recompile-directory "." 0)))) ; recompile .el files in current dir if needed, even if no .elp exists
+  ; nothing right now
+  )
 
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)

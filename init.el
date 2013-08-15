@@ -43,7 +43,9 @@
 (setq inhibit-splash-screen t) ; inhibit splash screen
 (add-hook 'emacs-startup-hook (lambda () (kill-buffer "*scratch*")))
 (setq recentf-max-menu-items 20)
-(set-frame-font "Source Code Pro-9") ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
+(set-frame-font (if (string-equal window-system "ns")
+		    "Source Code Pro-12" ; slightly larger on OS X
+		  "Source Code Pro-9")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 
 ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
 (font-lock-add-keywords
@@ -120,6 +122,7 @@
 			"elisp-init.el"
 			"js-init.el"
 			"markdown-init.el"
+			"ruby-init.el"
 			"objc-init.el")))))
 
 (mapc 'require '(lisp-init
@@ -128,4 +131,5 @@
 		 org-init
 		 js-init
 		 markdown-init
+		 ruby-init
 		 objc-init))
