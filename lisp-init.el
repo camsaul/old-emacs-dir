@@ -17,12 +17,18 @@
   (hl-sexp-mode 1) ; hl-sexp-mode highlights the current sexp
   (set-face-background 'hl-sexp-face "#EFFFFF"))
 
+(defun backward-paredit-kill ()
+  "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."
+  (interactive)
+  (paredit-kill 0))
+
 (defun cam-define-lisp-keys (mode-map)
   (define-key mode-map (kbd "RET") 'reindent-then-newline-and-indent)
   (define-key mode-map (kbd "<f11>") 'paredit-mode)
+  (define-key mode-map (kbd "C-S-k") 'backward-paredit-kill) 
   (define-key mode-map (kbd "TAB") 'lisp-complete-symbol)) ; tab to complete symbol)
 
-;; pretty-lambdas (lol) turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
+;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
 (defun pretty-lambdas ()
   (font-lock-add-keywords
    nil `(("(?\\(lambda\\>\\)"
@@ -30,4 +36,6 @@
                                     ,(make-char 'greek-iso8859-7 107))
                     nil))))))
 
-;; pretty-fn turns fn's to fancy f symbols. From 
+;; custom vars
+(setq ac-delay 0) ; no delay before showing completions
+(setq ac-auto-show-menu t) ; automatically show menu

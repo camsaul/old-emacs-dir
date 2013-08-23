@@ -3,6 +3,7 @@
 
 ;; MELPA Package Source
 (require 'package)
+(require 'cl)
 (mapc (lambda (l) (add-to-list 'package-archives l))
       '(("melpa" . "http://melpa.milkbox.net/packages/")
 	("marmalade" . "http://marmalade-repo.org/packages/")))
@@ -10,15 +11,14 @@
 (package-initialize)
 (when (not package-archive-contents)
 	(package-refresh-contents))
-	
+
 (mapc (lambda (package)
 	(when (not (package-installed-p package))
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
-		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp))
+		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy))
 
-(mapc 'require '(cl 
-		 cam-functions 
+(mapc 'require '(cam-functions 
 		 recentf 
 		 rainbow-delimiters))
 
@@ -45,12 +45,16 @@
 (setq recentf-max-menu-items 20)
 (set-frame-font (if (string-equal window-system "ns")
 		    "Source Code Pro-12" ; slightly larger on OS X
-		  "Source Code Pro-9")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
+		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 
 ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
 (font-lock-add-keywords
  nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t)))
+
+(defun backward-kill-line ()
+  (interactive)
+  (kill-line 0))
 
 ;; custom key bindings
 (define-keys nil
@@ -58,6 +62,8 @@
     ("C-x C-b" buffer-menu)		; C-x C-b shows buffer menu
     ("C-x C-r" recentf-open-files) ; C-x C-r -> display recent files (overrides open file in read-only mode)
     ("C-x C-d" ido-dired) ; C-x C-d -> dired instead of list directory
+    ("C-M-S-k" backward-kill-sexp) ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
+    ("C-S-k" backward-kill-line)   ; C-S-k will kill line backwards.
     ("C-M-y" popup-yank-menu) 
     ("<f12> s" stackoverflow-search)
     ("<f12> b" bing-search) 

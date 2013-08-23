@@ -7,8 +7,8 @@
   (cam-lisp-mode-setup)
   (subword-mode 1) ; enable CamelCase support for editor movement
   (pretty-fn))
-(add-hook 'nrepl-mode-hook 'cam-lisp-mode-setup)
-(add-hook 'clojure-mode-hook 'cam-lisp-mode-setup)
+(add-hook 'nrepl-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
 
 ;; custom keyboard shortcuts
 (defun cam-define-clojure-keys (mode-map)
@@ -67,11 +67,12 @@
 
 ;; turns fn into a fancy f symbol. credit: emacs-starter-kit on github
 (defun pretty-fn ()
-  (font-lock-add-keywords nil `(("(\\(\\<fn\\>\\)"
-				 (0 (progn (compose-region (match-beginning 1)
-							   (match-end 1)
-							   "\u0192"
-							   'decompose-region)))))))
+  (font-lock-add-keywords
+   nil `(("(\\(\\<fn\\>\\)"
+	  (0 (progn (compose-region (match-beginning 1)
+				    (match-end 1)
+				    "\u0192"
+				    'decompose-region)))))))
 
 (defun nice-ns (namespace)
   (interactive)

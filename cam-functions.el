@@ -1,3 +1,4 @@
+
 (provide 'cam-functions)
 (require 'speedbar)
 
@@ -53,30 +54,3 @@
    (concat
     "http://www.bing.com/search?setmkt=en-US&q="
     (active-region-or-prompt "Search Bing for: "))))
-
-;; (defconst speedbar-buffer-name "SPEEDBAR")
-
-;; (defun speedbar-no-separate-frame ()
-;;   (interactive)
-;;   (when (not (buffer-live-p speedbar-buffer))
-;;     (setq speedbar-buffer (get-buffer-create speedbar-buffer-name)
-;; 	  speedbar-frame (selected-frame)
-;; 	  dframe-attached-frame (selected-frame)
-;; 	  speedbar-select-frame-method 'attached
-;; 	  speedbar-verbosity-level 0
-;; 	  speedbar-last-selected-file nil)
-;;     (set-buffer speedbar-buffer)
-;;     (speedbar-mode)
-;;     (speedbar-reconfigure-keymaps)
-;;     (speedbar-update-contents)
-;;     (speedbar-set-timer 1)
-;;     (add-hook 'kill-buffer-hook
-;; 	      (lambda () (when (eq (current-buffer) speedbar-buffer)
-;; 		      (setq speedbar-frame nil
-;; 			    dframe-attached-frame nil
-;; 			    speedbar-buffer nil)
-;; 		      (speedbar-set-timer nil)))))
-;;   (set-window-buffer (selected-window)
-;; 		     (get-buffer speedbar-buffer-name)))
-
-;; (speedbar-no-separate-frame)
