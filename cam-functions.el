@@ -1,4 +1,3 @@
-
 (provide 'cam-functions)
 (require 'speedbar)
 
@@ -54,3 +53,8 @@
    (concat
     "http://www.bing.com/search?setmkt=en-US&q="
     (active-region-or-prompt "Search Bing for: "))))
+
+(defun backward-kill-line ()
+  "Calls (kill-line 0), which kills line from current cursor position to beginning of line."
+  (interactive)
+  (kill-line 0))

@@ -1,9 +1,9 @@
-(provide 'elisp-init)
 (require 'ielm)
+(require 'lisp-init)
 
 (defun cam-elisp-mode-setup ()
   (cam-lisp-mode-setup)
-  ; nothing right now
+  (setq completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
   )
 
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
@@ -20,4 +20,6 @@
 (define-keys ielm-map
   '(("RET" ielm-return)))
 
+(add-to-list 'ac-modes 'elisp-mode)
 
+(provide 'elisp-init)

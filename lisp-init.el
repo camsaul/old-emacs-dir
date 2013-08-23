@@ -1,9 +1,9 @@
-(provide 'lisp-init)
 (require 'highlight-parentheses)
 (require 'auto-complete)
 (require 'hl-sexp)
 
 (defun cam-lisp-mode-setup ()
+  (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
   (paredit-mode 1)
@@ -39,3 +39,6 @@
 ;; custom vars
 (setq ac-delay 0) ; no delay before showing completions
 (setq ac-auto-show-menu t) ; automatically show menu
+(setq ac-quick-help-delay 0) ; no delay before showing quick help (documentation)
+
+(provide 'lisp-init)

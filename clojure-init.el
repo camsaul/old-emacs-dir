@@ -1,13 +1,20 @@
-(provide 'clojure-init)
 (require 'ac-nrepl)
 (require 'clojure-mode)
 (require 'lisp-init)
 
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete))) ; make autocomplete a completion-at-point function
+
 (defun cam-clojure-mode-setup ()
   (cam-lisp-mode-setup)
-  (subword-mode 1) ; enable CamelCase support for editor movement
-  (pretty-fn))
+  (subword-mode 1)      ; enable CamelCase support for editor movement
+  (pretty-fn)
+  (set-auto-complete-as-completion-at-point-function)
+  (ac-nrepl-setup)
+  (cljx/basic-init)) ; useful hacks to make clojure indent only with spaces, and save with a final newline.
+
 (add-hook 'nrepl-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'nrepl-interaction-mode-hook 'cam-clojure-mode-setup)
 (add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
 
 ;; custom keyboard shortcuts
@@ -22,26 +29,24 @@
       ("<f12> <f12> c" clojure-cheatsheet)
       ("<C-M-S-return>" toggle-test-file)
       ("S-<f9>" clojure-test-run-tests)
+      ("C-c C-d" ac-nrepl-popup-doc)
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
 (cam-define-clojure-keys clojure-mode-map)
 (cam-define-clojure-keys nrepl-mode-map)
+(cam-define-clojure-keys nrepl-interaction-mode-map)
 
 ;; custom keyboard shortcuts for NREPL only
 (define-keys nrepl-mode-map
-  '(("C-c C-d" ac-nrepl-popup-doc)
-    ("RET" nrepl-return)))
-
-;; Auto-Complete for NREPL
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete)))
+  '(("RET" nrepl-return)))
 
 (defun cam-ac-nrepl-setup ()
-  (ac-nrepl-setup)
-  (set-auto-complete-as-completion-at-point-function))
+    ; nothing right now
+  )
 
 (add-hook 'nrepl-mode-hook 'cam-ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'cam-ac-nrepl-setup)
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
+(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'clojure-mode))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 ;; other custom hooks
@@ -147,3 +152,5 @@
    (concat
     "http://cammsaul.github.io/instant-clojure-cheatsheet/?"
     (active-region-or-prompt "Search Instant Clojure Cheatsheet for: "))))
+
+(provide 'clojure-init)

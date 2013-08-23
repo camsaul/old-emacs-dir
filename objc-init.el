@@ -2,12 +2,13 @@
 (require 'cc-mode)
 (require 'find-lisp)
 
-(add-hook 'objc-mode-hook
-	  (lambda ()
-	    (interactive)
-	    (setq tab-width 4)
-	    (setq c-basic-indent 4))
-	  (subword-mode 1))
+(defun objc-mode-setup ()
+  (global-mode-setup)
+  (setq tab-width 4)
+  (setq c-basic-indent 4)
+  (subword-mode 1))
+
+(add-hook 'objc-mode-hook 'objc-mode-setup)
 
 (define-keys objc-mode-map
 	  '(("M-;" comment-region)

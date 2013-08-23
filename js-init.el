@@ -1,6 +1,7 @@
 (provide 'js-init)
 
 (defun cam-js-mode-setup ()
+  (global-mode-setup)
   (pretty-function)
   (electric-layout-m))
 

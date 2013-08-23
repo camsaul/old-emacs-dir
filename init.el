@@ -16,11 +16,16 @@
 	(when (not (package-installed-p package))
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
-		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy))
+		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
+		     json slime))
 
 (mapc 'require '(cam-functions 
 		 recentf 
-		 rainbow-delimiters))
+		 rainbow-delimiters
+                 rainbow-mode
+		 clojure-mode-ext
+		 clojure-mode-slime
+		 clojuredocs))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -33,7 +38,16 @@
 (set-face-background 'hl-line "#F0F0F0")
 (ido-mode 1)
 (recentf-mode 1)
-(rainbow-mode 1) ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"  
+(rainbow-mode 1)
+
+(defun global-mode-setup ()
+  "function to call when setting up any mode, e.g. minor modes that "
+  (rainbow-mode 1) ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
+  ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
+  (font-lock-add-keywords
+    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+	1 font-lock-warning-face t)))
+  )
 
 ;; global settings
 (setq query-replace-interactive t) ; Use last incremental seach regexp for query in regexp-query-replace
@@ -46,15 +60,6 @@
 (set-frame-font (if (string-equal window-system "ns")
 		    "Source Code Pro-12" ; slightly larger on OS X
 		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-
-;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
-(font-lock-add-keywords
- nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
-	1 font-lock-warning-face t)))
-
-(defun backward-kill-line ()
-  (interactive)
-  (kill-line 0))
 
 ;; custom key bindings
 (define-keys nil
@@ -103,7 +108,7 @@
 (defun menu-edit-init-file (f)
   (menu-edit-file (concat "Edit " f) (concat "~/.emacs.d/" f)))
 
-;;; put my custom stuff in a menu
+;; put my custom stuff in a menu
 (easy-menu-define cam-menu global-map "CAM :)"
   (list "CAM :)"
 	["Coffee House" coffee-house]
