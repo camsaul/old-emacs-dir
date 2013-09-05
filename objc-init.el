@@ -6,7 +6,9 @@
   (global-mode-setup)
   (setq tab-width 4)
   (setq c-basic-indent 4)
-  (subword-mode 1))
+  (subword-mode 1)
+  (auto-complete-mode 1))
+(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'objc-mode))
 
 (add-hook 'objc-mode-hook 'objc-mode-setup)
 
@@ -23,7 +25,7 @@
 
 (easy-menu-define ryde-menu objc-mode-map "Ryde"
   (cons "Ryde"
-	(let ((ryde-dir "~/MobileMuni/MobileMuni"))
+	(let ((ryde-dir "~/Ryde/MobileMuni"))
 	  (mapcar (lambda (f) (menu-edit-file f (concat ryde-dir f)))
 		  (find-h-and-m-files ryde-dir)))))
 
