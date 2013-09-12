@@ -54,8 +54,8 @@
 
 ;; custom vars
 (setq nrepl-hide-special-buffers t) ; hide the *nrepl-connection* and *nrepl-server* buffers
-(setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
-(setq nrepl-popup-stacktraces-in-repl nil)
+;; (setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
+;; (setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-use-pretty-printing t)
 
 (define-clojure-indent ; better indenting for compojure stuff

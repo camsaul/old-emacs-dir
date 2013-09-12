@@ -36,9 +36,4 @@
                                     ,(make-char 'greek-iso8859-7 107))
                     nil))))))
 
-;; custom vars
-(setq ac-delay 0) ; no delay before showing completions
-(setq ac-auto-show-menu t) ; automatically show menu
-(setq ac-quick-help-delay 0) ; no delay before showing quick help (documentation)
-
 (provide 'lisp-init)

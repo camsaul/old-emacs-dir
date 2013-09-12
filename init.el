@@ -33,7 +33,7 @@
 (global-linum-mode 1) ; linum-mode is for line numbers on left
 (line-number-mode 0) ; line-number-mode is for line numbers on mode line
 (column-number-mode 1)
-(global-auto-revert-mode 0)
+(global-auto-revert-mode 1) ; auto-revert mode reload buffers when underlying file changes
 (global-hl-line-mode 1) ; highlights the current line
 (set-face-background 'hl-line "#F0F0F0")
 (ido-mode 1)
@@ -60,6 +60,9 @@
 (set-frame-font (if (string-equal window-system "ns")
 		    "Source Code Pro-12" ; slightly larger on OS X
 		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
+(setq ac-delay 0.01) ; less delay before showing completions. Default is 0.1. Setting to zero makes it crash
+(setq ac-auto-show-menu t) ; automatically show menu
+(setq ac-quick-help-delay 0) ; no delay before showing quick help (documentation)
 
 ;; custom key bindings
 (define-keys nil
