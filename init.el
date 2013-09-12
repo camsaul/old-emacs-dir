@@ -60,9 +60,9 @@
 (set-frame-font (if (string-equal window-system "ns")
 		    "Source Code Pro-12" ; slightly larger on OS X
 		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-(setq ac-delay 0.01) ; less delay before showing completions. Default is 0.1. Setting to zero makes it crash
+(setq ac-delay 0) ; no delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t) ; automatically show menu
-(setq ac-quick-help-delay 0) ; no delay before showing quick help (documentation)
+(setq ac-quick-help-delay 0.1) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
 
 ;; custom key bindings
 (define-keys nil
