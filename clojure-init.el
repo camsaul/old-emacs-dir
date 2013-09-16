@@ -29,7 +29,7 @@
       ("<f12> <f12> c" clojure-cheatsheet)
       ("<C-M-S-return>" toggle-test-file)
       ("S-<f9>" clojure-test-run-tests)
-      ("C-c C-d" ac-nrepl-popup-doc)
+      ("C-c C-d" ac-nrepl-popup-doc)      
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
 (cam-define-clojure-keys clojure-mode-map)
 (cam-define-clojure-keys nrepl-mode-map)
@@ -37,7 +37,8 @@
 
 ;; custom keyboard shortcuts for NREPL only
 (define-keys nrepl-mode-map
-  '(("RET" nrepl-return)))
+  '(("RET" nrepl-return)
+    ("C-c e" nrepl-stacktrace)))
 
 (defun cam-ac-nrepl-setup ()
     ; nothing right now
@@ -54,8 +55,8 @@
 
 ;; custom vars
 (setq nrepl-hide-special-buffers t) ; hide the *nrepl-connection* and *nrepl-server* buffers
-;; (setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
-;; (setq nrepl-popup-stacktraces-in-repl nil)
+(setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
+(setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-use-pretty-printing t)
 
 (define-clojure-indent ; better indenting for compojure stuff
@@ -70,8 +71,16 @@
 
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode)) ; ClojureScript Files should be edited in Clojure-mode
 
-;; turns fn into a fancy f symbol. credit: emacs-starter-kit on github
+(defun nrepl-stacktrace ()
+  "Helper method to jump over to the nrepl and call clojure.stacktrace/e, which will print the stacktrace
+  For the last exception"
+  (interactive)
+  (end-of-buffer)
+  (insert "clojure.stacktrace/e")
+  (nrepl-return))
+
 (defun pretty-fn ()
+  "turns fn into a fancy f symbol. credit: emacs-starter-kit on github"
   (font-lock-add-keywords
    nil `(("(\\(\\<fn\\>\\)"
 	  (0 (progn (compose-region (match-beginning 1)
@@ -80,8 +89,8 @@
 				    'decompose-region)))))))
 
 (defun nice-ns (namespace)
-  (interactive)
   "Returns the path of the src file for the given test namespace."
+  (interactive)
   (let* ((namespace (clojure-underscores-for-hyphens namespace)))
     (concat (car (last (split-string namespace "\\."))) ".clj")))
 
@@ -127,7 +136,7 @@
 
 (defun clojure-cheatsheet ()
   (interactive)
-  (browse-url "http://jafingerhut.github.com/cheatsheet-clj-1.3/cheatsheet-tiptip-no-cdocs-summary.html"))
+  (browse-url "http://clojuredocs.org/quickref/Clojure%20Core"))
 
 (defun clojure-docs-search ()
   "Searches clojuredocs.org for a query or selected region if any."
