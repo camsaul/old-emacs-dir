@@ -17,7 +17,7 @@
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime))
+		     json slime erlang))
 
 (mapc 'require '(cam-functions 
 		 recentf 
