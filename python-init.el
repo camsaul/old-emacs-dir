@@ -1,17 +1,19 @@
 (require 'python)
-(require 'ipython)
+;; (require 'ipython)
 ;; (require 'info-look)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
 
 ;; tweaks to use ipython as the default python interpreter
 (setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "--pylab" ; preload matplotlib and numpy for interactive use
+      python-command python-shell-interpreter
+      py-shell-name python-shell-interpreter
+      python-shell-interpreter-args "-i --pylab=tk" ; preload matplotlib and numpy for interactive use
       python-shell-prompt-regexp "In \\[[0-9]+\\]: "
       python-shell-output-regexp "Out\\[[0-9]+\\]: "
       python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
       python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
-      python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
+      python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"      
       )
 
 (defun cam-python-mode-setup ()
@@ -22,7 +24,8 @@
   (diminish 'paredit-mode " π")
   (auto-complete-mode 1)
   (diminish 'auto-complete-mode)
-  (setq py-python-command-args (cons "--pylab" py-python-command-args))
+  ;; (setq py-python-command-args (cons python-shell-interpreter-args
+  ;; 				     py-python-command-args))
   ;; (turn-on-eldoc-mode)
   ;; (diminish 'eldoc-mode)
   (pretty-lambdas))
