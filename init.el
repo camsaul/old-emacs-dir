@@ -1,3 +1,4 @@
+
 ;; add this dir to the load path
 (add-to-list 'load-path "~/.emacs.d/")
 
@@ -17,7 +18,7 @@
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime erlang))
+		     json slime erlang python ipython))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -138,7 +139,9 @@
 			"js-init.el"
 			"markdown-init.el"
 			"ruby-init.el"
-			"objc-init.el")))))
+			"objc-init.el"
+			"erlang-init.el"
+			"python-init.el")))))
 
 (mapc 'require '(lisp-init
 		 clojure-init
@@ -147,4 +150,6 @@
 		 js-init
 		 markdown-init
 		 ruby-init
-		 objc-init))
+		 objc-init
+		 python-init
+		 erlang-init))
