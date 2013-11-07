@@ -1,4 +1,3 @@
-(provide 'objc-init)
 (require 'cc-mode)
 (require 'find-lisp)
 (require 'find-file)
@@ -50,3 +49,5 @@
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
 		     ".m")))
+
+(provide 'objc-init)

@@ -18,7 +18,7 @@
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime erlang python ipython xmlgen))
+		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -47,8 +47,7 @@
   ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
   (font-lock-add-keywords
     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
-	1 font-lock-warning-face t)))
-  )
+	1 font-lock-warning-face t))))
 
 ;; global settings
 (setq query-replace-interactive t) ; Use last incremental seach regexp for query in regexp-query-replace
@@ -77,13 +76,13 @@
     ("C-M-y" popup-yank-menu) 
     ("<f12> s" stackoverflow-search)
     ("<f12> b" bing-search) 
-    ("C-z" undo)	       ; C-z -> undo instead of minimize emacs
-    ("C-v" yank)	       ; C-z -> undo instead of minimize emacs
+    ("C-z" undo)     ; C-z -> undo instead of minimize emacs
+    ("C-v" yank)     ; C-v -> yank instead of whatever it usually does
     ("<escape>" keyboard-escape-quit)
-    ("<insert>" nil)			; disable overwrite key
+    ("<insert>" nil)		    ; disable overwrite key on windows
+    ("C-c e" eval-and-replace) ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
-    ("C-x z")			; disable minimize emacs
-    ("<mouse-4>" speedbar)	; mouse button 4 can open the speedbar
+    ("C-x z")				; disable minimize emacs
     ))
 
 ;; Use the AppButton (Windows) or fn key (Mac) to switch windows, frames, buffers, etc.
@@ -146,7 +145,8 @@
 			"ruby-init.el"
 			"objc-init.el"
 			"erlang-init.el"
-			"python-init.el")))))
+			"python-init.el"
+			"html-init.el")))))
 
 (mapc 'require '(lisp-init
 		 clojure-init
@@ -157,5 +157,6 @@
 		 ruby-init
 		 objc-init
 		 python-init
-		 erlang-init))
+		 erlang-init
+		 html-init))
 (put 'upcase-region 'disabled nil)

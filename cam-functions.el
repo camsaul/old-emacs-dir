@@ -1,5 +1,3 @@
-
-(provide 'cam-functions)
 (require 'speedbar)
 
 (defun cygwin-shell () 
@@ -55,7 +53,27 @@
     "http://www.bing.com/search?setmkt=en-US&q="
     (active-region-or-prompt "Search Bing for: "))))
 
+(defun stackoverflow-search ()
+  "Searches Stack Overflow for current region, or prompts for query if none exists."
+  (interactive)
+  (browse-url
+   (concat
+    "http://stackoverflow.com/search?q="
+    (active-region-or-prompt "Search Stack Overflow for: "))))
+
 (defun backward-kill-line ()
   "Calls (kill-line 0), which kills line from current cursor position to beginning of line."
   (interactive)
   (kill-line 0))
+
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value"
+  (interactive)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+	     (current-buffer))
+    (error (message "Invalid expression")
+	   (insert (current-kill 0)))))
+
+(provide 'cam-functions)
