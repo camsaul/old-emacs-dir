@@ -24,9 +24,10 @@
 		 recentf 
 		 rainbow-delimiters
                  rainbow-mode
-		 clojure-mode-ext
+		 clojure-mode-ext ; <- TODO can't these be moded to clojure-init.el?
 		 clojure-mode-slime
-		 clojuredocs))
+		 clojuredocs
+		 midnight))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -63,6 +64,7 @@
 (setq ac-delay 0) ; shorter delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t) ; automatically show menu
 (setq ac-quick-help-delay 0.5) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
+(setq midnight-period 600) ; every ten minutes run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour
 
 ;; custom key bindings
 (define-keys nil
