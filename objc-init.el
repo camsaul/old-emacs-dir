@@ -1,6 +1,7 @@
 (provide 'objc-init)
 (require 'cc-mode)
 (require 'find-lisp)
+(require 'find-file)
 
 ;; Automatically open .h files with @interface declarations as obj-c rather than c
 (add-to-list 'magic-mode-alist
@@ -9,6 +10,9 @@
 		       (re-search-forward "@\\<interface\\>" 
 					  magic-mode-regexp-match-limit t)))
 	       . objc-mode))
+
+;; .m and .mm files to cc-other-file-find-alist
+(nconc (cadr (assoc "\\.h\\'" cc-other-file-alist)) '(".m" ".mm"))
 
 (defun objc-mode-setup ()
   (global-mode-setup)
