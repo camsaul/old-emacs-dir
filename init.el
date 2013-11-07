@@ -18,7 +18,7 @@
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime erlang python ipython))
+		     json slime erlang python ipython xmlgen))
 
 (mapc 'require '(cam-functions 
 		 recentf 
