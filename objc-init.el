@@ -2,6 +2,14 @@
 (require 'cc-mode)
 (require 'find-lisp)
 
+;; Automatically open .h files with @interface declarations as obj-c rather than c
+(add-to-list 'magic-mode-alist
+	     `(,(lambda ()
+		  (and (string= (file-name-extension buffer-file-name) "h")
+		       (re-search-forward "@\\<interface\\>" 
+					  magic-mode-regexp-match-limit t)))
+	       . objc-mode))
+
 (defun objc-mode-setup ()
   (global-mode-setup)
   (setq tab-width 4)
