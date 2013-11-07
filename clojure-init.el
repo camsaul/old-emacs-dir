@@ -1,5 +1,6 @@
-(require 'ac-nrepl)
 (require 'clojure-mode)
+(require 'nrepl)
+(require 'ac-nrepl)
 (require 'lisp-init)
 
 (defun set-auto-complete-as-completion-at-point-function ()
@@ -13,8 +14,7 @@
   (ac-nrepl-setup)
   (cljx/basic-init)) ; useful hacks to make clojure indent only with spaces, and save with a final newline.
 
-(add-hook 'nrepl-mode-hook 'cam-clojure-mode-setup)
-(add-hook 'nrepl-interaction-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'nrepl-repl-mode-hook 'cam-clojure-mode-setup)
 (add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
 
 ;; custom keyboard shortcuts
@@ -32,11 +32,11 @@
       ("C-c C-d" ac-nrepl-popup-doc)      
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
 (cam-define-clojure-keys clojure-mode-map)
-(cam-define-clojure-keys nrepl-mode-map)
+;; (cam-define-clojure-keys nrepl-mode-map)
 (cam-define-clojure-keys nrepl-interaction-mode-map)
 
 ;; custom keyboard shortcuts for NREPL only
-(define-keys nrepl-mode-map
+(define-keys nrepl-repl-mode-map
   '(("RET" nrepl-return)
     ("C-c e" nrepl-stacktrace)))
 
@@ -45,8 +45,8 @@
   )
 
 (add-hook 'nrepl-mode-hook 'cam-ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'cam-ac-nrepl-setup)
-(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-mode))
+(add-hook 'nrepl-repl-mode-hook 'cam-ac-nrepl-setup)
+(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-repl-mode))
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'clojure-mode))
 (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
@@ -58,6 +58,7 @@
 (setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
 (setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-use-pretty-printing t)
+(setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
@@ -117,18 +118,13 @@
 ;;; get the environment set up
 (defun switch-to-nrepl-in-current-ns ()
   (interactive)
-  (if (string= major-mode "nrepl-mode")
-      (switch-to-buffer-other-window (nice-ns (nrepl-current-ns)))
-    (let ((ns (strip-clj-cljs (clojure-expected-ns))))
-      (if (or (not (get-buffer "*nrepl*"))
-	      (not (get-buffer (nrepl-current-connection-buffer))))
-	  (progn
-	    (nrepl-jack-in))
-	(progn
-	  (save-buffer)
-	  (nrepl-load-current-buffer)
-	  (switch-to-buffer-other-window "*nrepl*")
-	  (nrepl-set-ns ns))))))
+  (if (string= major-mode "nrepl-repl-mode")
+      (nrepl-switch-to-last-clojure-buffer)
+    (progn
+      (let (nmspace (cider-get-current-ns))
+        (cider-load-current-buffer)
+        (cider-switch-to-relevant-repl-buffer)
+        (nrepl-set-ns nmspace)))))
 
 (defun paredit-cheatsheet ()
   (interactive)

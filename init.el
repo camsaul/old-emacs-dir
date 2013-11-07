@@ -61,9 +61,9 @@
 (set-frame-font (if (string-equal window-system "ns")
 		    "Source Code Pro-12" ; slightly larger on OS X
 		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-(setq ac-delay 0) ; no delay before showing completions. Default is 0.1.
+(setq ac-delay 0) ; shorter delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t) ; automatically show menu
-(setq ac-quick-help-delay 0.1) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
+(setq ac-quick-help-delay 0.5) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
 
 ;; custom key bindings
 (define-keys nil
@@ -87,14 +87,19 @@
     ))
 
 ;; Use the AppButton (Windows) or fn key (Mac) to switch windows, frames, buffers, etc.
-(setq ns-function-modifier 'hyper)
+(setq ns-function-modifier 'hyper) ; doesn't actually seem to work
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
-  '(("<H-up>" windmove-up) 
+  '(("<H-up>" windmove-up)
     ("<H-left>" windmove-left) 
     ("<H-right>" windmove-right) 
-    ("<H-down>" windmove-down) 
-    ("<H-SPC>" other-frame) 
+    ("<H-down>" windmove-down)
+    ("<C-s-M-left>" windmove-left)
+    ("<C-s-M-right>" windmove-right)
+    ("<C-s-M-up>" windmove-up)
+    ("<C-s-M-down>" windmove-down)
+    ("<H-SPC>" other-frame)
+    ("<C-s-M-return>" other-frame)
     ("<H-S-left>" previous-buffer) 
     ("<H-S-right>" next-buffer)
     ("H-k" kill-this-buffer))) 
@@ -153,3 +158,4 @@
 		 objc-init
 		 python-init
 		 erlang-init))
+(put 'upcase-region 'disabled nil)
