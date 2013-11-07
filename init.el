@@ -45,6 +45,7 @@
 (recentf-mode 1)
 (rainbow-mode 1)
 (undo-tree-mode 1) ; sane undo in emacs
+(diminish 'undo-tree-mode nil)
 (evil-mode 1)
 
 (defun global-mode-setup ()
