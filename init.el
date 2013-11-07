@@ -18,7 +18,8 @@
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block))
+		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
+		     undo-tree evil))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -27,7 +28,9 @@
 		 clojure-mode-ext ; <- TODO can't these be moded to clojure-init.el?
 		 clojure-mode-slime
 		 clojuredocs
-		 midnight))
+		 midnight
+		 undo-tree
+		 evil))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -41,6 +44,8 @@
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)
+(undo-tree-mode 1) ; sane undo in emacs
+(evil-mode 1)
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
@@ -78,7 +83,7 @@
     ("C-M-y" popup-yank-menu) 
     ("<f12> s" stackoverflow-search)
     ("<f12> b" bing-search) 
-    ("C-z" undo)     ; C-z -> undo instead of minimize emacs
+    ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
     ("C-v" yank)     ; C-v -> yank instead of whatever it usually does
     ("<escape>" keyboard-escape-quit)
     ("<insert>" nil)		    ; disable overwrite key on windows
