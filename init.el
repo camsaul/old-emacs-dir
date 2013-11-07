@@ -47,6 +47,7 @@
 (undo-tree-mode 1) ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
 (evil-mode 1)
+(tool-bar-mode 0)
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
@@ -65,7 +66,7 @@
 (add-hook 'emacs-startup-hook (lambda () (kill-buffer "*scratch*")))
 (setq recentf-max-menu-items 20)
 (set-frame-font (if (string-equal window-system "ns")
-		    "Source Code Pro-12" ; slightly larger on OS X
+		    "Menlo Regular-11" ; use the Xcode font on OS X
 		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 (setq ac-delay 0) ; shorter delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t) ; automatically show menu
@@ -157,7 +158,7 @@
 			"html-init.el")))))
 
 (mapc 'require '(lisp-init
-		 clojure-init
+		 ;; clojure-init
 		 elisp-init
 		 org-init
 		 js-init
