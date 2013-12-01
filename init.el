@@ -1,4 +1,3 @@
-
 ;; add this dir to the load path
 (add-to-list 'load-path "~/.emacs.d/")
 
@@ -19,7 +18,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil))
+		     undo-tree evil nav))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -30,7 +29,9 @@
 		 clojuredocs
 		 midnight
 		 undo-tree
-		 evil))
+		 evil
+		 nav ; nav frame, better than speed bar
+		 ))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -47,6 +48,8 @@
 (undo-tree-mode 1) ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
 (evil-mode 1)
+(tool-bar-mode -1) ; disable the toolbar at top of screen
+(scroll-bar-mode -1) ; disable scrollbar
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
