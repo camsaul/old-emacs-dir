@@ -45,7 +45,7 @@
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)
-(undo-tree-mode 1) ; sane undo in emacs
+(global-undo-tree-mode 1) ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
 (evil-mode 1)
 (tool-bar-mode -1) ; disable the toolbar at top of screen
