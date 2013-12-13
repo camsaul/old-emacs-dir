@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 (add-to-list 'load-path "~/.emacs.d/") ; add this dir to the load path
 (add-to-list 'load-path "~/.emacs.d/auto-complete-clang") ; add path for clang autocomplete
-=======
-;; add this dir to the load path
-(add-to-list 'load-path "~/.emacs.d/")
->>>>>>> 9b1d0fc5605e70b1bc80bac48a00c846d2fdcc74
 
 ;; MELPA Package Source
 (require 'package)
