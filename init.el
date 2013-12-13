@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 (add-to-list 'load-path "~/.emacs.d/") ; add this dir to the load path
 (add-to-list 'load-path "~/.emacs.d/auto-complete-clang") ; add path for clang autocomplete
+=======
+;; add this dir to the load path
+(add-to-list 'load-path "~/.emacs.d/")
+>>>>>>> 9b1d0fc5605e70b1bc80bac48a00c846d2fdcc74
 
 ;; MELPA Package Source
 (require 'package)
@@ -18,7 +23,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil))
+		     undo-tree evil nav))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -30,7 +35,9 @@
 		 midnight
 		 undo-tree
 		 evil
-		 auto-complete-clang))
+		 auto-complete-clang
+		 nav ; nav frame, better than speed bar
+		 ))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -44,10 +51,11 @@
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)
-(undo-tree-mode 1) ; sane undo in emacs
+(global-undo-tree-mode 1) ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
 (evil-mode 1)
-(tool-bar-mode 0)
+(tool-bar-mode -1) ; disable the toolbar at top of screen
+(scroll-bar-mode -1) ; disable scrollbar
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
