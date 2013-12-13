@@ -1,6 +1,5 @@
-
-;; add this dir to the load path
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/") ; add this dir to the load path
+(add-to-list 'load-path "~/.emacs.d/auto-complete-clang") ; add path for clang autocomplete
 
 ;; MELPA Package Source
 (require 'package)
@@ -30,7 +29,8 @@
 		 clojuredocs
 		 midnight
 		 undo-tree
-		 evil))
+		 evil
+		 auto-complete-clang))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)

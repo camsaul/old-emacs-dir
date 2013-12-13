@@ -18,6 +18,7 @@
   (setq tab-width 4)
   (setq c-basic-indent 4)
   (setq c-basic-offset 4)
+  (c-set-offset 'case 4)
   (subword-mode 1)
   (auto-complete-mode 1))
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'objc-mode))
