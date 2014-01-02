@@ -1,9 +1,10 @@
-(require 'rspec-mode)
-(require 'ruby-electric)
-(require 'ruby-block)
 (require 'auto-complete)
 
 (defun cam-ruby-mode-setup ()
+  (require 'rspec-mode)
+  (require 'ruby-electric)
+  (require 'ruby-block)
+  (global-mode-setup)
   (ruby-electric-mode t)
   (ruby-block-mode t) ; highlight corresponding openings when cursor is on a closing block statement
   (auto-complete-mode t)

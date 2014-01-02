@@ -24,8 +24,8 @@
 		 recentf 
 		 rainbow-delimiters
                  rainbow-mode
-		 clojure-mode-ext ; <- TODO can't these be moded to clojure-init.el?
-		 clojure-mode-slime
+		 ;; clojure-mode-ext ; <- TODO can't these be added to clojure-init.el?
+		 ;; clojure-mode-slime
 		 clojuredocs
 		 midnight
 		 undo-tree
@@ -45,10 +45,11 @@
 (set-face-background 'hl-line "#F0F0F0")
 (ido-mode 1)
 (recentf-mode 1)
-(rainbow-mode 1)
+(rainbow-mode 1) ; colorize strings that represent colors
+(diminish 'rainbow-mode nil)
 (global-undo-tree-mode 1) ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
-(evil-mode 1)
+;; (evil-mode 1)
 (tool-bar-mode -1) ; disable the toolbar at top of screen
 (scroll-bar-mode -1) ; disable scrollbar
 
@@ -158,10 +159,11 @@
 			"objc-init.el"
 			"erlang-init.el"
 			"python-init.el"
-			"html-init.el")))))
+			"html-init.el"
+			"cpp-init.el")))))
 
 (mapc 'require '(lisp-init
-		 ;; clojure-init
+		 clojure-init
 		 elisp-init
 		 org-init
 		 js-init
@@ -170,5 +172,7 @@
 		 objc-init
 		 python-init
 		 erlang-init
-		 html-init))
+		 html-init
+		 cpp-init))
+
 (put 'upcase-region 'disabled nil)

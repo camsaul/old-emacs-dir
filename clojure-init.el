@@ -1,3 +1,4 @@
+
 (require 'clojure-mode)
 (require 'nrepl)
 (require 'ac-nrepl)
@@ -55,10 +56,10 @@
 
 ;; custom vars
 (setq nrepl-hide-special-buffers t) ; hide the *nrepl-connection* and *nrepl-server* buffers
-(setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
-(setq nrepl-popup-stacktraces-in-repl nil)
+; (setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
+; (setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-use-pretty-printing t)
-(setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
+; (setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
