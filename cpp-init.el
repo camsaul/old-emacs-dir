@@ -7,7 +7,7 @@
 (add-to-list 'magic-mode-alist
 	     `(,(lambda ()
 		  (and (string= (file-name-extension buffer-file-name) "h")
-		       (or (re-search-forward "#include <\w+>" 
+		       (or (re-search-forward "#include <\\w+>" 
 					      magic-mode-regexp-match-limit t)
 			   (re-search-forward "std::" 
 					      magic-mode-regexp-match-limit t))))
