@@ -76,4 +76,14 @@
     (error (message "Invalid expression")
 	   (insert (current-kill 0)))))
 
+(defun force-indent-region ()
+  "Indent a region, overriding normal indentation behavior."
+  (interactive)  
+  (indent-rigidly (region-beginning) (region-end) 4))
+
+(defun force-unindent-region ()
+  "Unindent a region, overriding normal indentation behavior."
+  (interactive)  
+  (indent-rigidly (region-beginning) (region-end) -4))
+
 (provide 'cam-functions)

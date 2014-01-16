@@ -114,6 +114,8 @@
     ("C-c e" eval-and-replace) ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
     ("C-x z")				; disable minimize emacs
+    ("s-]" force-indent-region)
+    ("s-[" force-unindent-region)
     ))
 
 ;; Use the AppButton (Windows) or fn key (Mac) to switch windows, frames, buffers, etc.
@@ -126,13 +128,15 @@
     ("<H-down>" windmove-down)
     ("<C-s-M-left>" windmove-left)
     ("<C-s-M-right>" windmove-right)
+    ("<C-s-right>" previous-buffer)
+    ("<C-s-left>" next-buffer)
     ("<C-s-M-up>" windmove-up)
     ("<C-s-M-down>" windmove-down)
     ("<H-SPC>" other-frame)
     ("<C-s-M-return>" other-frame)
     ("<H-S-left>" previous-buffer) 
     ("<H-S-right>" next-buffer)
-    ("H-k" kill-this-buffer))) 
+    ("H-k" kill-this-buffer)))
 
 ;;; todo -> super, alt modifiers?
 ;;; ns-right-command-modifier

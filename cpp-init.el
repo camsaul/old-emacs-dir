@@ -41,6 +41,7 @@
   '(("M-;" comment-region)
     ("<f3>" flymake-display-err-menu-for-current-line)
     ("<f4>" flymake-goto-next-error)
+    ("<f11>" paredit-mode)
     ("C-c f" flymake-mode)
     ("C-c C-k" flymake-compile)
     ("<C-M-up>" c++-jump-to-header)
