@@ -1,5 +1,5 @@
-(add-to-list 'load-path "~/.emacs.d/") ; add this dir to the load path
-(add-to-list 'load-path "~/.emacs.d/auto-complete-clang") ; add path for clang autocomplete
+(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/auto-complete-clang")
 
 ;; MELPA Package Source
 (require 'package)
@@ -19,7 +19,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet))
+		     undo-tree evil nav yasnippet dired+))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -36,90 +36,97 @@
 (mapc (lambda (package)
 	(unless (package-installed-p package)
 	  (el-get-install package)))
-      '()) ; nothing right now
+      '()					  ; nothing right now
+      )
 
 (mapc 'require '(cam-functions 
 		 recentf 
 		 rainbow-delimiters
                  rainbow-mode
-		 ;; clojure-mode-ext ; <- TODO can't these be added to clojure-init.el?
-		 ;; clojure-mode-slime
 		 clojuredocs
 		 midnight
 		 undo-tree
-		 evil
-		 nav ; nav frame, better than speed bar
+		 ;; evil
+		 nav				  ; nav frame, better than speed bar 
+		 dired+
 		 ))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
-(winner-mode 1)
-(global-linum-mode 1) ; linum-mode is for line numbers on left
-(line-number-mode 0) ; line-number-mode is for line numbers on mode line
+(winner-mode 1)					  
+(global-linum-mode 1)				  ; linum-mode is for line numbers on left	      			  
+(line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
 (column-number-mode 1)
-(global-auto-revert-mode 1) ; auto-revert mode reload buffers when underlying file changes
-(global-hl-line-mode 1) ; highlights the current line
+(global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes 
+(setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
+(setq auto-revert-verbose nil)
+(global-hl-line-mode 1)				  ; highlights the current line 
 (set-face-background 'hl-line "#F0F0F0")
 (ido-mode 1)
 (recentf-mode 1)
-(rainbow-mode 1) ; colorize strings that represent colors
+(rainbow-mode 1)				  ; colorize strings that represent colors	      
 (diminish 'rainbow-mode nil)
-(global-undo-tree-mode 1) ; sane undo in emacs
-(diminish 'undo-tree-mode nil)
+(global-undo-tree-mode 1)			  ; sane undo in emacs
+(diminish 'undo-tree-mode nil)			  
+(tool-bar-mode -1)				  ; disable the toolbar at top of screen
+(scroll-bar-mode -1)				  ; disable scrollbar
+(toggle-diredp-find-file-reuse-dir)		  ; reuse dired buffer
 ;; (evil-mode 1)
-(tool-bar-mode -1) ; disable the toolbar at top of screen
-(scroll-bar-mode -1) ; disable scrollbar
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
-  (rainbow-mode 1) ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
+  (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue" 
   ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
   (font-lock-add-keywords
     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
 
 ;; global settings
-(setq query-replace-interactive t) ; Use last incremental seach regexp for query in regexp-query-replace
-;; (setq make-backup-files nil) ; stop creating those backup~ files
+(setq query-replace-interactive t)		  ; Use last incremental seach regexp for query in regexp-query-replace 
 (prefer-coding-system 'utf-8-auto-unix)
-(setq inhibit-startup-screen t) ; inhibit startup screen
-(setq inhibit-splash-screen t) ; inhibit splash screen
-(add-hook 'emacs-startup-hook (lambda () (kill-buffer "*scratch*")))
+(setq inhibit-startup-screen t)			  ; inhibit startup screen 
+(setq inhibit-splash-screen t)			  ; inhibit splash screen 
+(add-hook 'emacs-startup-hook			  ; Remove *scratch* buffer
+	  (lambda () (kill-buffer "*scratch*")))
 (setq recentf-max-menu-items 20)
 (set-frame-font (if (string-equal window-system "ns")
-		    "Menlo Regular-11" ; use the Xcode font on OS X
-		  "Source Code Pro-10")) ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-(setq ac-delay 0) ; shorter delay before showing completions. Default is 0.1.
-(setq ac-auto-show-menu t) ; automatically show menu
-(setq ac-quick-help-delay 0.5) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
+		    "Menlo Regular-11"		  ; use the Xcode font on OS X 
+		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
+		  )) 
+(setq ac-delay 0)				  ; shorter delay before showing completions. Default is 0.1. 
+(setq ac-auto-show-menu t)			  ; automatically show menu 
+(setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
-(setq midnight-period 60) ; every minute run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour
+(setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour 
 
 ;; custom key bindings
 (define-keys nil
-  '(("C-x u" nil) ; disable emacs default keybinding for undo, use C-z instead
-    ("C-x C-b" buffer-menu)		; C-x C-b shows buffer menu
-    ("C-x C-r" recentf-open-files) ; C-x C-r -> display recent files (overrides open file in read-only mode)
-    ("C-x r" recentf-open-files) ; make C-x r recent files as well in case I hit wrong button
-    ("C-x C-d" ido-dired) ; C-x C-d -> dired instead of list directory
-    ("C-M-S-k" backward-kill-sexp) ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
-    ("C-S-k" backward-kill-line)   ; C-S-k will kill line backwards.
-    ("C-M-y" popup-yank-menu) 
+  '(("C-x u" nil) 				  ; disable emacs default keybinding for undo, use C-z instead
+    ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu			  		
+    ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)		   
+    ("C-x r" recentf-open-files)		  ; make C-x r recent files as well in case I hit wrong button		   
+    ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory			   
+    ("C-M-S-k" backward-kill-sexp)		  ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))		   
+    ("C-S-k" backward-kill-line)		  
+    ("C-M-y" popup-yank-menu)
+    ("<f9>" whitespace-mode)
+    ("<f10>" nav)				  ; open a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer (not very useful)				   
+    ("<f11>" paredit-mode)			  ; F11 is now global key for paredit-mode			   
     ("<f12> s" stackoverflow-search)
     ("<f12> b" bing-search) 
     ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
-    ("C-v" yank)     ; C-v -> yank instead of whatever it usually does
+    ("C-v" yank)				  ; C-v -> yank instead of whatever it usually does				       				  				  
     ("<escape>" keyboard-escape-quit)
-    ("<insert>" nil)		    ; disable overwrite key on windows
-    ("C-c e" eval-and-replace) ; eval previous elisp expression at point, replace with results
+    ("<insert>" nil)				  ; disable stupid insert key TODO maybe use as a prefix to insert something useful		     
+    ("C-c e" eval-and-replace)		     	  ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
-    ("C-x z")				; disable minimize emacs
+    ("C-x z")				      	  ; disable minimize emacs
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
     ))
 
-;; Use the AppButton (Windows) or fn key (Mac) to switch windows, frames, buffers, etc.
-(setq ns-function-modifier 'hyper) ; doesn't actually seem to work
+
+(setq ns-function-modifier 'hyper)		  ; doesn't actually seem to work     
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
   '(("<H-up>" windmove-up)
@@ -137,14 +144,6 @@
     ("<H-S-left>" previous-buffer) 
     ("<H-S-right>" next-buffer)
     ("H-k" kill-this-buffer)))
-
-;;; todo -> super, alt modifiers?
-;;; ns-right-command-modifier
-;;; ns-right-option-modifier
-;;; (setq w32-pass-lwindow-to-system nil)
-;;; (setq w32-apps-lwindow-modifer 'super)
-;;; (setq w32-scroll-lock-modifier 'alt)
-;;; (setq w32-recognize-altgr t) ; Right Ctrl + Left Alt is <AltGr> ?
 
 (defun menu-edit-file (str f)
   (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
@@ -168,7 +167,7 @@
 	'("Modes"
 	  ["toggle-paredit-mode" paredit-mode]
 	  ["whitespace-mode" whitespace-mode])
-	(cons "Edit Init File"
+	(cons "Edit Ihknit File"
 	      (mapcar 'menu-edit-init-file
 		      '("init.el"
 			"cam-functions.el"
