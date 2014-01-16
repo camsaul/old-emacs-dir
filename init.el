@@ -12,13 +12,31 @@
 (when (not package-archive-contents)
 	(package-refresh-contents))
 
+;; install melpa/maramalade packages
 (mapc (lambda (package)
 	(when (not (package-installed-p package))
 	  (package-install package)))
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav))
+		     undo-tree evil nav yasnippet))
+
+;; install el-get if needed
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+
+;; install el-get packages
+(mapc (lambda (package)
+	(unless (package-installed-p package)
+	  (el-get-install package)))
+      '()) ; nothing right now
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -30,7 +48,6 @@
 		 midnight
 		 undo-tree
 		 evil
-		 auto-complete-clang
 		 nav ; nav frame, better than speed bar
 		 ))
 
@@ -63,7 +80,7 @@
 
 ;; global settings
 (setq query-replace-interactive t) ; Use last incremental seach regexp for query in regexp-query-replace
-(setq make-backup-files nil) ; stop creating those backup~ files
+;; (setq make-backup-files nil) ; stop creating those backup~ files
 (prefer-coding-system 'utf-8-auto-unix)
 (setq inhibit-startup-screen t) ; inhibit startup screen
 (setq inhibit-splash-screen t) ; inhibit splash screen
@@ -75,7 +92,8 @@
 (setq ac-delay 0) ; shorter delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t) ; automatically show menu
 (setq ac-quick-help-delay 0.5) ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
-(setq midnight-period 600) ; every ten minutes run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour
+(setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+(setq midnight-period 60) ; every minute run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour
 
 ;; custom key bindings
 (define-keys nil
