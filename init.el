@@ -19,7 +19,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet dired+))
+		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -49,6 +49,7 @@
 		 ;; evil
 		 nav				  ; nav frame, better than speed bar 
 		 dired+
+		 smex				  ; IDO-like completion for M-x
 		 ))
 
 ;; global minor modes
@@ -71,6 +72,7 @@
 (tool-bar-mode -1)				  ; disable the toolbar at top of screen
 (scroll-bar-mode -1)				  ; disable scrollbar
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
+(nav)						  ; Start with a nav buffer open
 ;; (evil-mode 1)
 
 (defun global-mode-setup ()
@@ -97,7 +99,14 @@
 (setq ac-auto-show-menu t)			  ; automatically show menu 
 (setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
-(setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited in the last hour 
+(setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
+(midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
+(setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
+(setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
+(setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
+      '("\\*.*\\*"))
+(setq nav-width 30)				  ; nav should be 30 chars wide (default is 18)
+(nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
 
 ;; custom key bindings
 (define-keys nil
@@ -109,8 +118,12 @@
     ("C-M-S-k" backward-kill-sexp)		  ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))		   
     ("C-S-k" backward-kill-line)		  
     ("C-M-y" popup-yank-menu)
+    ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)    
     ("<f9>" whitespace-mode)
-    ("<f10>" nav)				  ; open a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer (not very useful)				   
+    ("<f10>" (lambda ()				  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer (not very useful)
+	       (interactive)
+	       (switch-to-buffer-other-window "*nav*")))
+    ("S-<f10>" nav)				  ; Open nav buffer
     ("<f11>" paredit-mode)			  ; F11 is now global key for paredit-mode			   
     ("<f12> s" stackoverflow-search)
     ("<f12> b" bing-search) 
@@ -123,7 +136,9 @@
     ("C-x z")				      	  ; disable minimize emacs
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
+    ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
     ))
+
 
 
 (setq ns-function-modifier 'hyper)		  ; doesn't actually seem to work     
@@ -195,5 +210,3 @@
 		 erlang-init
 		 html-init
 		 cpp-init))
-
-(put 'upcase-region 'disabled nil)

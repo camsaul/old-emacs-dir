@@ -1,8 +1,10 @@
 (require 'ielm)
 (require 'lisp-init)
+(require 'elisp-slime-nav)
 
 (defun cam-elisp-mode-setup ()
   (cam-lisp-mode-setup)
+  (elisp-slime-nav-mode t)
   (setq completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
   )
 
@@ -13,6 +15,7 @@
   (cam-define-lisp-keys mode-map)
   (define-keys mode-map
     '(("C-x C-e" pp-eval-last-sexp) ; pretty-print eval'd expressions
+      ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point)
       )))
 
 (cam-define-elisp-keys emacs-lisp-mode-map)
