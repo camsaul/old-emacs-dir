@@ -70,7 +70,7 @@
 (diminish 'undo-tree-mode nil)			  
 (tool-bar-mode -1)				  ; disable the toolbar at top of screen
 (scroll-bar-mode -1)				  ; disable scrollbar
-(toggle-diredp-find-file-reuse-dir)		  ; reuse dired buffer
+(toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
 ;; (evil-mode 1)
 
 (defun global-mode-setup ()
@@ -167,7 +167,7 @@
 	'("Modes"
 	  ["toggle-paredit-mode" paredit-mode]
 	  ["whitespace-mode" whitespace-mode])
-	(cons "Edit Ihknit File"
+	(cons "Edit Init File"
 	      (mapcar 'menu-edit-init-file
 		      '("init.el"
 			"cam-functions.el"
