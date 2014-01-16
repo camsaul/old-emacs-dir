@@ -19,7 +19,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar))
+		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -53,10 +53,22 @@
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
+
+;; helper settings to make emacs work better from terminal
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
+
+;; start in fullscreen mode
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
+
+(add-hook 'emacs-startup-hook			  
+	  (lambda ()
+            (progn
+              (kill-buffer "*scratch*")
+              (nav))))                            ; Start with a nav buffer open
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -79,7 +91,6 @@
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
-(nav)						  ; Start with a nav buffer open
 (tabbar-mode 1)					  
 
 ;; (evil-mode 1)
@@ -95,10 +106,8 @@
 ;; global settings
 (setq query-replace-interactive t)		  ; Use last incremental seach regexp for query in regexp-query-replace 
 (prefer-coding-system 'utf-8-auto-unix)
-(setq inhibit-startup-screen t)			  ; inhibit startup screen 
-(setq inhibit-splash-screen t)			  ; inhibit splash screen 
-(add-hook 'emacs-startup-hook			  ; Remove *scratch* buffer
-	  (lambda () (kill-buffer "*scratch*")))
+(setq inhibit-startup-screen t
+      inhibit-splash-screen t)
 (setq recentf-max-menu-items 20)
 (set-frame-font (if (string-equal window-system "ns")
 		    "Menlo Regular-11"		  ; use the Xcode font on OS X 
