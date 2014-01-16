@@ -19,7 +19,7 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav))
+		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -52,6 +52,12 @@
 		 smex				  ; IDO-like completion for M-x
 		 ))
 
+(add-hook 'before-make-frame-hook 'turn-off-tool-bar)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(ansi-color-for-comint-mode-on)
+
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
 (winner-mode 1)					  
@@ -71,8 +77,11 @@
 (diminish 'undo-tree-mode nil)			  
 (tool-bar-mode -1)				  ; disable the toolbar at top of screen
 (scroll-bar-mode -1)				  ; disable scrollbar
+(delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
 (nav)						  ; Start with a nav buffer open
+(tabbar-mode 1)					  
+
 ;; (evil-mode 1)
 
 (defun global-mode-setup ()
@@ -107,6 +116,8 @@
       '("\\*.*\\*"))
 (setq nav-width 30)				  ; nav should be 30 chars wide (default is 18)
 (nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
+(set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
+(setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
 
 ;; custom key bindings
 (define-keys nil
@@ -137,6 +148,12 @@
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
+    ("C-p" isearch-forward)			  ; The windows edit menu keyboard button is C-p on mac, use this as alias for search since I don't really use it for lines
+    ("<C-268632080>" query-replace)		  ; 268632080 apparently refers to Win Edit key on Mac when combined with other keys
+    ("<M-268632080>" isearch-forward-regexp)	 
+    ("<C-M-268632080>" query-replace-regexp)	 
+    ("<s-268632080>" isearch-backward)
+    ("<M-s-268632080>" isearch-backward-regexp)
     ))
 
 

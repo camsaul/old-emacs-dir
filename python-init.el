@@ -23,7 +23,7 @@
   (paredit-mode 1)
   (diminish 'paredit-mode " π")
   (auto-complete-mode 1)
-  (diminish 'auto-complete-mode)
+  (diminish 'auto-complete-mode)  
   ;; (setq py-python-command-args (cons python-shell-interpreter-args
   ;; 				     py-python-command-args))
   ;; (turn-on-eldoc-mode)
@@ -35,8 +35,10 @@
 ;; custom keyboard shortcuts
 (setq py-mode-map python-mode-map) ; some python modes are looking for keymap under alternate napme (?)
 (define-keys py-mode-map
-    '() ; nothing yet
-    )
+  '(("<f5>" flymake-display-err-menu-for-current-line)
+    ("<f6>" flymake-goto-next-error)
+    ("<f7>" flymake-mode))		; nothing yet
+  )
 
 
 ;; Use the correct documentation for info lookup (C-h s) ? 
@@ -48,5 +50,18 @@
 ;; auto-complete-mode
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+;; flymake
+
+(when (load "flymake" t)
+  (defun flymake-pylint-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "epylint" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+	       '("\\.py\\'" flymake-pylint-init)))
 
 (provide 'python-init)

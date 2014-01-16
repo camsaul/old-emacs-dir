@@ -39,10 +39,9 @@
 
 (define-keys c++-mode-map
   '(("M-;" comment-region)
-    ("<f3>" flymake-display-err-menu-for-current-line)
-    ("<f4>" flymake-goto-next-error)
-    ("<f11>" paredit-mode)
-    ("C-c f" flymake-mode)
+    ("<f5>" flymake-display-err-menu-for-current-line)
+    ("<f6>" flymake-goto-next-error)
+    ("<f7>" flymake-mode)
     ("C-c C-k" flymake-compile)
     ("<C-M-up>" c++-jump-to-header)
     ("<C-M-down>" c++-jump-to-implementation)))

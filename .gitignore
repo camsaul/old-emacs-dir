@@ -5,6 +5,6 @@ elpa/
 eshell/
 *.elc
 *~
-*#
+*#*
 url/
 el-get/

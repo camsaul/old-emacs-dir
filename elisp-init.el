@@ -14,7 +14,7 @@
 (defun cam-define-elisp-keys (mode-map)
   (cam-define-lisp-keys mode-map)
   (define-keys mode-map
-    '(("C-x C-e" pp-eval-last-sexp) ; pretty-print eval'd expressions
+    '(("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
       ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point)
       )))
 
