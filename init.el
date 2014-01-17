@@ -127,6 +127,8 @@
 (nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 (setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
+(setq ns-use-native-fullscreen t)                 ; Native fullscreen on OS X
+(set-frame-parameter nil 'fullscreen 'fullboth)   ; Always use fullscreen
 
 ;; custom key bindings
 (define-keys nil
