@@ -3,6 +3,17 @@
 ;; (require 'info-look)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
+(require 'elpy)
+(require 'outline-magic)
+(require 'python-magic)
+
+ (setq pdb-path '/usr/lib/python2.7/pdb.py
+       gud-pdb-command-name (symbol-name pdb-path))
+ (defadvice pdb (before gud-query-cmdline activate)
+   "Provide a better default command line when called interactively."
+   (interactive
+    (list (gud-query-cmdline pdb-path
+	 		    (file-name-nondirectory buffer-file-name)))))
 
 ;; tweaks to use ipython as the default python interpreter
 (setq python-shell-interpreter "ipython"
@@ -16,19 +27,33 @@
       python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"      
       )
 
+;; (require 'pymacs)
+;; (pymacs-load "ropemacs" "rope-") # Requires pip install ropemacs
+
+;; Make info-look work correctly for python (C-h S)
+(require 'info-look)
+(info-lookup-add-help
+ :mode 'python-mode
+ :regexp "[[:alnum:]_]+"
+ :doc-spec
+ '(("(python)Index" nil "")))
+
 (defun cam-python-mode-setup ()
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
-  (paredit-mode 1)
-  (diminish 'paredit-mode " π")
+  ;; (paredit-mode 1)
+  ;; (diminish 'paredit-mode " π")
   (auto-complete-mode 1)
   (diminish 'auto-complete-mode)  
   ;; (setq py-python-command-args (cons python-shell-interpreter-args
   ;; 				     py-python-command-args))
-  ;; (turn-on-eldoc-mode)
-  ;; (diminish 'eldoc-mode)
-  (pretty-lambdas))
+  (turn-on-eldoc-mode)
+  (diminish 'eldoc-mode)
+  (electric-pair-mode +1)
+  (pretty-lambdas)
+  (elpy-mode))
+
 (add-hook 'python-mode-hook 'cam-python-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
 

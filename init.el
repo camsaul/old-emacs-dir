@@ -19,7 +19,8 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode))
+		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
+                     elpy pyflakes pymacs outline-magic python-magic))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -117,18 +118,18 @@
 (setq ac-auto-show-menu t)			  ; automatically show menu 
 (setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
-(setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
-(midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
-(setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
-(setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
-(setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
-      '("\\*.*\\*"))
+;; (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
+;; (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
+;; (setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
+;; (setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
+;; (setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
+;;       '("\\*.*\\*"))
 (setq nav-width 30)				  ; nav should be 30 chars wide (default is 18)
 (nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 (setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
-(setq ns-use-native-fullscreen t)                 ; Native fullscreen on OS X
-(set-frame-parameter nil 'fullscreen 'fullboth)   ; Always use fullscreen
+;; (setq ns-use-native-fullscreen t)                 ; Native fullscreen on OS X
+;; (set-frame-parameter nil 'fullscreen 'fullboth)   ; Always use fullscreen
 
 ;; custom key bindings
 (define-keys nil
