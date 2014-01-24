@@ -15,7 +15,7 @@
   (pretty-lambdas)
   (set-buffer-file-coding-system 'utf-8-auto-unix)
   (hl-sexp-mode 1) ; hl-sexp-mode highlights the current sexp
-  (set-face-background 'hl-sexp-face "#EFFFFF"))
+  (set-face-background 'hl-sexp-face "#111111"))
 
 (defun backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."

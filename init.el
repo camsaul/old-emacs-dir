@@ -1,4 +1,4 @@
-(add-to-list 'load-path "~/.emacs.d/")
+3(add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/.emacs.d/auto-complete-clang")
 
 ;; MELPA Package Source
@@ -21,7 +21,7 @@
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     achievements-mode ace-jump-buffer find-things-fast))
+                     achievements ace-jump-buffer find-things-fast))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -70,7 +70,15 @@
 
 ;; start in fullscreen mode
 (custom-set-variables
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes (quote (flatland)))
+ '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default)))
+ '(initial-frame-alist (quote ((fullscreen . maximized))))
+ '(nav-width 13)
+ '(transient-mark-mode nil))
 
 (add-hook 'emacs-startup-hook			  
 	  (lambda ()
@@ -86,7 +94,7 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes 
 (global-hl-line-mode 1)				  ; highlights the current line 
-(set-face-background 'hl-line "#F0F0F0")
+(set-face-background 'hl-line "#222222")
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)				  ; colorize strings that represent colors	      
@@ -118,11 +126,13 @@
 (setq inhibit-startup-screen t
       inhibit-splash-screen t)
 (setq recentf-max-menu-items 20)
-(set-frame-font (if (string-equal window-system "ns")
-		    "Menlo Regular-10"		  ; use the Xcode font on OS X 
-		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-		  ))
-
+;; (set-frame-font (if (string-equal window-system "ns")
+;; 		    "Menlo Regular-10"		  ; use the Xcode font on OS X 
+;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
+;; 		  ))
+;; (set-frame-font "Consolas-10")
+(set-frame-font "Source Code Pro-10")
+;; (set-frame-font "Menlo Regular-10")
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
   -conservatively 9999
@@ -161,7 +171,7 @@
     ("C-M-y" popup-yank-menu)
     ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)    
     ("<f9>" whitespace-mode)
-    ("<f10>" (lambda ()				  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer (not very useful)
+    ("<f10>" (lambda ()				  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
 	       (interactive)
 	       (switch-to-buffer-other-window "*nav*")))
     ("S-<f10>" nav)				  ; Open nav buffer
@@ -260,3 +270,9 @@
 		 erlang-init
 		 html-init
 		 cpp-init))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
