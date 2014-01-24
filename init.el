@@ -20,7 +20,7 @@
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
-                     elpy pyflakes pymacs outline-magic python-magic))
+                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -51,6 +51,7 @@
 		 nav				  ; nav frame, better than speed bar 
 		 dired+
 		 smex				  ; IDO-like completion for M-x
+                 multiple-cursors
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -78,8 +79,6 @@
 (line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes 
-(setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
-(setq auto-revert-verbose nil)
 (global-hl-line-mode 1)				  ; highlights the current line 
 (set-face-background 'hl-line "#F0F0F0")
 (ido-mode 1)
@@ -94,7 +93,10 @@
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
 (tabbar-mode 1)
 (electric-pair-mode 1)
+(multiple-cursors-mode 1)
 ;; (evil-mode 1)
+
+
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
@@ -111,19 +113,31 @@
       inhibit-splash-screen t)
 (setq recentf-max-menu-items 20)
 (set-frame-font (if (string-equal window-system "ns")
-		    "Menlo Regular-11"		  ; use the Xcode font on OS X 
+		    "Menlo Regular-10"		  ; use the Xcode font on OS X 
 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-		  )) 
+		  ))
+
+(setq
+ scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
+  -conservatively 9999
+  -up-aggresively 0.01
+ scroll-down-aggresively 0.01
+ auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
+ mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
+ scroll-margin 1
+ )
+(setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
+(setq auto-revert-verbose nil)
 (setq ac-delay 0)				  ; shorter delay before showing completions. Default is 0.1. 
 (setq ac-auto-show-menu t)			  ; automatically show menu 
 (setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
-;; (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
-;; (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
-;; (setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
-;; (setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
-;; (setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
-;;       '("\\*.*\\*"))
+(setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
+(midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
+(setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
+(setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
+(setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
+      '("\\*.*\\*"))
 (setq nav-width 30)				  ; nav should be 30 chars wide (default is 18)
 (nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
@@ -153,19 +167,17 @@
     ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
     ("C-v" yank)				  ; C-v -> yank instead of whatever it usually does				       				  				  
     ("<escape>" keyboard-escape-quit)
-    ("<insert>" nil)				  ; disable stupid insert key TODO maybe use as a prefix to insert something useful		     
+    ("<insert>" nil)			          ; disable stupid insert key TODO maybe use as a prefix to insert something useful
+    ("H-E" mc/mark-next-like-this)                ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
+    ("H-A" mc/mark-previous-like-this)
+    ("C-H-a" mc/mark-all-like-this)
+    ("C-H-e" mc/edit-lines)
     ("C-c e" eval-and-replace)		     	  ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
     ("C-x z")				      	  ; disable minimize emacs
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
-    ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
-    ("C-p" isearch-forward)			  ; The windows edit menu keyboard button is C-p on mac, use this as alias for search since I don't really use it for lines
-    ("<C-268632080>" query-replace)		  ; 268632080 apparently refers to Win Edit key on Mac when combined with other keys
-    ("<M-268632080>" isearch-forward-regexp)	 
-    ("<C-M-268632080>" query-replace-regexp)	 
-    ("<s-268632080>" isearch-backward)
-    ("<M-s-268632080>" isearch-backward-regexp)
+    ("M-x" smex)				  ; smex is IDO-mode like M-x behavior    
     ))
 
 

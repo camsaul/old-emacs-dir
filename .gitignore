@@ -8,3 +8,4 @@ eshell/
 *#*
 url/
 el-get/
+.mc-lists.el
