@@ -52,6 +52,7 @@
 		 dired+
 		 smex				  ; IDO-like completion for M-x
                  multiple-cursors
+                 magit
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
