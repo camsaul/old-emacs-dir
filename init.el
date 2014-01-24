@@ -20,7 +20,7 @@
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
-                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit magithub))
+                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
