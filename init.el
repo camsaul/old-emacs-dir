@@ -177,6 +177,7 @@
     ("C-x z")				      	  ; disable minimize emacs
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
+    ("C-x M-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior    
     ))
 
