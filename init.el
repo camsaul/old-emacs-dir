@@ -20,7 +20,8 @@
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
-                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit))
+                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
+                     achievements-mode ace-jump-buffer find-things-fast))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -53,6 +54,10 @@
 		 smex				  ; IDO-like completion for M-x
                  multiple-cursors
                  magit
+                 ace-jump-mode
+                 achievements
+                 ace-jump-buffer
+                 find-things-fast
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -143,8 +148,6 @@
 (nav-disable-overeager-window-splitting)	  ; turn off automatic splitting of frames when opening files in a large frame (?)
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 (setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
-;; (setq ns-use-native-fullscreen t)                 ; Native fullscreen on OS X
-;; (set-frame-parameter nil 'fullscreen 'fullboth)   ; Always use fullscreen
 
 ;; custom key bindings
 (define-keys nil
@@ -178,7 +181,11 @@
     ("C-x z")				      	  ; disable minimize emacs
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
-    ("C-x M-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
+    ("s-o" ftf-find-file)
+    ("s-f" ftf-grepsource)
+    ("S-SPC" ace-jump-mode)
+    ("C-S-SPC" ace-jump-buffer)
+    ("C-x C-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior    
     ))
 
