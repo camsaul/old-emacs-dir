@@ -1,4 +1,4 @@
-3(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/.emacs.d/auto-complete-clang")
 
 ;; MELPA Package Source
@@ -21,7 +21,7 @@
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     achievements ace-jump-buffer find-things-fast))
+                     achievements ace-jump-buffer find-things-fast flatland-theme))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -131,7 +131,7 @@
 ;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 ;; 		  ))
 ;; (set-frame-font "Consolas-10")
-(set-frame-font "Source Code Pro-10")
+(set-frame-font "Source Code Pro-11")
 ;; (set-frame-font "Menlo Regular-10")
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
