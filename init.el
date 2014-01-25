@@ -150,7 +150,7 @@
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
 (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
-(setq clean-buffer-list-delay-special 30)	  ; Remove buffers that haven't been used in last 30 secs
+(setq clean-buffer-list-delay-special 30)
 (setq clean-buffer-list-delay-general 0.02)	  ; Kill ANY buffer that hasn't been used in the half-hour (ish) - param is in day
 (setq clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
       '("\\*.*\\*"))
@@ -180,7 +180,7 @@
     ("<f12> b" bing-search) 
     ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
     ("C-v" yank)				  ; C-v -> yank instead of whatever it usually does				       				  				  
-    ("<escape>" keyboard-escape-quit)
+    ;; ("<escape>" keyboard-escape-quit)
     ("<insert>" nil)			          ; disable stupid insert key TODO maybe use as a prefix to insert something useful
     ("H-E" mc/mark-next-like-this)                ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
     ("H-A" mc/mark-previous-like-this)
@@ -193,7 +193,7 @@
     ("s-[" force-unindent-region)
     ("s-o" ftf-find-file)
     ("s-f" ftf-grepsource)
-    ("S-SPC" ace-jump-mode)
+    ("<escape>" ace-jump-mode)
     ("C-S-SPC" ace-jump-buffer)
     ("C-x C-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior    
@@ -205,7 +205,7 @@
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
   '(("<H-up>" windmove-up)
-    ("<H-left>" windmove-left) 
+     ("<H-left>" windmove-left) 
     ("<H-right>" windmove-right) 
     ("<H-down>" windmove-down)
     ("<C-s-M-left>" windmove-left)
