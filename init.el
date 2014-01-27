@@ -164,7 +164,6 @@
   '(("C-x u" nil) 				  ; disable emacs default keybinding for undo, use C-z instead
     ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu			  		
     ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)		   
-    ("C-x r" recentf-open-files)		  ; make C-x r recent files as well in case I hit wrong button		   
     ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory			   
     ("C-M-S-k" backward-kill-sexp)		  ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))		   
     ("C-S-k" backward-kill-line)		  
