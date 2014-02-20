@@ -144,7 +144,7 @@
  )
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
 (setq auto-revert-verbose nil)
-(setq ac-delay 0)				  ; shorter delay before showing completions. Default is 0.1. 
+(setq ac-delay 0.09)				  ; shorter delay before showing completions. Default is 0.1. 
 (setq ac-auto-show-menu t)			  ; automatically show menu 
 (setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))

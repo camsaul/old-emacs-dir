@@ -4,7 +4,7 @@
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
 (require 'elpy)
-(require 'outline-magic)
+;; (require 'outline-magic)
 (require 'python-magic)
 
  (setq pdb-path '/usr/lib/python2.7/pdb.py
@@ -51,6 +51,7 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (electric-pair-mode +1)
+  (outline-minor-mode -1)
   (pretty-lambdas)
   (elpy-mode))
 
@@ -58,11 +59,13 @@
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
 
 ;; custom keyboard shortcuts
-(setq py-mode-map python-mode-map) ; some python modes are looking for keymap under alternate napme (?)
+(setq py-mode-map python-mode-map) ; some python modes are looking for keymap under alternate name (?)
 (define-keys py-mode-map
   '(("<f5>" flymake-display-err-menu-for-current-line)
     ("<f6>" flymake-goto-next-error)
-    ("<f7>" flymake-mode))		; nothing yet
+    ("<f7>" flymake-mode)
+    ("<s-mouse-1>" elpy-goto-definition)
+    ("<M-mouse-1>" elpy-doc))	
   )
 
 
@@ -85,7 +88,7 @@
            (local-file (file-relative-name
                         temp-file
                         (file-name-directory buffer-file-name))))
-      (list "epylint" (list local-file))))
+      (list "pyflakes" (list local-file))))
   (add-to-list 'flymake-allowed-file-name-masks
 	       '("\\.py\\'" flymake-pylint-init)))
 
