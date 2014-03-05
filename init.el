@@ -19,27 +19,30 @@
       '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
+		     undo-tree evil nav dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info))
+                     achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
+                     auto-complete-clang-async ac-etags yasnippet                     
+                     ))
 
-;; install el-get if needed
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(el-get 'sync)
+;; ;; install el-get if needed
+;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+;; (unless (require 'el-get nil 'noerror)
+;;   (with-current-buffer
+;;       (url-retrieve-synchronously
+;;        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+;;     (goto-char (point-max))
+;;     (eval-print-last-sexp)))
+;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+;; (el-get 'sync)
 
-;; install el-get packages
-(mapc (lambda (package)
-	(unless (package-installed-p package)
-	  (el-get-install package)))
-      '()					  ; nothing right now
-      )
+;; ;; install el-get packages
+;; (mapc (lambda (package)
+;; 	(unless (package-installed-p package)
+;; 	  (el-get-install package)))
+;;       '(
+;;         ; helm
+;;         ))
 
 (mapc 'require '(cam-functions 
 		 recentf 
@@ -58,6 +61,7 @@
                  achievements
                  ace-jump-buffer
                  find-things-fast
+                 ;; helm
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -108,6 +112,8 @@
 (tabbar-mode 1)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
+;; (helm-mode +1)
+;; (diminish 'helm-mode nil)
 ;; (evil-mode 1)
 
 
@@ -144,9 +150,9 @@
  )
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
 (setq auto-revert-verbose nil)
-(setq ac-delay 0.09)				  ; shorter delay before showing completions. Default is 0.1. 
-(setq ac-auto-show-menu t)			  ; automatically show menu 
-(setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
+(setq ac-delay 0.08)				  ; shorter delay before showing completions. Default is 0.1. 
+(setq ac-auto-show-menu t)			  ; automatically show menu
+(setq ac-quick-help-delay 0.3)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
 (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
@@ -195,7 +201,8 @@
     ("<escape>" ace-jump-mode)
     ("C-S-SPC" ace-jump-buffer)
     ("C-x C-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
-    ("M-x" smex)				  ; smex is IDO-mode like M-x behavior    
+    ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
+    ;; ("M-ESC" helm-mini)
     ))
 
 

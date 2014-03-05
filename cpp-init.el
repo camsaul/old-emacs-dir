@@ -1,13 +1,11 @@
 (require 'cc-mode) ; c++-mode
-(require 'auto-complete)
-(require 'auto-complete-config)
-;; (require 'auto-complete-clang-async)
-(add-hook 'auto-complete-mode-hook 'ac-common-setup)
+;; (require 'auto-complete-config)
+;; (add-hook 'auto-complete-mode-hook 'ac-common-setup)
 
-(add-to-list 'load-path "~/emacs.d/AC")
-(add-to-list 'ac-dictionary-directories "~/emacs.d/AC/ac-dict")
+;; (add-to-list 'load-path "~/emacs.d/AC")
+;; (add-to-list 'ac-dictionary-directories "~/emacs.d/AC/ac-dict")
 
-;; Automatically open .h files with #include without .h at the end as c++ instead of c
+;; automatically open .h files with #include without .h at the end as c++ instead of c
 ;; or open header files that have std:: somewhere in them
 (add-to-list 'magic-mode-alist
 	     `(,(lambda ()
@@ -30,10 +28,11 @@
     (url-hexify-string (current-token)))))
 
 (defun c++-mode-setup ()
+  (require 'auto-complete)
   (require 'find-file)
   (require 'flymake)
-  (require 'auto-complete-clang)
-  (require 'yasnippet)
+  ;; (require 'auto-complete-clang)
+  ;; (require 'yasnippet)
   (global-mode-setup)
   (setq tab-width 4)
   (setq c-basic-indent 4)
@@ -42,7 +41,14 @@
   (flymake-mode 1)
   (electric-pair-mode +1)
   (auto-complete-mode 1)
-  (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
+  (require 'auto-complete-clang-async)
+  ;; (require 'ac-etags)
+  ;; (ac-etags-setup)
+  ;; (ac-etags-ac-setup)
+  (setq ac-clang-complete-executable "~/.emacs.d/emacs-clang-complete-async/clang-complete") ; make LLVM_CONFIG=/usr/local/Cellar/llvm/3.3/bin/llvm-config (via homebrew)
+  (setq ac-sources '(ac-source-clang-async)) ;  ac-source-yasnippet
+  (ac-clang-launch-completion-process))
+
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'c++-mode))
 
 (add-hook 'c++-mode-hook 'c++-mode-setup)
@@ -64,7 +70,7 @@
     ("<C-M-up>" c++-jump-to-header)
     ("<C-M-down>" c++-jump-to-implementation)
     ("<s-mouse-1>" find-tag-at-mark)
-    ("c-." find-tag-at-mark)
+    ("C-." find-tag-at-mark)
     ))
 
 (defun c++-jump-to-header ()

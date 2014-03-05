@@ -1,10 +1,7 @@
 (require 'python)
 ;; (require 'ipython)
-(require 'info-look)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
-(require 'elpy)
-(require 'flymake)
 ;; (require 'outline-magic)
 ;; (require 'python-magic)
 
@@ -39,7 +36,10 @@
 ;;  '(("(python)Index" nil "")))
 
 (defun cam-python-mode-setup ()
+  (require 'info-look)
   (require 'pydoc-info)
+  (require 'elpy)
+  (require 'flymake)
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
