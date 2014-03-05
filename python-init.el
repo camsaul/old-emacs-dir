@@ -52,6 +52,7 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (electric-pair-mode +1)
+  (whitespace-mode +1)
   (pretty-lambdas)
   (elpy-mode))
 

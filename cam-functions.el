@@ -1,5 +1,3 @@
-(require 'speedbar)
-
 (defun cygwin-shell () 
   "Run cygwin bash in shell mode."
   (interactive)
@@ -34,6 +32,17 @@
           "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla "
           "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
           "culpa qui officia deserunt mollit anim id est laborum."))
+
+(defun mark-whole-sexp ()
+  (progn
+    (backward-sexp)
+    (mark-sexp)))
+
+(defun current-token ()
+  "Returns the entire current sexp"
+  (save-excursion
+    (mark-whole-sexp)
+    (buffer-substring (region-beginning) (region-end))))
 
 (defun active-region-or-prompt (prompt)
   (url-hexify-string (if mark-active
