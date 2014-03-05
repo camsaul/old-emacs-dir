@@ -37,7 +37,7 @@
 
 (defun cam-python-mode-setup ()
   (require 'info-look)
-  (require 'pydoc-info)
+  (require 'pydoc-info) ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
   (require 'elpy)
   (require 'flymake)
   (global-mode-setup)
