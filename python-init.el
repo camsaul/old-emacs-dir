@@ -1,11 +1,12 @@
 (require 'python)
 ;; (require 'ipython)
-;; (require 'info-look)
+(require 'info-look)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
 (require 'elpy)
+(require 'flymake)
 ;; (require 'outline-magic)
-(require 'python-magic)
+;; (require 'python-magic)
 
  (setq pdb-path '/usr/lib/python2.7/pdb.py
        gud-pdb-command-name (symbol-name pdb-path))
@@ -31,14 +32,14 @@
 ;; (pymacs-load "ropemacs" "rope-") # Requires pip install ropemacs
 
 ;; Make info-look work correctly for python (C-h S)
-(require 'info-look)
-(info-lookup-add-help
- :mode 'python-mode
- :regexp "[[:alnum:]_]+"
- :doc-spec
- '(("(python)Index" nil "")))
+;; (info-lookup-add-help
+;;  :mode 'python-mode
+;;  :regexp "[[:alnum:]_]+"
+;;  :doc-spec
+;;  '(("(python)Index" nil "")))
 
 (defun cam-python-mode-setup ()
+  (require 'pydoc-info)
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
@@ -51,7 +52,6 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (electric-pair-mode +1)
-  (outline-minor-mode -1)
   (pretty-lambdas)
   (elpy-mode))
 
@@ -64,16 +64,11 @@
   '(("<f5>" flymake-display-err-menu-for-current-line)
     ("<f6>" flymake-goto-next-error)
     ("<f7>" flymake-mode)
+    ("<f8>" info-lookup-symbol)
     ("<s-mouse-1>" elpy-goto-definition)
-    ("<M-mouse-1>" elpy-doc))	
-  )
-
-
-;; Use the correct documentation for info lookup (C-h s) ? 
-;; (info-lookup-add-help
-;;  :mode 'python-mode
-;;  :regexp "[[:alnum:]_]+"
-;;  :doc-spec '(("(python)Index" nil "")))
+    ("<M-mouse-1>" elpy-doc)
+    ("<S-mouse-1>" info-lookup-symbol)
+    ))
  
 ;; auto-complete-mode
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))

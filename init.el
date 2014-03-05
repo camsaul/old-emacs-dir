@@ -21,7 +21,7 @@
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav yasnippet dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     achievements ace-jump-buffer find-things-fast flatland-theme))
+                     achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info))
 
 ;; install el-get if needed
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -269,9 +269,3 @@
 		 erlang-init
 		 html-init
 		 cpp-init))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
