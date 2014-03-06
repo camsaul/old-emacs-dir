@@ -22,7 +22,7 @@
 		     undo-tree evil nav dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
                      achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
-                     auto-complete-clang-async ac-etags yasnippet                     
+                     auto-complete-clang-async ac-etags yasnippet django-mode
                      ))
 
 ;; ;; install el-get if needed
@@ -112,6 +112,7 @@
 (tabbar-mode 1)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
+(achievements-mode 1)
 ;; (helm-mode +1)
 ;; (diminish 'helm-mode nil)
 ;; (evil-mode 1)
@@ -147,6 +148,7 @@
  auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
  mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
  scroll-margin 1
+ whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
  )
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
 (setq auto-revert-verbose nil)

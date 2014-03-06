@@ -41,6 +41,9 @@
   (flymake-mode 1)
   (electric-pair-mode +1)
   (auto-complete-mode 1)
+  (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
+  (diminish 'highlight-parentheses-mode)
+  (set-face-background 'hl-sexp-face "#111111")
   (require 'auto-complete-clang-async)
   ;; (require 'ac-etags)
   ;; (ac-etags-setup)

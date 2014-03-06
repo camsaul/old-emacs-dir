@@ -1,4 +1,5 @@
 (require 'python)
+(require 'django-mode)
 ;; (require 'ipython)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
@@ -36,8 +37,12 @@
 ;;  '(("(python)Index" nil "")))
 
 (defun cam-python-mode-setup ()
+  (django-mode))
+
+(defun cam-django-mode-setup ()
   (require 'info-look)
   (require 'pydoc-info) ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
+  (require 'yasnippet)
   (require 'elpy)
   (require 'flymake)
   (global-mode-setup)
@@ -46,18 +51,22 @@
   ;; (paredit-mode 1)
   ;; (diminish 'paredit-mode " π")
   (auto-complete-mode 1)
-  (diminish 'auto-complete-mode)  
+  (diminish 'auto-complete-mode)
+  (set-face-background 'hl-sexp-face "#111111")
   ;; (setq py-python-command-args (cons python-shell-interpreter-args
   ;; 				     py-python-command-args))
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
-  (electric-pair-mode +1)
-  (whitespace-mode +1)
+  (electric-pair-mode 1)
+  (whitespace-mode 1)
   (pretty-lambdas)
-  (elpy-mode))
+  (elpy-mode)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
+  )
 
 (add-hook 'python-mode-hook 'cam-python-mode-setup)
+(add-hook 'python-mode-hook 'cam-django-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
+(add-hook 'django-mode-hook 'cam-django-mode-setup)
 
 ;; custom keyboard shortcuts
 (setq py-mode-map python-mode-map) ; some python modes are looking for keymap under alternate name (?)
