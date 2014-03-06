@@ -60,8 +60,6 @@
   (interactive)
   (find-tag (current-token)))
 
-  ;; (find-tag (mark-spot))
-
 (define-keys c++-mode-map
   '(("M-;" comment-region)
     ("<f5>" flymake-display-err-menu-for-current-line)
@@ -73,7 +71,7 @@
     ("<C-M-up>" c++-jump-to-header)
     ("<C-M-down>" c++-jump-to-implementation)
     ("<s-mouse-1>" find-tag-at-mark)
-    ("C-." find-tag-at-mark)
+    ("M-." find-tag-at-mark)
     ))
 
 (defun c++-jump-to-header ()
