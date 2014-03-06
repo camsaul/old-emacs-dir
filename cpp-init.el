@@ -60,6 +60,11 @@
   (interactive)
   (find-tag (current-token)))
 
+(defun find-tag-at-mouse-mark (event)
+  (interactive "e")
+  (progn (mouse-set-point event)
+         (find-tag-at-mark)))
+
 (define-keys c++-mode-map
   '(("M-;" comment-region)
     ("<f5>" flymake-display-err-menu-for-current-line)
@@ -70,7 +75,8 @@
     ("C-c C-k" flymake-compile)
     ("<C-M-up>" c++-jump-to-header)
     ("<C-M-down>" c++-jump-to-implementation)
-    ("<s-mouse-1>" find-tag-at-mark)
+    ("<s-mouse-1>" find-tag-at-mouse-mark)
+    ("<mouse-2>" find-tag-at-mouse-mark) ; the mouse wheel
     ("M-." find-tag-at-mark)
     ))
 
