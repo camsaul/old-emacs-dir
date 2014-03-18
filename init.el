@@ -44,15 +44,15 @@
 ;;         ; helm
 ;;         ))
 
-(mapc 'require '(cam-functions 
-		 recentf 
+(mapc 'require '(cam-functions
+		 recentf
 		 rainbow-delimiters
                  rainbow-mode
 		 clojuredocs
 		 midnight
 		 undo-tree
 		 ;; evil
-		 nav				  ; nav frame, better than speed bar 
+		 nav				  ; nav frame, better than speed bar
 		 dired+
 		 smex				  ; IDO-like completion for M-x
                  multiple-cursors
@@ -85,7 +85,7 @@
  '(nav-width 13)
  '(transient-mark-mode nil))
 
-(add-hook 'emacs-startup-hook			  
+(add-hook 'emacs-startup-hook
 	  (lambda ()
             (progn
               (kill-buffer "*scratch*")
@@ -93,19 +93,19 @@
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
-(winner-mode 1)					  
-(global-linum-mode 1)				  ; linum-mode is for line numbers on left	      			  
+(winner-mode 1)
+(global-linum-mode 1)				  ; linum-mode is for line numbers on left
 (line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
 (column-number-mode 1)
-(global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes 
-(global-hl-line-mode 1)				  ; highlights the current line 
+(global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
+(global-hl-line-mode 1)				  ; highlights the current line
 (set-face-background 'hl-line "#222222")
 (ido-mode 1)
 (recentf-mode 1)
-(rainbow-mode 1)				  ; colorize strings that represent colors	      
+(rainbow-mode 1)				  ; colorize strings that represent colors
 (diminish 'rainbow-mode nil)
 (global-undo-tree-mode 1)			  ; sane undo in emacs
-(diminish 'undo-tree-mode nil)			  
+(diminish 'undo-tree-mode nil)
 (tool-bar-mode -1)				  ; disable the toolbar at top of screen
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
@@ -122,20 +122,20 @@
 
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
-  (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue" 
+  (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
   ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
   (font-lock-add-keywords
     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
 
 ;; global settings
-(setq query-replace-interactive t)		  ; Use last incremental seach regexp for query in regexp-query-replace 
+(setq query-replace-interactive t)		  ; Use last incremental seach regexp for query in regexp-query-replace
 (prefer-coding-system 'utf-8-auto-unix)
 (setq inhibit-startup-screen t
       inhibit-splash-screen t)
 (setq recentf-max-menu-items 20)
 ;; (set-frame-font (if (string-equal window-system "ns")
-;; 		    "Menlo Regular-10"		  ; use the Xcode font on OS X 
+;; 		    "Menlo Regular-10"		  ; use the Xcode font on OS X
 ;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 ;; 		  ))
 ;; (set-frame-font "Consolas-10")
@@ -150,12 +150,13 @@
  mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
  scroll-margin 1
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
+ require-final-newline t                          ; add final newline on save
  )
-(setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
+(setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it
 (setq auto-revert-verbose nil)
-(setq ac-delay 0.1)				  ; shorter delay before showing completions. Default is 0.1. 
+(setq ac-delay 0.1)				  ; shorter delay before showing completions. Default is 0.1.
 (setq ac-auto-show-menu t)			  ; automatically show menu
-(setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
+(setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
 (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay
@@ -171,23 +172,23 @@
 ;; custom key bindings
 (define-keys nil
   '(("C-x u" nil) 				  ; disable emacs default keybinding for undo, use C-z instead
-    ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu			  		
-    ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)		   
-    ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory			   
-    ("C-M-S-k" backward-kill-sexp)		  ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))		   
-    ("C-S-k" backward-kill-line)		  
+    ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu
+    ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)
+    ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory
+    ("C-M-S-k" backward-kill-sexp)		  ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
+    ("C-S-k" backward-kill-line)
     ("C-M-y" popup-yank-menu)
-    ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)    
+    ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
     ("<f9>" whitespace-mode)
     ("<f10>" (lambda ()				  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
 	       (interactive)
 	       (switch-to-buffer-other-window "*nav*")))
     ("S-<f10>" nav)				  ; Open nav buffer
-    ("<f11>" paredit-mode)			  ; F11 is now global key for paredit-mode			   
+    ("<f11>" paredit-mode)			  ; F11 is now global key for paredit-mode
     ("<f12> s" stackoverflow-search)
-    ("<f12> b" bing-search) 
+    ("<f12> b" bing-search)
     ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
-    ("C-v" yank)				  ; C-v -> yank instead of whatever it usually does				       				  				  
+    ("C-v" yank)				  ; C-v -> yank instead of whatever it usually does
     ;; ("<escape>" keyboard-escape-quit)
     ("<insert>" nil)			          ; disable stupid insert key TODO maybe use as a prefix to insert something useful
     ("H-E" mc/mark-next-like-this)                ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
@@ -210,12 +211,12 @@
 
 
 
-(setq ns-function-modifier 'hyper)		  ; doesn't actually seem to work     
+(setq ns-function-modifier 'hyper)		  ; doesn't actually seem to work
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
   '(("<H-up>" windmove-up)
-     ("<H-left>" windmove-left) 
-    ("<H-right>" windmove-right) 
+     ("<H-left>" windmove-left)
+    ("<H-right>" windmove-right)
     ("<H-down>" windmove-down)
     ("<C-s-M-left>" windmove-left)
     ("<C-s-M-right>" windmove-right)
@@ -225,7 +226,7 @@
     ("<C-s-M-down>" windmove-down)
     ("<H-SPC>" other-frame)
     ("<C-s-M-return>" other-frame)
-    ("<H-S-left>" previous-buffer) 
+    ("<H-S-left>" previous-buffer)
     ("<H-S-right>" next-buffer)
     ("H-k" kill-this-buffer)))
 
