@@ -65,6 +65,7 @@
 		 ))
 
 (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; helper settings to make emacs work better from terminal
 (set-terminal-coding-system 'utf-8)
@@ -152,9 +153,9 @@
  )
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it 
 (setq auto-revert-verbose nil)
-(setq ac-delay 0.08)				  ; shorter delay before showing completions. Default is 0.1. 
+(setq ac-delay 0.1)				  ; shorter delay before showing completions. Default is 0.1. 
 (setq ac-auto-show-menu t)			  ; automatically show menu
-(setq ac-quick-help-delay 0.3)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
+(setq ac-quick-help-delay 0.5)			  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash 
 (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
 (setq midnight-period 10)			  ; every 10 secs run clean-buffer-list, which kills *Help*, *Buffer List*, *Apropos*, etc buffers that haven't been visited recently
 (midnight-delay-set 'midnight-delay 10)		  ; Have to use this function to set midnight-delay

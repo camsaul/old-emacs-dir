@@ -36,8 +36,8 @@
 ;;  :doc-spec
 ;;  '(("(python)Index" nil "")))
 
-(defun cam-python-mode-setup ()
-  (django-mode))
+;; (defun cam-python-mode-setup ()
+;;   (django-mode))
 
 (defun cam-django-mode-setup ()
   (require 'info-look)
@@ -63,8 +63,8 @@
   (elpy-mode)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
   )
 
-(add-hook 'python-mode-hook 'cam-python-mode-setup)
-(add-hook 'python-mode-hook 'cam-django-mode-setup)
+;; (add-hook 'python-mode-hook 'cam-python-mode-setup)
+;; (add-hook 'python-mode-hook 'cam-django-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
 (add-hook 'django-mode-hook 'cam-django-mode-setup)
 
@@ -81,8 +81,8 @@
     ))
  
 ;; auto-complete-mode
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
+(add-to-list 'interpreter-mode-alist '("python" . django-modee))
 
 ;; flymake
 
