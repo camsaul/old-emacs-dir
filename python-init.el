@@ -1,17 +1,17 @@
+(require 'flymake)
 (require 'python)
 (require 'django-mode)
 ;; (require 'ipython)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
-;; (require 'outline-magic)
-;; (require 'python-magic)
-
- (setq pdb-path '/usr/lib/python2.7/pdb.py
-       gud-pdb-command-name (symbol-name pdb-path))
- (defadvice pdb (before gud-query-cmdline activate)
-   "Provide a better default command line when called interactively."
-   (interactive
-    (list (gud-query-cmdline pdb-path
+(require 'py-autopep8)
+(require 'python-pep8)
+(setq pdb-path '/usr/lib/python2.7/pdb.py
+      gud-pdb-command-name (symbol-name pdb-path))
+(defadvice pdb (before gud-query-cmdline activate)
+  "Provide a better default command line when called interactively."
+  (interactive
+   (list (gud-query-cmdline pdb-path
 	 		    (file-name-nondirectory buffer-file-name)))))
 
 ;; tweaks to use ipython as the default python interpreter
@@ -23,7 +23,7 @@
       python-shell-output-regexp "Out\\[[0-9]+\\]: "
       python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
       python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
-      python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"      
+      python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
       )
 
 ;; (require 'pymacs)
@@ -39,12 +39,19 @@
 ;; (defun cam-python-mode-setup ()
 ;;   (django-mode))
 
+(defun run-autopep8 ()
+  (interactive)
+  (when (or (eq major-mode 'django-mode)
+            (eq major-mode 'python-mode))
+    (py-autopep8)))
+
 (defun cam-django-mode-setup ()
   (require 'info-look)
   (require 'pydoc-info) ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
   (require 'yasnippet)
   (require 'elpy)
   (require 'flymake)
+  (setq python-check-command "pyflakes")
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
@@ -58,10 +65,14 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (electric-pair-mode 1)
-  (whitespace-mode 1)
+  ;; (whitespace-mode 1)
   (pretty-lambdas)
   (elpy-mode)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
-  )
+)
+
+(add-hook 'before-save-hook 'run-autopep8)
+(setq py-autopep8-options '("--aggressive" "--aggressive" "--ignore" "E501,E401"))
+(setq python-pep8-options '("--format=pylint" "--ignore E501,E401"))
 
 ;; (add-hook 'python-mode-hook 'cam-python-mode-setup)
 ;; (add-hook 'python-mode-hook 'cam-django-mode-setup)
@@ -79,22 +90,22 @@
     ("<M-mouse-1>" elpy-doc)
     ("<S-mouse-1>" info-lookup-symbol)
     ))
- 
+
 ;; auto-complete-mode
 (add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
 (add-to-list 'interpreter-mode-alist '("python" . django-modee))
 
 ;; flymake
 
-(when (load "flymake" t)
-  (defun flymake-pylint-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
-  (add-to-list 'flymake-allowed-file-name-masks
-	       '("\\.py\\'" flymake-pylint-init)))
+;; (when (load "flymake" t)
+;;   (defun flymake-pylint-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;; 		       'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))
+;;       (list "pylint" (list local-file))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;; 	       '("\\.py\\'" flymake-pylint-init)))
 
 (provide 'python-init)

@@ -22,7 +22,7 @@
 		     undo-tree evil nav dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
                      achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
-                     auto-complete-clang-async ac-etags yasnippet django-mode
+                     auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
                      ))
 
 ;; ;; install el-get if needed
@@ -74,22 +74,21 @@
 (ansi-color-for-comint-mode-on)
 
 ;; start in fullscreen mode
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes (quote (flatland)))
- '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default)))
- '(initial-frame-alist (quote ((fullscreen . maximized))))
- '(nav-width 13)
- '(transient-mark-mode nil))
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(custom-enabled-themes (quote (flatland)))
+;;  '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default)))
+;;  '(initial-frame-alist (quote ((fullscreen . maximized))))
+;;  '(nav-width 13)
+;;  '(transient-mark-mode nil))
 
 (add-hook 'emacs-startup-hook
 	  (lambda ()
             (progn
-              (kill-buffer "*scratch*")
-              (nav))))                            ; Start with a nav buffer open
+              (kill-buffer "*scratch*"))))
 
 ;; global minor modes
 (global-rainbow-delimiters-mode 1)
@@ -99,7 +98,7 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
 (global-hl-line-mode 1)				  ; highlights the current line
-(set-face-background 'hl-line "#222222")
+(set-face-background 'hl-line "#EEEEEE")
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)				  ; colorize strings that represent colors
@@ -114,6 +113,7 @@
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
 (achievements-mode 1)
+
 ;; (helm-mode +1)
 ;; (diminish 'helm-mode nil)
 ;; (evil-mode 1)
@@ -139,8 +139,8 @@
 ;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 ;; 		  ))
 ;; (set-frame-font "Consolas-10")
-(set-frame-font "Source Code Pro-11")
-;; (set-frame-font "Menlo Regular-10")
+(set-frame-font "Source Code Pro-12")
+;; (set-frame-font "Menlo Regular-11")
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
   -conservatively 9999
@@ -151,7 +151,7 @@
  scroll-margin 1
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
  require-final-newline t                          ; add final newline on save
- )
+ initial-frame-alist (quote ((fullscreen . maximized))))
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it
 (setq auto-revert-verbose nil)
 (setq ac-delay 0.1)				  ; shorter delay before showing completions. Default is 0.1.

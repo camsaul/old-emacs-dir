@@ -15,7 +15,7 @@
   (pretty-lambdas)
   (set-buffer-file-coding-system 'utf-8-auto-unix)
   (hl-sexp-mode 1) ; hl-sexp-mode highlights the current sexp
-  (set-face-background 'hl-sexp-face "#111111"))
+  (set-face-background 'hl-sexp-face "#DDDDDD"))
 
 (defun backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."
@@ -25,7 +25,7 @@
 (defun cam-define-lisp-keys (mode-map)
   (define-key mode-map (kbd "RET") 'reindent-then-newline-and-indent)
   (define-key mode-map (kbd "<f11>") 'paredit-mode)
-  (define-key mode-map (kbd "C-S-k") 'backward-paredit-kill) 
+  (define-key mode-map (kbd "C-S-k") 'backward-paredit-kill)
   (define-key mode-map (kbd "TAB") 'lisp-complete-symbol)) ; tab to complete symbol)
 
 ;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
