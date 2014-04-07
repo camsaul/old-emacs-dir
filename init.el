@@ -23,7 +23,9 @@
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
                      achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
+                     highlight-symbol projectile
                      ))
+
 
 ;; ;; install el-get if needed
 ;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -61,6 +63,7 @@
                  achievements
                  ace-jump-buffer
                  find-things-fast
+                 highlight-symbol
                  ;; helm
 		 ))
 
@@ -70,20 +73,11 @@
 ;; helper settings to make emacs work better from terminal
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
 
-;; start in fullscreen mode
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(custom-enabled-themes (quote (flatland)))
-;;  '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default)))
-;;  '(initial-frame-alist (quote ((fullscreen . maximized))))
-;;  '(nav-width 13)
-;;  '(transient-mark-mode nil))
+(custom-set-variables
+ '(custom-enabled-themes (quote (flatland)))
+ '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default))))
 
 (add-hook 'emacs-startup-hook
 	  (lambda ()
@@ -98,7 +92,7 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
 (global-hl-line-mode 1)				  ; highlights the current line
-(set-face-background 'hl-line "#EEEEEE")
+(set-face-background 'hl-line "#222222")
 (ido-mode 1)
 (recentf-mode 1)
 (rainbow-mode 1)				  ; colorize strings that represent colors
@@ -113,11 +107,7 @@
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
 (achievements-mode 1)
-
-;; (helm-mode +1)
-;; (diminish 'helm-mode nil)
 ;; (evil-mode 1)
-
 
 
 (defun global-mode-setup ()
@@ -210,8 +200,10 @@
     ))
 
 
+;; THE HOLY GRAIL <3
+(setq ns-right-control-modifier 'hyper
+      ns-right-command-modifier 'hyper)
 
-(setq ns-function-modifier 'hyper)		  ; doesn't actually seem to work
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
   '(("<H-up>" windmove-up)
