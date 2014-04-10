@@ -68,14 +68,25 @@
   ;; (whitespace-mode 1)
   (pretty-lambdas)
   (elpy-mode)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
+
+  (add-hook 'after-save-hook 'run-isort nil t)
 )
 
 (add-hook 'before-save-hook 'run-autopep8)
-(setq py-autopep8-options '("--aggressive" "--aggressive" "--ignore" "E501,E401"))
+(setq py-autopep8-options '("--aggressive" "--aggressive" "--ignore" "E501,E401" "-j" "0"))
 (setq python-pep8-options '("--format=pylint" "--ignore E501,E401"))
+
+(defun run-isort ()
+  "Runs isort on the current buffer in place"
+  (interactive)
+  (call-process "isort" nil t nil (buffer-file-name) "--order-by-type" "--multi_line" "1" "--lines" "120")
+  (revert-buffer t t))
+
+
 
 ;; (add-hook 'python-mode-hook 'cam-python-mode-setup)
 ;; (add-hook 'python-mode-hook 'cam-django-mode-setup)
+(defalias 'cam-python-mode-setup 'cam-django-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
 (add-hook 'django-mode-hook 'cam-django-mode-setup)
 
@@ -94,18 +105,5 @@
 ;; auto-complete-mode
 (add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
 (add-to-list 'interpreter-mode-alist '("python" . django-modee))
-
-;; flymake
-
-;; (when (load "flymake" t)
-;;   (defun flymake-pylint-init ()
-;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
-;; 		       'flymake-create-temp-inplace))
-;;            (local-file (file-relative-name
-;;                         temp-file
-;;                         (file-name-directory buffer-file-name))))
-;;       (list "pylint" (list local-file))))
-;;   (add-to-list 'flymake-allowed-file-name-masks
-;; 	       '("\\.py\\'" flymake-pylint-init)))
 
 (provide 'python-init)
