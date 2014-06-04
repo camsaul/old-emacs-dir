@@ -1,18 +1,27 @@
-(provide 'js-init)
+(require 'js2-mode)
 
 (defun cam-js-mode-setup ()
+  (require 'auto-complete)
+  (require 'jquery-doc)
   (global-mode-setup)
   (pretty-function)
-  (electric-layout-m))
+  (electric-layout-mode)
+  (highlight-parentheses-mode)
+  (auto-complete-mode 1)
+  (setq ac-sources '(ac-source-jquery)))
 
-(add-hook 'js-mode-hook 'cam-js-mode-setup)
+(add-to-list 'auto-mode-alist '("\.js$" . js2-mode)) ; use js2-mode instead of js-mode
 
-;; turns the word "function" into a fancy f symbol
+(add-hook 'js2-mode-hook 'cam-js-mode-setup)
+
 (defun pretty-function ()
+  "turns function into a fancy f symbol"
   (font-lock-add-keywords
-   'js-mode `(("\\(function *\\)("
-	       (0 (progn (compose-region (match-beginning 1)
-					 (match-end 1) "\u0192")
-			 nil))))))
+   nil `(("\\(\\<function\\>\\)"
+	  (0 (progn (compose-region (match-beginning 1)
+				    (match-end 1)
+				    "\u0192"
+				    'decompose-region)))))))
 
 (setq js-indent-level 2)
+(provide 'js-init)

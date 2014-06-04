@@ -23,7 +23,7 @@
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
                      achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
-                     highlight-symbol projectile
+                     highlight-symbol projectile js2-mode jquery-doc
                      ))
 
 
@@ -204,7 +204,8 @@
 
 ;; THE HOLY GRAIL <3
 (setq ns-right-control-modifier 'hyper
-      ns-right-command-modifier 'hyper)
+      ns-right-command-modifier 'hyper
+      ns-right-option-modifier 'alt)
 
 (setq w32-apps-modifier 'hyper)
 (define-keys nil
