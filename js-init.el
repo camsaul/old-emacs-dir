@@ -1,12 +1,16 @@
 (require 'js2-mode)
 
 (defun cam-js-mode-setup ()
+  (require 'auto-complete)
+  (require 'jquery-doc)
   (global-mode-setup)
   (pretty-function)
   (electric-layout-mode)
-  )
+  (highlight-parentheses-mode)
+  (auto-complete-mode 1)
+  (setq ac-sources '(ac-source-jquery)))
 
-(add-to-list 'auto-mode-alist '("\.js" . js2-mode)) ; use js2-mode instead of js-mode
+(add-to-list 'auto-mode-alist '("\.js$" . js2-mode)) ; use js2-mode instead of js-mode
 
 (add-hook 'js2-mode-hook 'cam-js-mode-setup)
 
