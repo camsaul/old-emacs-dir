@@ -113,9 +113,9 @@
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
   (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
-  ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
+  ;; highlight in bold yellow the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT, DEPRECATED.
   (font-lock-add-keywords
-    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|DEPRECATED\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
 
 ;; global settings
