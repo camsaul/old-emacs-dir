@@ -129,7 +129,9 @@
 ;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 ;; 		  ))
 ;; (set-frame-font "Consolas-10")
-(set-frame-font "Source Code Pro-12")
+
+(set-frame-font (if (string-equal window-system "ns") "Source Code Pro-12"
+                  "Source Code Pro-11"))
 ;; (set-frame-font "Menlo Regular-11")
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
