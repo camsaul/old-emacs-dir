@@ -15,6 +15,7 @@
         (add-to-list 'auto-mode-alist (cons str 'ruby-mode)))
       '("\.podspec$"
         "\.Gemfile$"
+        "\.Rakefile$"
         "\.Podfile$"))
 
 (setq ruby-block-highlight-toggle 'overlay) ; highlight ruby block on screen instead of minibuffer
