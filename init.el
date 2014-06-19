@@ -67,7 +67,7 @@
                  ;; helm
 		 ))
 
-(add-hook 'before-make-frame-hook 'turn-off-tool-bar)
+;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; helper settings to make emacs work better from terminal
@@ -187,6 +187,7 @@
     ("H-A" mc/mark-previous-like-this)
     ("C-H-a" mc/mark-all-like-this)
     ("C-H-e" mc/edit-lines)
+    ("H-h" highlight-symbol-at-point)
     ("C-c e" eval-and-replace)		     	  ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
     ("C-x z")				      	  ; disable minimize emacs
