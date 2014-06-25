@@ -1,4 +1,3 @@
-
 (require 'clojure-mode)
 (require 'nrepl)
 (require 'ac-nrepl)
@@ -8,12 +7,13 @@
   (setq completion-at-point-functions '(auto-complete))) ; make autocomplete a completion-at-point function
 
 (defun cam-clojure-mode-setup ()
+  (require 'cider)
   (cam-lisp-mode-setup)
   (subword-mode 1)      ; enable CamelCase support for editor movement
   (pretty-fn)
   (set-auto-complete-as-completion-at-point-function)
   (ac-nrepl-setup)
-  (cljx/basic-init)) ; useful hacks to make clojure indent only with spaces, and save with a final newline.
+  (cider-mode 1))
 
 (add-hook 'nrepl-repl-mode-hook 'cam-clojure-mode-setup)
 (add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
@@ -30,7 +30,7 @@
       ("<f12> <f12> c" clojure-cheatsheet)
       ("<C-M-S-return>" toggle-test-file)
       ("S-<f9>" clojure-test-run-tests)
-      ("C-c C-d" ac-nrepl-popup-doc)      
+      ("C-c C-d" ac-nrepl-popup-doc)
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
 (cam-define-clojure-keys clojure-mode-map)
 ;; (cam-define-clojure-keys nrepl-mode-map)
@@ -56,10 +56,10 @@
 
 ;; custom vars
 (setq nrepl-hide-special-buffers t) ; hide the *nrepl-connection* and *nrepl-server* buffers
-; (setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
-; (setq nrepl-popup-stacktraces-in-repl nil)
+(setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
+(setq nrepl-popup-stacktraces-in-repl nil)
 (setq nrepl-use-pretty-printing t)
-; (setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
+(setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
@@ -98,7 +98,7 @@
 
 (defun toggle-test-file ()
   (interactive)
-  (if 
+  (if
       (string= major-mode "nrepl-mode")
       (progn
 	(switch-to-buffer-other-window (nice-ns (nrepl-current-ns)))
