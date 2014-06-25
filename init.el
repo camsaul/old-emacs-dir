@@ -23,7 +23,7 @@
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
                      achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
-                     highlight-symbol projectile
+                     highlight-symbol projectile js2-mode jquery-doc
                      ))
 
 
@@ -67,7 +67,7 @@
                  ;; helm
 		 ))
 
-(add-hook 'before-make-frame-hook 'turn-off-tool-bar)
+;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; helper settings to make emacs work better from terminal
@@ -113,9 +113,9 @@
 (defun global-mode-setup ()
   "function to call when setting up any mode, e.g. minor modes that "
   (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
-  ;; highlight in bold red the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT.
+  ;; highlight in bold yellow the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT, DEPRECATED.
   (font-lock-add-keywords
-    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|NOCOMMIT\\)"
+    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|DEPRECATED\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
 
 ;; global settings
@@ -129,7 +129,9 @@
 ;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
 ;; 		  ))
 ;; (set-frame-font "Consolas-10")
-(set-frame-font "Source Code Pro-12")
+
+(set-frame-font (if (string-equal window-system "ns") "Source Code Pro-12"
+                  "Source Code Pro-11"))
 ;; (set-frame-font "Menlo Regular-11")
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
@@ -185,6 +187,7 @@
     ("H-A" mc/mark-previous-like-this)
     ("C-H-a" mc/mark-all-like-this)
     ("C-H-e" mc/edit-lines)
+    ("H-h" highlight-symbol-at-point)
     ("C-c e" eval-and-replace)		     	  ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
     ("C-x z")				      	  ; disable minimize emacs
@@ -202,7 +205,8 @@
 
 ;; THE HOLY GRAIL <3
 (setq ns-right-control-modifier 'hyper
-      ns-right-command-modifier 'hyper)
+      ns-right-command-modifier 'hyper
+      ns-right-option-modifier 'alt)
 
 (setq w32-apps-modifier 'hyper)
 (define-keys nil

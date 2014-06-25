@@ -82,6 +82,36 @@
   (call-process "isort" nil t nil (buffer-file-name) "--order-by-type" "--multi_line" "1" "--lines" "120")
   (revert-buffer t t))
 
+(defun insert-lines (lines)
+  "Insert a list of strings calling (newline-and-indent) after each."
+  (mapc (lambda (line)
+          (insert-string line)
+          (newline-and-indent))
+        lines))
+
+(defun insert-debug-code ()
+  "Insert code print a stacktrace and run the Python debugger at location."
+  (interactive)
+  (insert-lines '("##### DEBUGGING CODE - NOCOMMIT #####"
+                  "import pdb"
+                  "import pprint"
+                  "import traceback"
+                  "pp = lambda o: pprint.PrettyPrinter(indent=2).pprint(o)"
+                  "traceback.print_stack()"
+                  "pdb.set_trace()"
+                  "##### END DEBUGGING CODE - NOCOMMIT #####")))
+
+(defun insert-time-code ()
+  "Insert a lambda to use for profiling Python code."
+  (interactive)
+  (insert-lines '("##### PROFILING CODE - NOCOMMIT #####"
+                  "import time"
+                  "def time_method(m):"
+                  "t1 = time.time()"
+                  "res = m()"
+                  "print \"TIME = %.0f ms\" % ((time.time() - t1) * 1000)"
+                  "return res"
+                  "##### END PROFILING CODE - NOCOMMIT #####")))
 
 
 ;; (add-hook 'python-mode-hook 'cam-python-mode-setup)
