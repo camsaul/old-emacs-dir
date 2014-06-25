@@ -16,15 +16,15 @@
 (mapc (lambda (package)
 	(when (not (package-installed-p package))
 	  (package-install package)))
-      '(clojure-mode clojure-test-mode nrepl ac-nrepl highlight-parentheses paredit markdown-mode
+      '(clojure-mode highlight-parentheses paredit markdown-mode
 		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
 		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
 		     undo-tree evil nav dired+ smex elisp-slime-nav tabbar clojurescript-mode
                      elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     achievements ace-jump-buffer find-things-fast flatland-theme pydoc-info
+                     ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
-                     highlight-symbol projectile js2-mode jquery-doc
-                     ))
+                     highlight-symbol projectile js2-mode jquery-doc loccur company
+                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido))
 
 
 ;; ;; install el-get if needed
@@ -60,11 +60,11 @@
                  multiple-cursors
                  magit
                  ace-jump-mode
-                 achievements
                  ace-jump-buffer
                  find-things-fast
                  highlight-symbol
-                 ;; helm
+                 loccur
+                 flx-ido
 		 ))
 
 ;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -94,6 +94,8 @@
 (global-hl-line-mode 1)				  ; highlights the current line
 (set-face-background 'hl-line "#222222")
 (ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)                                  ; fuzzy-matching for ido
 (recentf-mode 1)
 (rainbow-mode 1)				  ; colorize strings that represent colors
 (diminish 'rainbow-mode nil)
@@ -106,7 +108,6 @@
 (tabbar-mode 1)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
-(achievements-mode 1)
 ;; (evil-mode 1)
 
 
@@ -124,15 +125,11 @@
 (setq inhibit-startup-screen t
       inhibit-splash-screen t)
 (setq recentf-max-menu-items 20)
-;; (set-frame-font (if (string-equal window-system "ns")
-;; 		    "Menlo Regular-10"		  ; use the Xcode font on OS X
-;; 		  "Source Code Pro-10"		  ; Source Code Pro open-source font by Adobe. https://github.com/abobe/Source-Code-Pro
-;; 		  ))
-;; (set-frame-font "Consolas-10")
 
-(set-frame-font (if (string-equal window-system "ns") "Source Code Pro-12"
-                  "Source Code Pro-11"))
+(set-frame-font "Menlo-11")
 ;; (set-frame-font "Menlo Regular-11")
+;; (set-frame-font "Source Code Pro-11")
+
 (setq
  scroll-step 1                                    ; prevent Emacs from getting into weird state where it insists on centering the buffer on the cursor
   -conservatively 9999
@@ -161,7 +158,7 @@
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 (setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
 
-;; custom key bindings
+k;; custom key bindings
 (define-keys nil
   '(("C-x u" nil) 				  ; disable emacs default keybinding for undo, use C-z instead
     ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu
@@ -196,10 +193,13 @@
     ("s-o" ftf-find-file)
     ("s-f" ftf-grepsource)
     ("<escape>" ace-jump-mode)
-    ("C-S-SPC" ace-jump-buffer)
+    ("A-<tab>" ace-jump-buffer)
     ("C-x C-g" keyboard-quit)                     ; Quit commands that I started typing with C-x
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
     ;; ("M-ESC" helm-mini)
+    ("H-;" loccur-current)                        ; folder current buffer to lines containing the current word
+    ("A-;" loccur)                                ; activate loccur-mode (prompt for word/regex)
+    ("A-H-;" loccur-previous-match)               ; jump batch to previous loccur search
     ))
 
 

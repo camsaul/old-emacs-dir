@@ -1,22 +1,21 @@
 (require 'clojure-mode)
 (require 'nrepl)
-(require 'ac-nrepl)
 (require 'lisp-init)
-
-(defun set-auto-complete-as-completion-at-point-function ()
-  (setq completion-at-point-functions '(auto-complete))) ; make autocomplete a completion-at-point function
 
 (defun cam-clojure-mode-setup ()
   (require 'cider)
+  (require 'company)
+  (require 'clojure-mode-extra-font-locking)
   (cam-lisp-mode-setup)
+  (cider-mode 1)
   (subword-mode 1)      ; enable CamelCase support for editor movement
+  (company-mode 1)
   (pretty-fn)
-  (set-auto-complete-as-completion-at-point-function)
-  (ac-nrepl-setup)
-  (cider-mode 1))
+  (cider-turn-on-eldoc-mode))
 
 (add-hook 'nrepl-repl-mode-hook 'cam-clojure-mode-setup)
-(add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
+;; (add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'cider-mode-hook 'cam-clojure-mode-setup)
 
 ;; custom keyboard shortcuts
 (defun cam-define-clojure-keys (mode-map)
@@ -28,12 +27,9 @@
       ("<f12> s" stackoverflow-search)
       ("<f12> <f12> p" paredit-cheatsheet)
       ("<f12> <f12> c" clojure-cheatsheet)
-      ("<C-M-S-return>" toggle-test-file)
-      ("S-<f9>" clojure-test-run-tests)
       ("C-c C-d" ac-nrepl-popup-doc)
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
 (cam-define-clojure-keys clojure-mode-map)
-;; (cam-define-clojure-keys nrepl-mode-map)
 (cam-define-clojure-keys nrepl-interaction-mode-map)
 
 ;; custom keyboard shortcuts for NREPL only
@@ -41,25 +37,19 @@
   '(("RET" nrepl-return)
     ("C-c e" nrepl-stacktrace)))
 
-(defun cam-ac-nrepl-setup ()
-    ; nothing right now
-  )
-
-(add-hook 'nrepl-mode-hook 'cam-ac-nrepl-setup)
-(add-hook 'nrepl-repl-mode-hook 'cam-ac-nrepl-setup)
-(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'nrepl-repl-mode))
-(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'clojure-mode))
-(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-;; other custom hooks
-(add-hook 'clojure-mode-hook 'clojure-test-mode)
-
 ;; custom vars
-(setq nrepl-hide-special-buffers t) ; hide the *nrepl-connection* and *nrepl-server* buffers
-(setq nrepl-popup-stacktraces nil) ; stop error buffer from popping up
-(setq nrepl-popup-stacktraces-in-repl nil)
+(setq nrepl-hide-special-buffers t)                            ; hide the *nrepl-connection* and *nrepl-server* buffers
 (setq nrepl-use-pretty-printing t)
-(setq nrepl-error-handler nil) ;; overwrite cider mode which snuck its way onto the machine somehow
+(setq nrepl-error-handler nil)
+(setq cider-repl-pop-to-buffer-on-connect t                    ; start NREPL in separate window
+      cider-auto-select-error-buffer nil                       ; don't auto-switch to error buffer
+      cider-show-error-buffer 'only-in-repl                    ; alternatively, set to nil or 'except-in-nrepl
+      cider-stacktrace-default-filters '(java, clj, repl, tooling, dup)
+      cider-repl-display-in-current-window nil                 ; C-c C-z switches to CIDER repl?? (cider-switch-to-repl)
+
+
+      )
+(setq)
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
@@ -95,17 +85,6 @@
   (interactive)
   (let* ((namespace (clojure-underscores-for-hyphens namespace)))
     (concat (car (last (split-string namespace "\\."))) ".clj")))
-
-(defun toggle-test-file ()
-  (interactive)
-  (if
-      (string= major-mode "nrepl-mode")
-      (progn
-	(switch-to-buffer-other-window (nice-ns (nrepl-current-ns)))
-	(find-file (funcall clojure-test-for-fn (clojure-find-ns))))
-    (progn
-      (save-buffer)
-      (clojure-jump-between-tests-and-code))))
 
 (defun strip-clj-cljs (namespace-str)
   (interactive)
