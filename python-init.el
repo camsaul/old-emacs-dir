@@ -65,7 +65,6 @@
   ;; 				     py-python-command-args))
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
-  (electric-pair-mode 1)
   ;; (whitespace-mode 1)
   (pretty-lambdas)
   (elpy-mode 1)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
