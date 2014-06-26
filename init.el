@@ -50,7 +50,6 @@
 		 recentf
 		 rainbow-delimiters
                  rainbow-mode
-		 clojuredocs
 		 midnight
 		 undo-tree
 		 ;; evil
@@ -158,7 +157,7 @@
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 (setq x-select-enable-clipboard t)		  ; Use the clipboard in addition to emacs kill ring
 
-k;; custom key bindings
+;; custom key bindings
 (define-keys nil
   '(("C-x u" nil) 				  ; disable emacs default keybinding for undo, use C-z instead
     ("C-x C-b" buffer-menu)			  ; C-x C-b shows buffer menu
