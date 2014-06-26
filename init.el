@@ -24,7 +24,7 @@
                      ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
                      highlight-symbol projectile js2-mode jquery-doc loccur company
-                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido))
+                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido smartparens))
 
 
 ;; ;; install el-get if needed

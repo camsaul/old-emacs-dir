@@ -51,6 +51,7 @@
   (require 'yasnippet)
   (require 'elpy)
   (require 'flymake)
+  (require 'smartparens)
   (setq python-check-command "pyflakes")
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
@@ -67,8 +68,8 @@
   (electric-pair-mode 1)
   ;; (whitespace-mode 1)
   (pretty-lambdas)
-  (elpy-mode)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
-
+  (elpy-mode 1)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
+  (smartparens-mode 1)
   (add-hook 'after-save-hook 'run-isort nil t)
 )
 
