@@ -199,6 +199,7 @@
     ("H-;" loccur-current)                        ; folder current buffer to lines containing the current word
     ("A-;" loccur)                                ; activate loccur-mode (prompt for word/regex)
     ("A-H-;" loccur-previous-match)               ; jump batch to previous loccur search
+    ("s-b" balance-windows)
     ))
 
 

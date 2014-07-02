@@ -51,7 +51,7 @@
   (require 'yasnippet)
   (require 'elpy)
   (require 'flymake)
-  (require 'smartparens)
+  ;; (require 'smartparens)
   (setq python-check-command "pyflakes")
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
@@ -68,9 +68,9 @@
   ;; (whitespace-mode 1)
   (pretty-lambdas)
   (elpy-mode 1)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
-  (smartparens-mode 1)
-  (add-hook 'after-save-hook 'run-isort nil t)
-)
+  ;; (smartparens-mode 1)
+  (electric-pair-mode 1)
+  (add-hook 'after-save-hook 'run-isort nil t))
 
 (add-hook 'before-save-hook 'run-autopep8)
 (setq py-autopep8-options '("--aggressive" "--aggressive" "--ignore" "E501,E401" "-j" "0"))
@@ -97,6 +97,7 @@
                   "import pprint"
                   "import traceback"
                   "pp = lambda o: pprint.PrettyPrinter(indent=2).pprint(o)"
+                  "ppo = lambda o: pprint.PrettyPrinter(indent=2).pprint(o.__dict__)"
                   "traceback.print_stack()"
                   "pdb.set_trace()"
                   "##### END DEBUGGING CODE - NOCOMMIT #####")))
