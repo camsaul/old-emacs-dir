@@ -24,27 +24,9 @@
                      ace-jump-buffer find-things-fast flatland-theme pydoc-info
                      auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
                      highlight-symbol projectile js2-mode jquery-doc loccur company
-                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido smartparens))
-
-
-;; ;; install el-get if needed
-;; (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-;; (unless (require 'el-get nil 'noerror)
-;;   (with-current-buffer
-;;       (url-retrieve-synchronously
-;;        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-;;     (goto-char (point-max))
-;;     (eval-print-last-sexp)))
-;; (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-;; (el-get 'sync)
-
-;; ;; install el-get packages
-;; (mapc (lambda (package)
-;; 	(unless (package-installed-p package)
-;; 	  (el-get-install package)))
-;;       '(
-;;         ; helm
-;;         ))
+                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido smartparens
+                     bm ; visual-bookmark-mode
+                     ))
 
 (mapc 'require '(cam-functions
 		 recentf
@@ -64,6 +46,7 @@
                  highlight-symbol
                  loccur
                  flx-ido
+                 bm
 		 ))
 
 ;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -139,7 +122,9 @@
  scroll-margin 1
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
  require-final-newline t                          ; add final newline on save
- initial-frame-alist (quote ((fullscreen . maximized))))
+ initial-frame-alist (quote ((fullscreen . maximized)))
+ bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
+ )
 (setq global-auto-revert-non-file-buffers t)	  ; also refresh dired but be quiet about it
 (setq auto-revert-verbose nil)
 (setq ac-delay 0.1)				  ; shorter delay before showing completions. Default is 0.1.
@@ -200,6 +185,10 @@
     ("A-;" loccur)                                ; activate loccur-mode (prompt for word/regex)
     ("A-H-;" loccur-previous-match)               ; jump batch to previous loccur search
     ("s-b" balance-windows)
+    ("A-b" bm-toggle)                             ; Toggle visual bookmark on this line
+    ("A-H-b" bm-show-all)                         ; Show all visual bookmarks in all files
+    ("A-n" bm-next)
+    ("A-p" bm-previous)
     ))
 
 
