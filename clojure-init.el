@@ -14,7 +14,7 @@
   (cider-turn-on-eldoc-mode))
 
 (add-hook 'nrepl-repl-mode-hook 'cam-clojure-mode-setup)
-;; (add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
 (add-hook 'cider-mode-hook 'cam-clojure-mode-setup)
 
 ;; custom keyboard shortcuts
