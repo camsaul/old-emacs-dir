@@ -6,8 +6,11 @@
 (require 'lisp-init) ; to get my pretty-lambdas function
 (require 'py-autopep8)
 (require 'python-pep8)
+(require 'cam-functions)
+
 (setq pdb-path '/usr/lib/python2.7/pdb.py
       gud-pdb-command-name (symbol-name pdb-path))
+
 (defadvice pdb (before gud-query-cmdline activate)
   "Provide a better default command line when called interactively."
   (interactive
@@ -67,13 +70,14 @@
   (diminish 'eldoc-mode)
   ;; (whitespace-mode 1)
   (pretty-lambdas)
-  (elpy-mode 1)                ; !!!! EDITED THIS TO WORK IN DJANGO MODE
+  (elpy-mode 1)              ; !!!! EDITED THIS TO WORK IN DJANGO MODE
   ;; (smartparens-mode 1)
   (electric-pair-mode 1)
+  (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'run-isort nil t))
 
 (add-hook 'before-save-hook 'run-autopep8)
-(setq py-autopep8-options '("--aggressive" "--aggressive" "--ignore" "E501,E401" "-j" "0"))
+(setq py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0"))
 (setq python-pep8-options '("--format=pylint" "--ignore E501,E401"))
 
 (defun run-isort ()

@@ -1,4 +1,4 @@
-(defun cygwin-shell () 
+(defun cygwin-shell ()
   "Run cygwin bash in shell mode."
   (interactive)
   (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
@@ -6,7 +6,7 @@
 
 (defun define-keys (map-or-nil keys)
   (flet ((set-key-fn (ks a)
-		     (let ((k (eval (list 'kbd ks))))		       
+		     (let ((k (eval (list 'kbd ks))))
 		       (if map-or-nil
 			   (define-key map-or-nil k a)
 			 (global-set-key k a)))))
@@ -15,12 +15,24 @@
 	  keys)))
 
 (defun popup-yank-menu ()
+  "Show list of recent yanks as a popup menu."
   (interactive)
   (popup-menu 'yank-menu))
 
+(defun popup-cam-menu ()
+  "Show the 'CAM :)' menu as a popup menu."
+  (interactive)
+  (popup-menu cam-menu))
+
 (defun join-next-line ()
+  "Basically like C-e C-k then deleting leftover space."
   (interactive)
   (join-line -1))
+
+(defun untabify-current-buffer ()
+  "Run untabify over the entire current buffer."
+  (interactive)
+  (untabify (point-min) (point-max)))
 
 (defun lorem-ipsum ()
   "Insert a lorem ipsum."
@@ -87,12 +99,12 @@
 
 (defun force-indent-region ()
   "Indent a region, overriding normal indentation behavior."
-  (interactive)  
+  (interactive)
   (indent-rigidly (region-beginning) (region-end) 4))
 
 (defun force-unindent-region ()
   "Unindent a region, overriding normal indentation behavior."
-  (interactive)  
+  (interactive)
   (indent-rigidly (region-beginning) (region-end) -4))
 
 (provide 'cam-functions)

@@ -172,6 +172,7 @@
     ("C-c e" eval-and-replace)		     	  ; eval previous elisp expression at point, replace with results
     ("M-j" join-next-line)
     ("C-x z")				      	  ; disable minimize emacs
+    ("<f13>" popup-cam-menu)
     ("s-]" force-indent-region)
     ("s-[" force-unindent-region)
     ("s-o" ftf-find-file)
