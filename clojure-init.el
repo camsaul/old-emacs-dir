@@ -33,9 +33,9 @@
 (cam-define-clojure-keys nrepl-interaction-mode-map)
 
 ;; custom keyboard shortcuts for NREPL only
-(define-keys nrepl-repl-mode-map
-  '(("RET" nrepl-return)
-    ("C-c e" nrepl-stacktrace)))
+;; (define-keys nrepl-repl-mode-map
+;;   '(("RET" nrepl-return)
+;;     ("C-c e" nrepl-stacktrace)))
 
 ;; custom vars
 (setq nrepl-hide-special-buffers t)                            ; hide the *nrepl-connection* and *nrepl-server* buffers
