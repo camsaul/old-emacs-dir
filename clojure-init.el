@@ -53,6 +53,8 @@
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
+  (sqlfn 'defun)
+  (k/sqlfn 'defun)
   (GET 2)
   (POST 2)
   (PUT 2)
