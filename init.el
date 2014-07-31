@@ -16,17 +16,61 @@
 (mapc (lambda (package)
 	(when (not (package-installed-p package))
 	  (package-install package)))
-      '(clojure-mode highlight-parentheses paredit markdown-mode
-		     less-css-mode diminish rainbow-delimiters rainbow-mode hl-sexp fuzzy
-		     json slime erlang python ipython xmlgen rspec-mode ruby-electric ruby-block
-		     undo-tree evil nav dired+ smex elisp-slime-nav tabbar clojurescript-mode
-                     elpy pyflakes pymacs outline-magic python-magic multiple-cursors magit ace-jump-mode
-                     ace-jump-buffer find-things-fast flatland-theme pydoc-info
-                     auto-complete-clang-async ac-etags yasnippet django-mode py-autopep8
-                     highlight-symbol projectile js2-mode jquery-doc loccur company
-                     clojure-mode-extra-font-locking ido-ubiquitous flx-ido smartparens
-                     bm ; visual-bookmark-mode
-                     ))
+      '(ac-etags
+        ace-jump-buffer
+        ace-jump-mode
+        auto-complete-clang-async
+        clojure-mode
+        clojure-mode-extra-font-locking
+        clojurescript-mode
+        company
+        diminish
+        dired+
+        django-mode
+        elisp-slime-nav
+        elpy
+        erlang
+        evil
+        find-things-fast
+        flatland-theme
+        flx-ido
+        fuzzy
+        highlight-parentheses
+        highlight-symbol
+        hl-sexp
+        ido-ubiquitous
+        ipython
+        jquery-doc
+        js2-mode
+        json
+        less-css-mode
+        loccur
+        magit
+        markdown-mode
+        multiple-cursors
+        nav
+        outline-magic
+        paredit
+        projectile
+        py-autopep8
+        pydoc-info
+        pyflakes
+        pymacs
+        python
+        python-magic
+        python-pep8
+        rainbow-delimiters
+        rainbow-mode
+        rspec-mode
+        ruby-block
+        ruby-electric
+        slime
+        smartparens
+        smex
+        tabbar
+        undo-tree
+        xmlgen
+        yasnippet))
 
 (mapc 'require '(cam-functions
 		 recentf
