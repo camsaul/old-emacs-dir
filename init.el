@@ -10,7 +10,7 @@
 
 (package-initialize)
 (when (not package-archive-contents)
-	(package-refresh-contents))
+  (package-refresh-contents))
 
 ;; install melpa/maramalade packages
 (mapc (lambda (package)
@@ -72,8 +72,7 @@
         xmlgen
         yasnippet))
 
-(mapc 'require '(
-		 ;; evil
+(mapc 'require '( ;; evil
 		 cam-functions
 		 dired+
 		 midnight

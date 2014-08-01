@@ -11,3 +11,4 @@ el-get/
 .mc-lists.el
 bookmarks
 .achievements
+emacs-clang-complete-async
