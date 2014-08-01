@@ -32,7 +32,6 @@
         erlang
         evil
         find-things-fast
-        flatland-theme
         flx-ido
         fuzzy
         highlight-parentheses
@@ -49,6 +48,7 @@
         markdown-mode
         multiple-cursors
         nav
+        organic-green-theme
         outline-magic
         paredit
         projectile
@@ -72,25 +72,26 @@
         xmlgen
         yasnippet))
 
-(mapc 'require '(cam-functions
-		 recentf
-		 rainbow-delimiters
-                 rainbow-mode
-		 midnight
-		 undo-tree
+(mapc 'require '(
 		 ;; evil
-		 nav				  ; nav frame, better than speed bar
+		 cam-functions
 		 dired+
+		 midnight
+		 nav				  ; nav frame, better than speed bar
+		 rainbow-delimiters
+		 recentf
 		 smex				  ; IDO-like completion for M-x
-                 multiple-cursors
-                 magit
-                 ace-jump-mode
+		 undo-tree
                  ace-jump-buffer
+                 ace-jump-mode
+                 bm
                  find-things-fast
+                 flx-ido
                  highlight-symbol
                  loccur
-                 flx-ido
-                 bm
+                 magit
+                 multiple-cursors
+                 rainbow-mode
 		 ))
 
 ;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
@@ -100,10 +101,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
-
-(custom-set-variables
- '(custom-enabled-themes (quote (flatland)))
- '(custom-safe-themes (quote ("86f4407f65d848ccdbbbf7384de75ba320d26ccecd719d50239f2c36bec18628" default))))
 
 (add-hook 'emacs-startup-hook
 	  (lambda ()
@@ -118,7 +115,7 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
 (global-hl-line-mode 1)				  ; highlights the current line
-(set-face-background 'hl-line "#222222")
+;; (set-face-background 'hl-line "#222222")
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)                                  ; fuzzy-matching for ido
@@ -310,3 +307,8 @@
 		 erlang-init
 		 html-init
 		 cpp-init))
+
+(custom-set-variables
+ '(custom-enabled-themes (quote (organic-green)))
+ '(custom-safe-themes (quote ("1ef7df153ee59ef210acf0060073cd98e4992c9014b4fc7766243a3cb56cc6e4" default))))
+(custom-set-faces)
