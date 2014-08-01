@@ -88,7 +88,6 @@
                  flx-ido
                  highlight-symbol
                  loccur
-                 magit
                  multiple-cursors
                  rainbow-mode
 		 ))
