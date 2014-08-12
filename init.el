@@ -70,6 +70,7 @@
         tabbar
         undo-tree
         xmlgen
+        yaml-mode
         yasnippet))
 
 (mapc 'require '(
