@@ -174,6 +174,9 @@
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
 
+;; Additional file types that should be recognized by ftf-grepsource (Super + F)
+(setq ftf-filetypes (append ftf-filetypes '("*.js")))
+
 ;; (setq
 ;;  clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
 ;; )
