@@ -110,13 +110,20 @@
   "Insert a lambda to use for profiling Python code."
   (interactive)
   (insert-lines '("##### PROFILING CODE - NOCOMMIT #####"
+                  "def timed(fn):"
+                  "from functools import wraps"
                   "import time"
-                  "def time_method(m):"
+                  "from colorama import Fore, Style"
+                  "@wraps(fn)"
+                  "def timed_fn(*args, **kwargs):"
                   "t1 = time.time()"
-                  "res = m()"
-                  "print \"TIME = %.0f ms\" % ((time.time() - t1) * 1000)"
-                  "return res"
-                  "##### END PROFILING CODE - NOCOMMIT #####")))
+                  "res = fn(*args, **kwargs)"
+                  "print Style.BRIGHT + Fore.MAGENTA + \"%s took %.0f ms\" % (fn.__name__, (time.time() - t1) * 1000) + Style.RESET_ALL"
+                  "return res"))
+  (python-indent-dedent-line)
+  (insert-lines '("return timed_fn"))
+  (python-indent-dedent-line)
+  (insert-lines '("##### END PROFILING CODE - NOCOMMIT #####")))
 
 
 ;; (add-hook 'python-mode-hook 'cam-python-mode-setup)

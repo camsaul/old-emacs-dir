@@ -232,6 +232,7 @@
     ("<H-SPC>" other-frame)
     ("<H-down>" windmove-down)
     ("<H-left>" windmove-left)
+    ("<H-return>" mc/mark-next-lines)
     ("<H-right>" windmove-right)
     ("<H-up>" windmove-up)
     ("A-;" loccur)                                ; activate loccur-mode (prompt for word/regex)
