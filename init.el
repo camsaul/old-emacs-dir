@@ -213,6 +213,7 @@
     ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
     ("C-x u" nil) ; disable emacs default keybinding for undo, use C-z instead
     ("C-x z")				      	  ; disable minimize emacs
+    ("C-x C-z")                                   ; disable minimize emacs
     ("H-A" mc/mark-previous-like-this)
     ("H-E" mc/mark-next-like-this)                ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
     ("H-h" highlight-symbol-at-point)

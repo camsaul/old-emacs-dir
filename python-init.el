@@ -1,7 +1,6 @@
 (require 'flymake)
 (require 'python)
 (require 'django-mode)
-;; (require 'ipython)
 (require 'auto-complete)
 (require 'lisp-init) ; to get my pretty-lambdas function
 (require 'py-autopep8)
@@ -29,19 +28,6 @@
       python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
       )
 
-;; (require 'pymacs)
-;; (pymacs-load "ropemacs" "rope-") # Requires pip install ropemacs
-
-;; Make info-look work correctly for python (C-h S)
-;; (info-lookup-add-help
-;;  :mode 'python-mode
-;;  :regexp "[[:alnum:]_]+"
-;;  :doc-spec
-;;  '(("(python)Index" nil "")))
-
-;; (defun cam-python-mode-setup ()
-;;   (django-mode))
-
 (defun run-autopep8 ()
   (interactive)
   (when (or (eq major-mode 'django-mode)
@@ -59,8 +45,6 @@
   (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
-  ;; (paredit-mode 1)
-  ;; (diminish 'paredit-mode " π")
   (auto-complete-mode 1)
   (diminish 'auto-complete-mode)
   (set-face-background 'hl-sexp-face "#111111")
@@ -126,8 +110,6 @@
   (insert-lines '("##### END PROFILING CODE - NOCOMMIT #####")))
 
 
-;; (add-hook 'python-mode-hook 'cam-python-mode-setup)
-;; (add-hook 'python-mode-hook 'cam-django-mode-setup)
 (defalias 'cam-python-mode-setup 'cam-django-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
 (add-hook 'django-mode-hook 'cam-django-mode-setup)
