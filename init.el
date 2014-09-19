@@ -20,6 +20,7 @@
         ace-jump-buffer
         ace-jump-mode
         auto-complete-clang-async
+	bm
         clojure-mode
         clojure-mode-extra-font-locking
         clojurescript-mode
@@ -143,7 +144,9 @@
 	1 font-lock-warning-face t))))
 
 (prefer-coding-system 'utf-8-auto-unix)
-(set-frame-font "Menlo-11")
+(set-frame-font (cond
+		 ((string= system-type "windows-nt") "Consolas-11")
+		 ((string= system-type "darwin") "Menlo-11"))) ; what about "gnu/linux" ?
 
 (setq
  ac-auto-show-menu t                    	  ; automatically show menu
