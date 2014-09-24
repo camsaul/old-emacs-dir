@@ -5,7 +5,6 @@
   (require 'jquery-doc)
   (global-mode-setup)
   (pretty-function)
-  (electric-layout-mode)
   (highlight-parentheses-mode)
   (auto-complete-mode 1)
   (setq ac-sources '(ac-source-jquery)))
