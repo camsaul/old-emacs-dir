@@ -3,7 +3,6 @@
 
 ;; MELPA Package Source
 (require 'package)
-;; (require 'cl)
 (mapc (lambda (l) (add-to-list 'package-archives l))
       '(("melpa" . "http://melpa.milkbox.net/packages/")
 	("marmalade" . "http://marmalade-repo.org/packages/")))
@@ -49,7 +48,6 @@
         markdown-mode
         multiple-cursors
         nav
-        organic-green-theme
         outline-magic
         paredit
         projectile
@@ -69,6 +67,7 @@
         smartparens
         smex
         tabbar
+        tommyh-theme
         undo-tree
         xmlgen
         yaml-mode
@@ -305,8 +304,7 @@
 		 ruby-init
                  lisp-init
                  ))
-
 (custom-set-variables
- '(custom-enabled-themes (quote (organic-green)))
- '(custom-safe-themes (quote ("1ef7df153ee59ef210acf0060073cd98e4992c9014b4fc7766243a3cb56cc6e4" default))))
+ '(custom-enabled-themes (quote (tommyh)))
+ '(custom-safe-themes (quote ("353861e69d6510a824905208f7290f90248f0b9354ee034fd4562b962790bdfc" default))))
 (custom-set-faces)
