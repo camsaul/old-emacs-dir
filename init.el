@@ -40,7 +40,7 @@
         ido-ubiquitous
         ipython
         jquery-doc
-        js2-mode
+        js3-mode
         json
         less-css-mode
         loccur
