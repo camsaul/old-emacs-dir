@@ -108,7 +108,6 @@
               (kill-buffer "*scratch*"))))
 
 ;; global minor modes
-(global-rainbow-delimiters-mode 1)
 (winner-mode 1)
 (global-linum-mode 1)				  ; linum-mode is for line numbers on left
 (line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
@@ -135,7 +134,8 @@
 
 
 (defun global-mode-setup ()
-  "function to call when setting up any mode, e.g. minor modes that "
+  "Function that should be called to do some extra customization when setting up any major mode."
+  (rainbow-delimiters-mode 1)
   (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
   ;; highlight in bold yellow the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT, DEPRECATED.
   (font-lock-add-keywords
