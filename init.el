@@ -221,7 +221,7 @@
     ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory
     ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)
     ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
-    ("C-x u" nil) ; disable emacs default keybinding for undo, use C-z instead
+    ("C-x u" nil)                                 ; disable emacs default keybinding for undo, use C-z instead
     ("C-x z")				      	  ; disable minimize emacs
     ("C-x C-z")                                   ; disable minimize emacs
     ("H-A" mc/mark-previous-like-this)
@@ -233,7 +233,6 @@
     ("s-]" force-indent-region)
     ("s-f" ftf-grepsource)
     ("s-o" ftf-find-file)
-    ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
     ("<C-s-M-right>" windmove-right)
     ("<C-s-M-up>" windmove-up)
     ("<C-s-left>" next-buffer)
