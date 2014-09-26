@@ -295,7 +295,8 @@
 			"erlang-init.el"
 			"python-init.el"
 			"html-init.el"
-			"cpp-init.el")))))
+			"cpp-init.el"
+                        "theme-init.el")))))
 
 (mapc 'require '(
 		 clojure-init

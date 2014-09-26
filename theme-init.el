@@ -117,6 +117,7 @@
                         (powerline-raw " " color-face)
                         (funcall separator-left color-face face1)
                         (powerline-buffer-id face1 'l)
+                        (powerline-raw " " face1)
                         (funcall separator-left face1 face2)
                         (powerline-major-mode face2 'l)
                         (powerline-process face2)
