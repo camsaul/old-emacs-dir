@@ -66,7 +66,7 @@
         slime
         smartparens
         smex
-        tabbar
+        ;; tabbar
         tommyh-theme
         undo-tree
         xmlgen
@@ -127,7 +127,7 @@
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
-(tabbar-mode 1)
+;; (tabbar-mode 1)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
 ;; (evil-mode 1)
