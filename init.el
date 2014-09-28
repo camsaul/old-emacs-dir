@@ -144,7 +144,7 @@
 
 (prefer-coding-system 'utf-8-auto-unix)
 (set-frame-font (cond
-		 ((string= system-type "windows-nt") "Consolas-11")
+		 ((string= system-type "windows-nt") "Consolas-10")
 		 ((string= system-type "darwin") "Menlo-11"))) ; what about "gnu/linux" ?
 
 (setq
