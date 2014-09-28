@@ -104,7 +104,6 @@
                  undo-tree
 		 ))
 
-;; (add-hook 'before-make-frame-hook 'turn-off-tool-bar)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; helper settings to make emacs work better from terminal
@@ -134,6 +133,7 @@
 (global-undo-tree-mode 1)			  ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
 (tool-bar-mode -1)				  ; disable the toolbar at top of screen
+(menu-bar-mode -1)                                ; disable the menu
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
@@ -175,6 +175,9 @@
  require-final-newline t                          ; add final newline on save
  scroll-margin 1
  w32-apps-modifier 'hyper
+ w32-lwindow-modifier 'super
+ w32-pass-lwindow-to-system nil
+ w32-rwindow-modifier 'alt
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
  x-select-enable-clipboard t           		  ; Use the clipboard in addition to emacs kill ring
  )
@@ -207,6 +210,7 @@
     ("<f12> b" bing-search)
     ("<f12> s" stackoverflow-search)
     ("<f13>" popup-cam-menu)
+    ("<scroll>" popup-cam-menu)                   ; windows only
     ("<f9>" whitespace-mode)
     ("<insert>" nil)			          ; disable stupid insert key TODO maybe use as a prefix to insert something useful
     ("C-H-a" mc/mark-all-like-this)
@@ -230,6 +234,7 @@
     ("S-<f10>" nav)				  ; Open nav buffer
     ("s-[" force-unindent-region)
     ("s-]" force-indent-region)
+    ("s-b" balance-windows)
     ("s-f" ftf-grepsource)
     ("s-o" ftf-find-file)
     ("<C-s-M-right>" windmove-right)
@@ -255,7 +260,6 @@
     ("H-;" loccur-current)                        ; folder current buffer to lines containing the current word
     ("H-k" kill-this-buffer)
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
-    ("s-b" balance-windows)
     ))
 
 (defun menu-edit-file (str f)
