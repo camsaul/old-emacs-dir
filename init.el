@@ -1,7 +1,14 @@
+;; Disable menu/scrollbar/toolbar first so they don't flash
+(mapc (lambda (mode)
+        (when (fboundp mode)
+          (funcall mode -1)))
+      '(menu-bar-mode
+        scroll-bar-mode
+        tool-bar-mode))
+
 (add-to-list 'load-path "~/.emacs.d/")
 (add-to-list 'load-path "~/.emacs.d/auto-complete-clang")
 
-;; MELPA Package Source
 (require 'package)
 (mapc (lambda (l) (add-to-list 'package-archives l))
       '(("melpa" . "http://melpa.milkbox.net/packages/")
@@ -134,9 +141,6 @@
 (diminish 'rainbow-mode nil)
 (global-undo-tree-mode 1)			  ; sane undo in emacs
 (diminish 'undo-tree-mode nil)
-(tool-bar-mode -1)				  ; disable the toolbar at top of screen
-(menu-bar-mode -1)                                ; disable the menu
-(scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
 (dired-details-install)
