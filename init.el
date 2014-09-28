@@ -31,6 +31,8 @@
         elpy
         erlang
         evil
+        evil-matchit
+        evil-paredit
         find-things-fast
         flx-ido
         fuzzy
@@ -50,6 +52,8 @@
         nav
         outline-magic
         paredit
+        powerline
+        powerline-evil
         projectile
         py-autopep8
         pydoc-info
@@ -60,13 +64,14 @@
         python-pep8
         rainbow-delimiters
         rainbow-mode
+        relative-line-numbers
         rspec-mode
         ruby-block
         ruby-electric
         slime
         smartparens
         smex
-        tabbar
+        ;; tabbar
         tommyh-theme
         undo-tree
         xmlgen
@@ -74,12 +79,14 @@
         yasnippet))
 
 (mapc 'require '(
-                 ;; evil
                  ace-jump-buffer
                  ace-jump-mode
                  bm
                  cam-functions
                  dired+
+                 evil
+                 evil-paredit
+                 evil-matchit
                  find-things-fast
                  flx-ido
                  highlight-symbol
@@ -87,9 +94,12 @@
                  midnight
                  multiple-cursors
                  nav		 ; nav frame, better than speed bar
+                 powerline
+                 powerline-evil
                  rainbow-delimiters
                  rainbow-mode
                  recentf
+                 relative-line-numbers
                  smex		 ; IDO-like completion for M-x
                  undo-tree
 		 ))
@@ -104,13 +114,12 @@
 
 (add-hook 'emacs-startup-hook
 	  (lambda ()
-            (progn
-              (kill-buffer "*scratch*"))))
+            (kill-buffer "*scratch*")
+            (setup-powerline)))
 
 ;; global minor modes
-(global-rainbow-delimiters-mode 1)
 (winner-mode 1)
-(global-linum-mode 1)				  ; linum-mode is for line numbers on left
+;; (global-linum-mode 1)				  ; linum-mode is for line numbers on left
 (line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
 (column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
@@ -128,14 +137,15 @@
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
-(tabbar-mode 1)
+;; (tabbar-mode 1)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
-;; (evil-mode 1)
-
+(evil-mode 1)
+(show-paren-mode 1)                               ; highlight matching parens
 
 (defun global-mode-setup ()
-  "function to call when setting up any mode, e.g. minor modes that "
+  "Function that should be called to do some extra customization when setting up any major mode."
+  (rainbow-delimiters-mode 1)
   (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
   ;; highlight in bold yellow the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT, DEPRECATED.
   (font-lock-add-keywords
@@ -143,10 +153,6 @@
 	1 font-lock-warning-face t))))
 
 (prefer-coding-system 'utf-8-auto-unix)
-(set-frame-font (cond
-		 ((string= system-type "windows-nt") "Consolas-10")
-		 ((string= system-type "darwin") "Menlo-11"))) ; what about "gnu/linux" ?
-
 (setq
  ac-auto-show-menu t                    	  ; automatically show menu
  ac-quick-help-delay 0.5                	  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
@@ -175,6 +181,7 @@
 
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
+(set-fringe-mode 0)                               ; Disable fringes
 
 ;; Additional file types that should be recognized by ftf-grepsource (Super + F)
 (setq ftf-filetypes (append ftf-filetypes '("*.js")))
@@ -213,7 +220,7 @@
     ("C-x C-d" ido-dired)			  ; C-x C-d -> dired instead of list directory
     ("C-x C-r" recentf-open-files)		  ; C-x C-r -> display recent files (overrides open file in read-only mode)
     ("C-x k" kill-this-buffer)			  ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
-    ("C-x u" nil) ; disable emacs default keybinding for undo, use C-z instead
+    ("C-x u" nil)                                 ; disable emacs default keybinding for undo, use C-z instead
     ("C-x z")				      	  ; disable minimize emacs
     ("C-x C-z")                                   ; disable minimize emacs
     ("H-A" mc/mark-previous-like-this)
@@ -225,7 +232,6 @@
     ("s-]" force-indent-region)
     ("s-f" ftf-grepsource)
     ("s-o" ftf-find-file)
-    ;; ("C-z" undo)     ; C-z -> undo instead of minimize emacs ; C-z used by evil-mode to switch to emacs state
     ("<C-s-M-right>" windmove-right)
     ("<C-s-M-up>" windmove-up)
     ("<C-s-left>" next-buffer)
@@ -288,7 +294,8 @@
 			"erlang-init.el"
 			"python-init.el"
 			"html-init.el"
-			"cpp-init.el")))))
+			"cpp-init.el"
+                        "theme-init.el")))))
 
 (mapc 'require '(
 		 clojure-init
@@ -303,8 +310,5 @@
 		 python-init
 		 ruby-init
                  lisp-init
+                 theme-init
                  ))
-(custom-set-variables
- '(custom-enabled-themes (quote (tommyh)))
- '(custom-safe-themes (quote ("353861e69d6510a824905208f7290f90248f0b9354ee034fd4562b962790bdfc" default))))
-(custom-set-faces)
