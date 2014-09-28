@@ -25,6 +25,7 @@
         clojurescript-mode
         company
         diminish
+        dired-details
         dired+
         django-mode
         elisp-slime-nav
@@ -83,6 +84,7 @@
                  ace-jump-mode
                  bm
                  cam-functions
+                 dired-details
                  dired+
                  evil
                  evil-paredit
@@ -137,7 +139,7 @@
 (scroll-bar-mode -1)				  ; disable scrollbar
 (delete-selection-mode 1)			  ; Typing will overwrite selections
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
-;; (tabbar-mode 1)
+(dired-details-install)
 (electric-pair-mode 1)
 (multiple-cursors-mode 1)
 (evil-mode 1)
