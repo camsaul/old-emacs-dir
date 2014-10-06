@@ -210,7 +210,7 @@
     ("<C-s-M-down>" windmove-down)
     ("<C-s-M-left>" windmove-left)
     ("<C-s-M-return>" other-frame)
-    ("<escape>" ace-jump-mode)
+    ("<escape>" evil-normal-state)
     ("<f10>" switch-to-nav-buffer-other-window)   ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
     ("<f11>" paredit-mode)			  ; F11 is now global key for paredit-mode
     ("<f12> b" bing-search)
