@@ -1,4 +1,5 @@
 (require 'auto-complete)
+(require 'ruby-mode)
 
 (defun cam-ruby-mode-setup ()
   (require 'rspec-mode)
