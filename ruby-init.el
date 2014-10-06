@@ -29,13 +29,30 @@
 (defun ruby-insert-end ()
   "Insert \"end\" at point and reindent current line."
   (interactive)
+  ;; Insert a newline if current line isn't empty
   (beginning-of-line)
   (indent-for-tab-command)
   (when (not (eolp))
     (end-of-line)
     (paredit-newline))
+
+  ;; Insert + indent 'end'
   (insert "end")
   (ruby-indent-line t)
-  (end-of-line))
+
+  ;; If the block is empty then insert + goto new line inside block
+  (let ((block-is-empty (save-excursion
+                          (forward-line -1)
+                          (end-of-line)
+                          (string= (buffer-substring-no-properties (point) (- (point) 2))
+                                   "do"))))
+    (if block-is-empty
+        (progn
+          (forward-line -1)
+          (end-of-line)
+          (paredit-newline))
+
+      ;; If block isn't empty move to end of line after 'end'
+      (end-of-line))))
 
 (provide 'ruby-init)
