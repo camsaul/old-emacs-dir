@@ -128,6 +128,6 @@
 
 ;; auto-complete-mode
 (add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
-(add-to-list 'interpreter-mode-alist '("python" . django-modee))
+(add-to-list 'interpreter-mode-alist '("python" . django-mode))
 
 (provide 'python-init)
