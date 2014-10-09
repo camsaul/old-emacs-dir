@@ -107,4 +107,18 @@
   (interactive)
   (indent-rigidly (region-beginning) (region-end) -4))
 
+(defun windmove-left-or-other-frame ()
+  "Move one window to the left, or to the frame one position before the current frame."
+  (interactive)
+  (condition-case nil
+      (windmove-left)
+    (error (other-frame -1))))
+
+(defun windmove-right-or-other-frame ()
+  "Move one window to the right, or to the frame one position before the current frame."
+  (interactive)
+  (condition-case nil
+      (windmove-right)
+    (error (other-frame 1))))
+
 (provide 'cam-functions)

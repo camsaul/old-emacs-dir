@@ -208,7 +208,7 @@
 (define-keys nil
   '(
     ("<C-s-M-down>" windmove-down)
-    ("<C-s-M-left>" windmove-left)
+    ("<C-s-M-left>" windmove-left-or-other-frame)
     ("<C-s-M-return>" other-frame)
     ("<escape>" evil-normal-state)
     ("<f10>" switch-to-nav-buffer-other-window)   ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
@@ -243,7 +243,7 @@
     ("s-b" balance-windows)
     ("s-f" ftf-grepsource)
     ("s-o" ftf-find-file)
-    ("<C-s-M-right>" windmove-right)
+    ("<C-s-M-right>" windmove-right-or-other-frame)
     ("<C-s-M-up>" windmove-up)
     ("<C-s-left>" next-buffer)
     ("<C-s-right>" previous-buffer)
@@ -251,9 +251,9 @@
     ("<H-S-right>" next-buffer)
     ("<H-SPC>" other-frame)
     ("<H-down>" windmove-down)
-    ("<H-left>" windmove-left)
+    ("<H-left>" windmove-left-or-other-frame)
     ("<H-return>" mc/mark-next-lines)
-    ("<H-right>" windmove-right)
+    ("<H-right>" windmove-right-or-other-frame)
     ("<H-up>" windmove-up)
     ("A-;" loccur)                                ; activate loccur-mode (prompt for word/regex)
     ("A-<tab>" ace-jump-buffer)
