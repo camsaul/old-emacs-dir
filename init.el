@@ -129,7 +129,6 @@
 (winner-mode 1)
 ;; (global-linum-mode 1)				  ; linum-mode is for line numbers on left
 (line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
-(column-number-mode 1)
 (global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
 (global-hl-line-mode 1)				  ; highlights the current line
 ;; (set-face-background 'hl-line "#222222")
