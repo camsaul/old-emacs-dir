@@ -143,12 +143,14 @@
       (setq files (cam-recentf-list))
       (save-excursion
         (insert (cam-recentf-format-list files)))
-      (setq fill-column (- (window-width) 4))
+      (setq fill-column (- (window-width) 3))
       (setq fill-nobreak-predicate '((lambda ()
-                                       (let ((char-is-p (lambda (str)
-                                                            (string= (char-to-string (char-before (point)))
-                                                                     str))))
-                                         (char-is-p "\n")))))
+                                       (string= (char-to-string (char-before (point)))
+                                                "\n"))))
+                                       ;; (let ((char-is-p (lambda (str)
+                                       ;;                      )))
+                                       ;;   (or (funcall char-is-p "\n")
+                                       ;;       (funcall char-is-p "/"))))))
       (fill-region (buffer-end 1) (buffer-end -1) 'right)
       (setq buffer-read-only t)
       (use-local-map cam-recentf-mode-map)))
@@ -166,7 +168,9 @@
   "Keymap for cam-recentf-mode")
 
 (define-keys cam-recentf-mode-map
-  '(("<return>" cam-recentf-return)))
+  '(("<return>" cam-recentf-return)
+    ("<mouse-1>" cam-recentf-return)
+    ("C-g" cam-recentf-kill-buffer)))
 
 ;;;; Helper functions
 
@@ -175,6 +179,7 @@
 
 (defun cam-recentf-kill-buffer ()
   "Kill cam-recentf buffer, if any."
+  (interactive)
   (when cam-recentf-buffer
     (kill-buffer cam-recentf-buffer)))
 
@@ -194,8 +199,13 @@
             recentf-list)))
 
 (defun cam-recentf-format-file (f)
-  "Take (i . fname) pair and format as string for display."
-  (format "%s [%d]\n" (cdr f) (car f)))
+  "Take (i . fname) pair and format as string (including truncating if needed) for display."
+  (let* ((str (format "%s [%d]\n" (cdr f) (car f)))
+            (max-len (- (window-width) 10))
+            (str-len (length str)))
+    (if (> str-len max-len)
+      (substring str (- max-len))
+      str)))
 
 (defun cam-recentf-format-list (recent-files)
   "TODO"
