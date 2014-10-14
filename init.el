@@ -1,11 +1,13 @@
 ;; -*- comment-column: 50; -*-
 
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
+
 (mapc (lambda (mode)
         (funcall mode -1))
       '(menu-bar-mode
         scroll-bar-mode
         tool-bar-mode))
+
 
 ;;;; LOAD PACKAGES
 
@@ -104,6 +106,7 @@
 
 
 ;; GENERAL SETTINGS
+
 (prefer-coding-system 'utf-8-auto-unix)
 (set-terminal-coding-system 'utf-8)               ; work better from Terminal
 (set-keyboard-coding-system 'utf-8)
@@ -210,28 +213,16 @@
                    "^[^#.].*.el$")
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
 
-;; put my custom stuff in a menu
-(easy-menu-define cam-menu global-map "CAM :)"
-  (list "CAM :)"
-        ["Coffee House" coffee-house]
-        ["Insert Lorem Ipsum" lorem-ipsum]
-        '("Search"
-          ["Bing Search" bing-search]
-          ["ClojureDocs Search" clojure-docs-search]
-          ["JavaDocs Search" javadocs-search]
-          ["StackOverflow Search" stackoverflow-search])
-        '("Reference"
-          ["Paredit Cheatsheet" paredit-cheatsheet]
-          ["Cloure Cheatsheet" clojure-cheatsheet])
-        '("Modes"
-          ["toggle-paredit-mode" paredit-mode]
-          ["whitespace-mode" whitespace-mode])
-        (cons "Edit Init File"
-              (mapcar 'menu-edit-init-file
-                      init-files))))
+
+;;;; CAM MENU
+
+(easy-menu-define cam-menu global-map "Edit init file.."
+  (cons "Edit Init File"
+        (mapcar 'menu-edit-init-file
+                init-files)))
 
 
-;; recompile init files as needed
+;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
 (let ((byte-compile-dynamic t))
   (mapc (lambda (file)
           (byte-recompile-file file
@@ -239,7 +230,8 @@
                                0))                ; recompile even if there's no .elc file
         init-files))
 
-;; load my various init files
+
+;;;; LOAD INIT FILES
 (mapc (lambda (init-file)
         (condition-case err
             (require init-file)

@@ -1,18 +1,19 @@
-(require 'js3-mode)
-
 (defun cam-js-mode-setup ()
+  (require 'js3-mode)
   (require 'auto-complete)
   (require 'jquery-doc)
-  (global-mode-setup)
+  (cam-enable-minor-modes
+    auto-complete-mode
+    highlight-parentheses-mode)
   (pretty-function)
-  (highlight-parentheses-mode)
-  (auto-complete-mode 1)
-  (setq
-   ac-sources '(ac-source-jquery)
-   js3-auto-indent-p t                          ; commas "right themselves" (?)
-   js3-enter-indents-newline t
-   js3-consistent-level-indent-inner-bracket t  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position
-   ))
+  (setq ac-sources '(ac-source-jquery)))
+
+(eval-after-load "js3-mode"
+  '(setq
+    js3-auto-indent-p t                        ; commas "right themselves" (?)
+    js3-enter-indents-newline t
+   js3-consistent-level-indent-inner-bracket t ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
+))
 
 (add-to-list 'auto-mode-alist '("\.js$" . js3-mode)) ; use js3-mode instead of js-mode
 
