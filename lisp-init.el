@@ -20,10 +20,10 @@
   (paredit-kill 0))
 
 (defun cam-define-lisp-keys (mode-map)
-  (define-key mode-map (kbd "RET") 'reindent-then-newline-and-indent)
-  (define-key mode-map (kbd "<f11>") 'paredit-mode)
-  (define-key mode-map (kbd "C-S-k") 'backward-paredit-kill)
-  (define-key mode-map (kbd "TAB") 'lisp-complete-symbol)) ; tab to complete symbol)
+  (define-keys mode-map
+    '(("RET" reindent-then-newline-and-indent)
+      ("<f11>" paredit-mode)
+      ("C-S-k" backward-paredit-kill))))
 
 ;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
 (defun pretty-lambdas ()

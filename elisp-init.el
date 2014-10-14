@@ -34,6 +34,8 @@
       ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point)
       )))
 
+
+
 (cam-define-elisp-keys emacs-lisp-mode-map)
 
 (add-to-list 'ac-modes 'elisp-mode)
