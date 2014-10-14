@@ -234,3 +234,14 @@
     (cam-recentf-finish buffer-num)))
 
 (global-set-key (kbd "C-x C-r") 'cam-recentf-mode-show)
+
+(defun switch-to-nav-buffer-other-window ()
+  "Switch to the *nav* buffer"
+  (interactive)
+  (switch-to-buffer-other-window "*nav*"))
+
+(defun menu-edit-file (str f)
+  (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
+
+(defun menu-edit-init-file (f)
+  (menu-edit-file (concat "Edit " f) (concat "~/.emacs.d/" f)))

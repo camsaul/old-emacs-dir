@@ -94,6 +94,7 @@
         yaml-mode
         yasnippet))
 
+;; packages to always require on launch
 (mapc 'require '(
                  ace-jump-buffer
                  ace-jump-mode
@@ -110,51 +111,61 @@
                  loccur
                  midnight
                  multiple-cursors
-                 nav		 ; nav frame, better than speed bar
+                 nav                              ; nav frame, better than speed bar
                  powerline
                  powerline-evil
                  rainbow-delimiters
                  rainbow-mode
                  recentf
                  relative-line-numbers
-                 smex		 ; IDO-like completion for M-x
+                 smex		                  ; IDO-like completion for M-x
                  undo-tree
 		 ))
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; helper settings to make emacs work better from terminal
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(ansi-color-for-comint-mode-on)
-
 (add-hook 'emacs-startup-hook
 	  (lambda ()
             (kill-buffer "*scratch*")
-            (setup-powerline)))
+	    (setup-powerline)			  ; needs to be ran as part of startup hook or doesn't work (?)
+            ))
 
-;; global minor modes
-(winner-mode 1)
-;; (global-linum-mode 1)				  ; linum-mode is for line numbers on left
-(line-number-mode 0) 				  ; line-number-mode is for line numbers on mode line
-(global-auto-revert-mode 1)			  ; auto-revert mode reload buffers when underlying file changes
-(global-hl-line-mode 1)				  ; highlights the current line
-;; (set-face-background 'hl-line "#222222")
-(ido-mode 1)
-(ido-everywhere 1)
-(flx-ido-mode 1)                                  ; fuzzy-matching for ido
-(recentf-mode 1)
-(rainbow-mode 1)				  ; colorize strings that represent colors
-(diminish 'rainbow-mode nil)
-(global-undo-tree-mode 1)			  ; sane undo in emacs
-(diminish 'undo-tree-mode nil)
-(delete-selection-mode 1)			  ; Typing will overwrite selections
+;; minor modes to disable
+(mapc (lambda (mode)
+        (funcall mode 0))
+      '(
+        line-number-mode                          ; line numbers on the modeline
+        ))
+
+;; minor modes to enable
+(mapc (lambda (mode)
+        (funcall mode 1))
+      '(
+        delete-selection-mode                     ; typing will delete selected text
+        electric-pair-mode
+        evil-mode
+        flx-ido-mode                              ; fuzzy matching for ido
+        global-auto-revert-mode
+        global-hl-line-mode
+        global-undo-tree-mode
+        ido-everywhere
+        ido-mode
+        multiple-cursors-mode
+        rainbow-mode                              ; colorize strings that represent colors e.g. #00FFFF
+        recentf-mode
+        show-paren-mode                           ; highlight matching parens
+        winner-mode
+        ))
+
+;; minor modes to diminish
+(mapc (lambda (mode)
+        (diminish mode nil))
+      '(rainbow-mode
+        undo-tree-mode))
+
+;; Enable other minor modes
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
-(dired-details-install)
-(electric-pair-mode 1)
-(multiple-cursors-mode 1)
-(evil-mode 1)
-(show-paren-mode 1)                               ; highlight matching parens
+(dired-details-install)                           ; enable dired details (hides file size, etc in dired by default)
 
 (defun global-mode-setup ()
   "Function that should be called to do some extra customization when setting up any major mode."
@@ -165,7 +176,17 @@
     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|DEPRECATED\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
 
+
+;; general settings - etc
 (prefer-coding-system 'utf-8-auto-unix)
+(set-terminal-coding-system 'utf-8)               ; work better from Terminal
+(set-keyboard-coding-system 'utf-8)
+(ansi-color-for-comint-mode-on)
+(midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
+(set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
+(set-fringe-mode 0)                               ; Disable fringes
+
+;; general settings w/ setq
 (setq
  ac-auto-show-menu t                    	  ; automatically show menu
  ac-quick-help-delay 0.5                	  ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
@@ -174,6 +195,8 @@
  auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
  bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
  clean-buffer-list-delay-special 30
+ ;; clean-buffer-list-kill-regexps		          ; Remove all starred buffers not currently in use
+ ftf-filetypes (append ftf-filetypes '("*.js"))   ; Additional file types that should be recognized by ftf-grepsource (Super + F)
  global-auto-revert-non-file-buffers t  	  ; also refresh dired but be quiet about it
  inhibit-splash-screen t
  inhibit-startup-screen t
@@ -194,22 +217,6 @@
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
  x-select-enable-clipboard t           		  ; Use the clipboard in addition to emacs kill ring
  )
-
-(midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
-(set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
-(set-fringe-mode 0)                               ; Disable fringes
-
-;; Additional file types that should be recognized by ftf-grepsource (Super + F)
-(setq ftf-filetypes (append ftf-filetypes '("*.js")))
-
-;; (setq
-;;  clean-buffer-list-kill-regexps		  ; Remove all starred buffers not currently in use
-;; )
-
-(defun switch-to-nav-buffer-other-window ()
-  "Switch to the *nav* buffer"
-  (interactive)
-  (switch-to-buffer-other-window "*nav*"))
 
 ;; custom key bindings
 (define-keys nil
@@ -275,12 +282,6 @@
     ("M-x" smex)				  ; smex is IDO-mode like M-x behavior
     ))
 
-(defun menu-edit-file (str f)
-  (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
-
-(defun menu-edit-init-file (f)
-  (menu-edit-file (concat "Edit " f) (concat "~/.emacs.d/" f)))
-
 ;; put my custom stuff in a menu
 (easy-menu-define cam-menu global-map "CAM :)"
   (list "CAM :)"
@@ -314,6 +315,7 @@
 			"cpp-init.el"
                         "theme-init.el")))))
 
+;; load my various init files
 (mapc 'require '(
 		 clojure-init
 		 cpp-init
