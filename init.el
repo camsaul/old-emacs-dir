@@ -93,9 +93,6 @@
               rainbow-delimiters-mode
               rainbow-mode)))
 
-(defun global-mode-setup ()
-  (error "global-mode-setup is deprecated"))
-
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
 

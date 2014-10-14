@@ -3,7 +3,6 @@
 
 (defun html-mode-setup ()
   (require 'nxml-mode)
-  (global-mode-setup)
   (nxml-mode)) ; fancy xml editing mode
 (add-hook 'html-mode-hook 'html-mode-setup)
 

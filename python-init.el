@@ -42,7 +42,6 @@
   (require 'flymake)
   ;; (require 'smartparens)
   (setq python-check-command "pyflakes")
-  (global-mode-setup)
   (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
   (diminish 'highlight-parentheses-mode)
   (auto-complete-mode 1)

@@ -14,7 +14,6 @@
 (nconc (cadr (assoc "\\.h\\'" cc-other-file-alist)) '(".m" ".mm"))
 
 (defun objc-mode-setup ()
-  (global-mode-setup)
   (setq tab-width 4)
   (setq c-basic-indent 4)
   (setq c-basic-offset 4)
