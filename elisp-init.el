@@ -15,6 +15,7 @@
   (eval-buffer))
 
 (defun cam-elisp-mode-setup ()
+  (cam-lisp-mode-setup)
   (cam-enable-minor-modes
     (auto-complete-mode . nil)
     elisp-slime-nav-mode)

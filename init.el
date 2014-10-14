@@ -206,7 +206,7 @@
 
 (defvar init-files
   (directory-files "~/.emacs.d"
-                   nil ; don't return file's full name
+                   t ; return file's absolute (full) name
                    "^[^#.].*.el$")
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
 

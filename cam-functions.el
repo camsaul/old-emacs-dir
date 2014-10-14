@@ -246,7 +246,7 @@
   (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
 
 (defun menu-edit-init-file (f)
-  (menu-edit-file (concat "Edit " f) (concat "~/.emacs.d/" f)))
+  (menu-edit-file (concat "Edit " f) f))
 
 (defmacro cam-enable-minor-modes (&rest modes)
   "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
@@ -280,14 +280,13 @@
   "Setup autoloads with the format (package-name-string symbol1 symbol2 ...)
    e.g. (cam-setup-autoloads (\"bytecomp\" byte-recompile-file))"
   `(progn ,@(cl-reduce 'append
-		       (mapcar (lambda (autoload-group)
-				 (let ((file (car autoload-group))
-				       (symbols (cdr autoload-group)))
-				   (mapcar (lambda (symbol)
-					     `(autoload ',symbol ,file nil t)) ; create autoload for each symbol
-					   symbols)))
-			       autoloads))))
+                       (mapcar (lambda (autoload-group)
+                                 (let ((file (car autoload-group))
+                                       (symbols (cdr autoload-group)))
+                                   (mapcar (lambda (symbol)
+                                             `(autoload ',symbol ,file nil t)) ; create autoload for each symbol
+                                           symbols)))
+                               autoloads))))
 (put 'cam-setup-autoloads 'lisp-indent-function 0)
 
 (provide 'cam-functions)
-

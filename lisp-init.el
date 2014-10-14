@@ -7,8 +7,7 @@
     (auto-complete-mode . nil)
     (highlight-parentheses-mode . nil)    ; highlight parentheses that surround the current sexpr
     hl-sexp-mode                        ; hl-sexp-mode highlights the current sexp
-    (paredit-mode . " π")
-    )
+    (paredit-mode . " π"))
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
