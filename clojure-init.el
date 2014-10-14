@@ -1,6 +1,7 @@
-(require 'clojure-mode)
-(require 'nrepl)
-(require 'lisp-init)
+;; -*- comment-column: 60; -*-
+
+(cam-setup-autoloads
+  ("lisp-init" cam-define-lisp-keys))
 
 (defun cam-clojure-mode-setup ()
   (require 'cider)
@@ -30,31 +31,39 @@
       ("<f12> <f12> c" clojure-cheatsheet)
       ("C-c C-d" ac-nrepl-popup-doc)
       ("<C-M-return>" switch-to-nrepl-in-current-ns))))
-(cam-define-clojure-keys clojure-mode-map)
-(cam-define-clojure-keys nrepl-interaction-mode-map)
 
-;; custom vars
-(setq nrepl-hide-special-buffers t)                            ; hide the *nrepl-connection* and *nrepl-server* buffers
-(setq nrepl-use-pretty-printing t)
-(setq nrepl-error-handler nil)
-(setq cider-repl-pop-to-buffer-on-connect t                    ; start NREPL in separate window
+(eval-after-load "clojure-mode"
+  '(progn
+     (cam-define-clojure-keys clojure-mode-map)
+     (define-clojure-indent ; better indenting for compojure stuff
+       (defroutes 'defun)
+       (sqlfn 'defun)
+       (k/sqlfn 'defun)
+       (GET 2)
+       (POST 2)
+       (PUT 2)
+       (DELETE 2)
+       (HEAD 2)
+       (ANY 2)
+       (context 2))))
+
+(eval-after-load "cider"
+  '(progn
+     (setq cider-repl-pop-to-buffer-on-connect t                    ; start NREPL in separate window
       cider-auto-select-error-buffer nil                       ; don't auto-switch to error buffer
       cider-show-error-buffer 'only-in-repl                    ; alternatively, set to nil or 'except-in-nrepl
       cider-stacktrace-default-filters '(java, clj, repl, tooling, dup)
       cider-repl-display-in-current-window nil                 ; C-c C-z switches to CIDER repl?? (cider-switch-to-repl)
-      )
+      )))
 
-(define-clojure-indent ; better indenting for compojure stuff
-  (defroutes 'defun)
-  (sqlfn 'defun)
-  (k/sqlfn 'defun)
-  (GET 2)
-  (POST 2)
-  (PUT 2)
-  (DELETE 2)
-  (HEAD 2)
-  (ANY 2)
-  (context 2))
+(eval-after-load "nrepl"
+  '(progn
+     (require 'lisp-init)
+     (cam-define-clojure-keys nrepl-interaction-mode-map)
+     (setq nrepl-hide-special-buffers t                        ; hide the *nrepl-connection* and *nrepl-server* buffers
+           nrepl-use-pretty-printing t
+           nrepl-error-handler nil)))
+
 
 (add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode)) ; ClojureScript Files should be edited in Clojure-mode
 

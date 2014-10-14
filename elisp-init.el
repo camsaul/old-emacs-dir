@@ -7,7 +7,8 @@
   (interactive)
   (byte-recompile-file (buffer-file-name)
                        t                          ; force recompile
-                       0))                        ; 0 = compile even if .elc does not exist
+                       0)                         ; 0 = compile even if .elc does not exist
+  (eval-buffer))
 
 (defun cam-elisp-mode-setup ()
   (require 'lisp-init)
@@ -40,7 +41,7 @@
 ;;;; IELM SPECIFIC
 
 (eval-after-load "ielm"
-  '(lambda ()
+  '(progn
      (cam-define-elisp-keys ielm-map)
      (define-keys ielm-map
        '(("RET" ielm-return)))))

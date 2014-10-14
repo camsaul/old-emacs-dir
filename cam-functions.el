@@ -276,4 +276,18 @@
          ',modes))
 (put 'cam-disable-minor-modes 'lisp-indent-function 0)
 
+(defmacro cam-setup-autoloads (&rest autoloads)
+  "Setup autoloads with the format (package-name-string symbol1 symbol2 ...)
+   e.g. (cam-setup-autoloads (\"bytecomp\" byte-recompile-file))"
+  `(progn ,@(cl-reduce 'append
+		       (mapcar (lambda (autoload-group)
+				 (let ((file (car autoload-group))
+				       (symbols (cdr autoload-group)))
+				   (mapcar (lambda (symbol)
+					     `(autoload ',symbol ,file nil t)) ; create autoload for each symbol
+					   symbols)))
+			       autoloads))))
+(put 'cam-setup-autoloads 'lisp-indent-function 0)
+
 (provide 'cam-functions)
+

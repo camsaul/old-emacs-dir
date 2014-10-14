@@ -33,17 +33,15 @@
   (require 'flymake)
   ;; (require 'auto-complete-clang)
   ;; (require 'yasnippet)
-  (global-mode-setup)
-  (setq tab-width 4)
-  (setq c-basic-indent 4)
-  (setq c-basic-offset 4)
-  (subword-mode 1)
-  (flymake-mode 1)
-  (electric-pair-mode +1)
-  (auto-complete-mode 1)
-  (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
-  (diminish 'highlight-parentheses-mode)
-  (set-face-background 'hl-sexp-face "#111111")
+  (cam-enable-minor-modes
+    auto-complete-mode
+    electric-pair-mode
+    (highlight-parentheses-mode . nil)
+    flymake-mode
+    subword-mode)
+  (setq tab-width 4
+        c-basic-indent 4
+        c-basic-offset 4)
   (require 'auto-complete-clang-async)
   ;; (require 'ac-etags)
   ;; (ac-etags-setup)

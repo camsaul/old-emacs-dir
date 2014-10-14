@@ -25,17 +25,13 @@
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
-(defun make-autoloads (file &rest symbols)
-  (mapc (lambda (symbol)
-          (autoload symbol file nil t))
-        symbols))
+(cam-setup-autoloads
+  ("bytecomp" byte-recompile-file)
+  ("find-things-fast" ftf-find-file ftf-grepsource)
+  ("loccur" loccur loccur-current loccur-previous-match)
+  ("highlight-error-keywords" highlight-error-keywords-mode)
+  ("multiple-cursors" multiple-cursors-mode))
 
-(mapc (lambda (args) (apply 'make-autoloads args))
-      '(("bytecomp" byte-recompile-file)
-        ("find-things-fast" ftf-find-file ftf-grepsource)
-        ("loccur" loccur loccur-current loccur-previous-match)
-        ("highlight-error-keywords" highlight-error-keywords-mode)
-        ("multiple-cursors" multiple-cursors-mode)))
 
 ;;;; GLOBALLY DISABLED MINOR MODES
 
@@ -244,18 +240,24 @@
         init-files))
 
 ;; load my various init files
-(mapc 'require '(
-                 clojure-init
-                 cpp-init
-                 elisp-init
-                 erlang-init
-                 html-init
-                 js-init
-                 markdown-init
-                 objc-init
-                 org-init
-                 python-init
-                 ruby-init
-                 lisp-init
-                 theme-init
-                 ))
+(mapc (lambda (init-file)
+	(condition-case err
+	    (require init-file)
+	    (error (message "%s" (error-message-string err))
+		   (switch-to-buffer "*Warnings*")
+		   (delete-other-windows)
+		   (split-window-below)
+		   (find-file init-file))))
+      '(clojure-init
+	cpp-init
+	elisp-init
+	erlang-init
+	html-init
+	js-init
+	markdown-init
+	objc-init
+	org-init
+	python-init
+	ruby-init
+	lisp-init
+	theme-init))
