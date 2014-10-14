@@ -4,17 +4,16 @@
 
 (defun cam-lisp-mode-setup ()
   (global-mode-setup)
-  (highlight-parentheses-mode 1) ; highlight parentheses that surround the current sexpr
-  (diminish 'highlight-parentheses-mode)
-  (paredit-mode 1)
-  (diminish 'paredit-mode " π")
-  (auto-complete-mode 1)
-  (diminish 'auto-complete-mode)
+  (cam-enable-minor-modes
+    (auto-complete-mode . nil)
+    (highlight-parentheses-mode . nil)    ; highlight parentheses that surround the current sexpr
+    hl-sexp-mode                        ; hl-sexp-mode highlights the current sexp
+    (paredit-mode . " π")
+    )
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
-  (set-buffer-file-coding-system 'utf-8-auto-unix)
-  (hl-sexp-mode 1) ; hl-sexp-mode highlights the current sexp
+  ;; (set-buffer-file-coding-system 'utf-8-auto-unix)
   (set-face-background 'hl-sexp-face "#DDFFDD"))
 
 (defun backward-paredit-kill ()

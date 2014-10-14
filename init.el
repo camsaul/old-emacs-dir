@@ -2,21 +2,21 @@
 
 ;; Disable menu/scrollbar/toolbar first so they don't flash
 (mapc (lambda (mode)
-        (when (fboundp mode)
-          (funcall mode -1)))
+	(funcall mode -1))
       '(menu-bar-mode
-        scroll-bar-mode
-        tool-bar-mode))
+	scroll-bar-mode
+	tool-bar-mode))
 
-(add-to-list 'load-path "~/.emacs.d/")
-(add-to-list 'load-path "~/.emacs.d/auto-complete-clang")
+(nconc load-path '("~/.emacs.d/"
+		   "~/.emacs.d/auto-complete-clang"))
 
 (require 'package)
-(mapc (lambda (l) (add-to-list 'package-archives l))
-      '(("melpa" . "http://melpa.milkbox.net/packages/")
-	("marmalade" . "http://marmalade-repo.org/packages/")))
+(nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 
-(setq cam-has-refreshed-packages-p nil)
+(defvar cam-has-refreshed-packages-p nil
+  "Have we called package-refresh-contents yet?")
+
 (defun cam-refresh-package-contents-if-needed ()
   "Call package-refresh-contents the first time this function is called."
   (when (not cam-has-refreshed-packages-p)
@@ -26,7 +26,6 @@
 (package-initialize)
 (when (not package-archive-contents)
   (cam-refresh-package-contents-if-needed))
-
 
 ;; install melpa/maramalade packages
 (mapc (lambda (package)
@@ -133,47 +132,46 @@
             ))
 
 ;; minor modes to disable
-(mapc (lambda (mode)
-        (funcall mode 0))
-      '(
-        line-number-mode                          ; line numbers on the modeline
-        ))
+(cam-disable-minor-modes
+  line-number-mode                                ; line numbers on the modeline
+  set-fringe-mode                                 ; disable fringes
+  )
 
 ;; minor modes to enable
-(mapc (lambda (mode)
-        (funcall mode 1))
-      '(
-        delete-selection-mode                     ; typing will delete selected text
-        electric-pair-mode
-        evil-mode
-        flx-ido-mode                              ; fuzzy matching for ido
-        global-auto-revert-mode
-        global-hl-line-mode
-        global-undo-tree-mode
-        ido-everywhere
-        ido-mode
-        multiple-cursors-mode
-        rainbow-mode                              ; colorize strings that represent colors e.g. #00FFFF
-        recentf-mode
-        show-paren-mode                           ; highlight matching parens
-        winner-mode
-        ))
+(cam-enable-minor-modes
+  delete-selection-mode                           ; typing will delete selected text
+  electric-pair-mode
+  evil-mode
+  flx-ido-mode                                    ; fuzzy matching for ido
+  global-auto-revert-mode
+  global-hl-line-mode
+  global-undo-tree-mode
+  ido-everywhere
+  ido-mode
+  multiple-cursors-mode
+  (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
+  recentf-mode
+  show-paren-mode                                 ; highlight matching parens
+  winner-mode
+  )
 
 ;; minor modes to diminish
-(mapc (lambda (mode)
-        (diminish mode nil))
-      '(rainbow-mode
-        undo-tree-mode))
+(cam-diminish-modes
+ rainbow-mode
+ undo-tree-mode)
 
 ;; Enable other minor modes
 (toggle-diredp-find-file-reuse-dir 1)		  ; reuse dired buffer
 (dired-details-install)                           ; enable dired details (hides file size, etc in dired by default)
 
+;; function to call when setting up a major mode
+;; TODO - what hook to add this to?
 (defun global-mode-setup ()
   "Function that should be called to do some extra customization when setting up any major mode."
-  (rainbow-delimiters-mode 1)
-  (rainbow-mode 1)				  ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
-  ;; highlight in bold yellow the words FIX. FIXME, TODO, HACK, REFACTOR, NOCOMMIT, DEPRECATED.
+  (cam-enable-minor-modes
+    rainbow-delimiters-mode
+    rainbow-mode)                                 ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
+  ;; highlight these words in bold warning face
   (font-lock-add-keywords
     nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|DEPRECATED\\|NOCOMMIT\\)"
 	1 font-lock-warning-face t))))
@@ -186,7 +184,6 @@
 (ansi-color-for-comint-mode-on)
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 (set-default 'indent-tabs-mode nil) 		  ; Indentation can insert tabs if this is non-nil
-(set-fringe-mode 0)                               ; Disable fringes
 
 ;; general settings w/ setq
 (setq

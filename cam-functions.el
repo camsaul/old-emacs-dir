@@ -5,11 +5,11 @@
     (call-interactively 'shell)))
 
 (defun define-keys (map-or-nil keys)
-  (flet ((set-key-fn (ks a)
-		     (let ((k (eval (list 'kbd ks))))
-		       (if map-or-nil
-			   (define-key map-or-nil k a)
-			 (global-set-key k a)))))
+  (cl-flet ((set-key-fn (ks a)
+                        (let ((k (eval (list 'kbd ks))))
+                          (if map-or-nil
+                              (define-key map-or-nil k a)
+                            (global-set-key k a)))))
     (mapc (lambda (ka)
 	    (set-key-fn (car ka) (cadr ka)))
 	  keys)))
@@ -121,12 +121,13 @@
       (windmove-right)
     (error (other-frame 1))))
 
-(provide 'cam-functions)
+;; TODO - put this recentf mode stuff in its own file
 
 (defface cam-recentf-dir4
   '((t :background "white"
        :foreground "grey75"))
-  "Face to show for the directory portion of the path in the list.")
+  "Face to show for the directory portion of the path in the list."
+  :group 'cam-recentf-faces)
 
 (define-generic-mode cam-recentf-mode
   nil                                                               ; comment-list
@@ -230,7 +231,7 @@
   (switch-to-buffer cam-recentf-buffer t t)
   (cam-recentf-mode)
   (let* ((buffer-num (read-from-minibuffer "Choose Buffer: " nil))
-         (buffer-num (string-to-int buffer-num)))
+         (buffer-num (string-to-number buffer-num)))
     (cam-recentf-finish buffer-num)))
 
 (global-set-key (kbd "C-x C-r") 'cam-recentf-mode-show)
@@ -245,3 +246,32 @@
 
 (defun menu-edit-init-file (f)
   (menu-edit-file (concat "Edit " f) (concat "~/.emacs.d/" f)))
+
+(defmacro cam-enable-minor-modes (&rest modes)
+  "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
+  `(mapc (lambda (mode)
+           (funcall (if (consp mode) (car mode)   ; enable the mode
+                      mode)
+                    1)
+           (when (consp mode)                     ; diminish the mode if we were passed a cons cell
+             (diminish (car mode) (cdr mode))))
+         ',modes))
+(put 'cam-enable-minor-modes 'lisp-indent-function 0)
+
+(defmacro cam-disable-minor-modes (&rest modes)
+  "Disable specified minor modes (if they are bound)"
+  `(mapc (lambda (mode)
+           (when (fboundp mode)
+             (funcall mode -1)))
+         ',modes))
+(put 'cam-disable-minor-modes 'lisp-indent-function 0)
+
+(defmacro cam-diminish-modes (&rest modes)
+  "Diminish a list of modes. Specify individual symbols to completely diminish, or (symbol . diminshed-text) pairs"
+  `(mapc (lambda (mode)
+           (if (consp mode) (diminish (car mode) (cdr mode))
+             (diminish mode nil)))
+         ',modes))
+(put 'cam-disable-minor-modes 'lisp-indent-function 0)
+
+(provide 'cam-functions)
