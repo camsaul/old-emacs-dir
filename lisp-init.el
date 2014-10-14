@@ -1,8 +1,8 @@
-(require 'highlight-parentheses)
-(require 'auto-complete)
-(require 'hl-sexp)
-
 (defun cam-lisp-mode-setup ()
+  (mapc 'require '(auto-complete
+                   highlight-parentheses
+                   hl-sexp
+                   ))
   (cam-enable-minor-modes
     (auto-complete-mode . nil)
     (highlight-parentheses-mode . nil)    ; highlight parentheses that surround the current sexpr

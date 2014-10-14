@@ -11,25 +11,31 @@
 
 (global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
 
-(setq
- evil-emacs-state-cursor '("#dd0000" box)
- evil-normal-state-cursor '("#0000dd" box)
- evil-visual-state-cursor '("#CC6633" box)
- evil-insert-state-cursor '("#336600" box)
- evil-replace-state-cursor '("#663399" box)
- evil-operator-state-cursor '("black" box)
- evil-motion-state-cursor '("#FF0099" box))
+(defvar evil-state-colors
+  '(("emacs" . "#dd0000")
+    ("normal" . "#0000dd")
+    ("visual" . "#cc6633")
+    ("insert" . "#336600")
+    ("replace" . "#663399")
+    ("operator" . "black")
+    ("motion" . "#ff0099"))
+  "Association list of colors to use for cursor + modeline for each evil state.")
+
+
+;; set variables like evil-emacs-state-cursor to ("#dd0000" box)
+(defmacro evil-set-cursor-colors ()
+  `(progn  ,@(mapcar (lambda (pair)
+                       (let* ((name (car pair))
+                              (color (cdr pair))
+                              (cursor-var (intern (format "evil-%s-state-cursor" name)))
+                              (cursor-val (list color 'box)))
+                         `(setq ,cursor-var ',cursor-val)))
+                     evil-state-colors)))
+(evil-set-cursor-colors)
 
 (defun mode-line-face-background ()
   "Color we should apply to the background of the mode-line (determined by evil state)"
-  (cond
-   ((evil-emacs-state-p) "#dd0000")
-   ((evil-normal-state-p) "#0000dd")
-   ((evil-visual-state-p) "#cc6633")
-   ((evil-insert-state-p) "#336600")
-   ((evil-replace-state-p) "#663399")
-   ((evil-operator-state-p) "black")
-   ((evil-motion-state-p) "#ff0099")))
+  (cdr (assoc (symbol-name evil-state) evil-state-colors)))
 
 (setq powerline-evil-tag-style 'verbose)
 
@@ -37,15 +43,24 @@
           (lambda ()
             (set-face-background 'mode-line (mode-line-face-background))))
 
+(defmacro cam-toggle-minor-modes (on-mode off-mode &rest body)
+  "Enable on-mode and disable off-mode"
+  `(lambda ()
+    (,on-mode 1)
+    (,off-mode -1)
+    ,@body))
+
+(set-default 'linum-format "%3d")
+(set-default 'relative-line-numbers-format
+             (lambda (offset)
+               (format "%3d" (abs offset))))
+
 (add-hook 'evil-normal-state-entry-hook
-          (lambda ()
-            (relative-line-numbers-mode +1)
-            (linum-mode -1)))
+          (cam-toggle-minor-modes relative-line-numbers-mode linum-mode))
 
 (add-hook 'evil-emacs-state-entry-hook
-          (lambda ()
-            (relative-line-numbers-mode -1)
-            (linum-mode +1)))
+          (cam-toggle-minor-modes linum-mode relative-line-numbers-mode))
+
 
 (defface pl-active-1
   '((t :background "grey20"

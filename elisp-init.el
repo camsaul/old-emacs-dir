@@ -1,5 +1,9 @@
 ;; -*- comment-column: 50; -*-
 
+(cam-setup-autoloads
+  ("lisp-init" cam-define-lisp-keys cam-lisp-mode-setup)
+  ("lisp-mode" emacs-lisp-mode lisp-mode))
+
 ;;;; .EL FILES / GENERAL
 
 (defun byte-recompile-this-file ()
@@ -11,11 +15,10 @@
   (eval-buffer))
 
 (defun cam-elisp-mode-setup ()
-  (require 'lisp-init)
-  (cam-lisp-mode-setup)
   (cam-enable-minor-modes
+    (auto-complete-mode . nil)
     elisp-slime-nav-mode)
-  (setq completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
+  (setq-local completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
@@ -27,18 +30,21 @@
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)
 
+
+;;;; KEY MAPS
+
 (defun cam-define-elisp-keys (mode-map)
   (cam-define-lisp-keys mode-map)
   (define-keys mode-map
     '(("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
-      ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point)
-      )))
+      ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point))))
 
+(eval-after-load "emacs-lisp-mode"
+  '(progn
+     (cam-define-elisp-keys emacs-lisp-mode-map)
+     (eval-after-load "auto-complete"
+       (add-to-list 'ac-modes 'emacs-lisp-mode))))
 
-
-(cam-define-elisp-keys emacs-lisp-mode-map)
-
-(add-to-list 'ac-modes 'elisp-mode)
 
 ;;;; IELM SPECIFIC
 
