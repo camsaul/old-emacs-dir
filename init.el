@@ -14,13 +14,22 @@
       '(("melpa" . "http://melpa.milkbox.net/packages/")
 	("marmalade" . "http://marmalade-repo.org/packages/")))
 
+(setq cam-has-refreshed-packages-p nil)
+(defun cam-refresh-package-contents-if-needed ()
+  "Call package-refresh-contents the first time this function is called."
+  (when (not cam-has-refreshed-packages-p)
+    (setq cam-has-refreshed-packages-p t)
+    (package-refresh-contents)))
+
 (package-initialize)
 (when (not package-archive-contents)
-  (package-refresh-contents))
+  (cam-refresh-package-contents-if-needed))
+
 
 ;; install melpa/maramalade packages
 (mapc (lambda (package)
 	(when (not (package-installed-p package))
+          (cam-refresh-package-contents-if-needed)
 	  (package-install package)))
       '(ac-etags
         ace-jump-buffer
@@ -79,7 +88,6 @@
         slime
         smartparens
         smex
-        ;; tabbar
         tommyh-theme
         undo-tree
         xmlgen
