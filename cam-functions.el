@@ -11,8 +11,8 @@
                               (define-key map-or-nil k a)
                             (global-set-key k a)))))
     (mapc (lambda (ka)
-	    (set-key-fn (car ka) (cadr ka)))
-	  keys)))
+            (set-key-fn (car ka) (cadr ka)))
+          keys)))
 
 (defun popup-yank-menu ()
   "Show list of recent yanks as a popup menu."
@@ -58,8 +58,8 @@
 
 (defun active-region-or-prompt (prompt)
   (url-hexify-string (if mark-active
-			 (buffer-substring (region-beginning) (region-end))
-		       (read-string prompt))))
+                         (buffer-substring (region-beginning) (region-end))
+                       (read-string prompt))))
 
 (defun coffee-house ()
   "You are working in a coffee house."
@@ -93,9 +93,9 @@
   (backward-kill-sexp)
   (condition-case nil
       (prin1 (eval (read (current-kill 0)))
-	     (current-buffer))
+             (current-buffer))
     (error (message "Invalid expression")
-	   (insert (current-kill 0)))))
+           (insert (current-kill 0)))))
 
 (defun force-indent-region ()
   "Indent a region, overriding normal indentation behavior."

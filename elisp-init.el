@@ -22,8 +22,7 @@
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
            (expand-file-name "~/.emacs.d/"))
-    (make-local-variable 'byte-compile-dynamic)
-    (setq byte-compile-dynamic t)))
+    (setq-local byte-compile-dynamic t)))
 
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)

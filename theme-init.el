@@ -1,6 +1,6 @@
 (set-frame-font (cond
-		 ((string= system-type "windows-nt") "Consolas-10")
-		 ((string= system-type "darwin") "Menlo-11"))) ; what about "gnu/linux" ?
+                 ((string= system-type "windows-nt") "Consolas-10")
+                 ((string= system-type "darwin") "Menlo-11"))) ; what about "gnu/linux" ?
 
 (custom-set-variables
  '(custom-enabled-themes (quote (tommyh)))

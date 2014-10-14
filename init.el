@@ -170,6 +170,12 @@
     ("M-x" smex)                                  ; smex is IDO-mode like M-x behavior
     ))
 
+(defvar init-files
+  (directory-files "~/.emacs.d"
+                   nil ; don't return file's full name
+                   "^[^#.].*.el$")
+  "All the Emacs Lisp init files in my ~/.emacs.d directory.")
+
 ;; put my custom stuff in a menu
 (easy-menu-define cam-menu global-map "CAM :)"
   (list "CAM :)"
@@ -188,20 +194,16 @@
           ["whitespace-mode" whitespace-mode])
         (cons "Edit Init File"
               (mapcar 'menu-edit-init-file
-                      '("init.el"
-                        "cam-functions.el"
-                        "lisp-init.el"
-                        "clojure-init.el"
-                        "elisp-init.el"
-                        "js-init.el"
-                        "markdown-init.el"
-                        "ruby-init.el"
-                        "objc-init.el"
-                        "erlang-init.el"
-                        "python-init.el"
-                        "html-init.el"
-                        "cpp-init.el"
-                        "theme-init.el")))))
+                      init-files))))
+
+
+;; recompile init files as needed
+(let ((byte-compile-dynamic t))
+  (mapc (lambda (file)
+          (byte-recompile-file file
+                               nil                ; don't force recompile
+                               0))                ; recompile even if there's no .elc file
+        init-files))
 
 ;; load my various init files
 (mapc 'require '(

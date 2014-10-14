@@ -14,7 +14,7 @@
   "Provide a better default command line when called interactively."
   (interactive
    (list (gud-query-cmdline pdb-path
-	 		    (file-name-nondirectory buffer-file-name)))))
+                            (file-name-nondirectory buffer-file-name)))))
 
 ;; tweaks to use ipython as the default python interpreter
 (setq python-shell-interpreter "ipython"
@@ -49,7 +49,7 @@
   (diminish 'auto-complete-mode)
   (set-face-background 'hl-sexp-face "#111111")
   ;; (setq py-python-command-args (cons python-shell-interpreter-args
-  ;; 				     py-python-command-args))
+  ;;                                 py-python-command-args))
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   ;; (whitespace-mode 1)

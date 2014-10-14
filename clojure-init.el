@@ -7,9 +7,10 @@
   (require 'company)
   (require 'clojure-mode-extra-font-locking)
   (cam-lisp-mode-setup)
-  (cider-mode 1)
-  (subword-mode 1)      ; enable CamelCase support for editor movement
-  (company-mode 1)
+  (cam-enable-minor-modes
+    cider-mode
+    subword-mode ; enable CamelCase support for editor movement
+    company-mode)
   (pretty-fn)
   (cider-turn-on-eldoc-mode))
 
@@ -32,11 +33,6 @@
 (cam-define-clojure-keys clojure-mode-map)
 (cam-define-clojure-keys nrepl-interaction-mode-map)
 
-;; custom keyboard shortcuts for NREPL only
-;; (define-keys nrepl-repl-mode-map
-;;   '(("RET" nrepl-return)
-;;     ("C-c e" nrepl-stacktrace)))
-
 ;; custom vars
 (setq nrepl-hide-special-buffers t)                            ; hide the *nrepl-connection* and *nrepl-server* buffers
 (setq nrepl-use-pretty-printing t)
@@ -46,10 +42,7 @@
       cider-show-error-buffer 'only-in-repl                    ; alternatively, set to nil or 'except-in-nrepl
       cider-stacktrace-default-filters '(java, clj, repl, tooling, dup)
       cider-repl-display-in-current-window nil                 ; C-c C-z switches to CIDER repl?? (cider-switch-to-repl)
-
-
       )
-(setq)
 
 (define-clojure-indent ; better indenting for compojure stuff
   (defroutes 'defun)
@@ -77,10 +70,10 @@
   "turns fn into a fancy f symbol. credit: emacs-starter-kit on github"
   (font-lock-add-keywords
    nil `(("(\\(\\<fn\\>\\)"
-	  (0 (progn (compose-region (match-beginning 1)
-				    (match-end 1)
-				    "\u0192"
-				    'decompose-region)))))))
+          (0 (progn (compose-region (match-beginning 1)
+                                    (match-end 1)
+                                    "\u0192"
+                                    'decompose-region)))))))
 
 (defun nice-ns (namespace)
   "Returns the path of the src file for the given test namespace."

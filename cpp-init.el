@@ -8,16 +8,16 @@
 ;; automatically open .h files with #include without .h at the end as c++ instead of c
 ;; or open header files that have std:: somewhere in them
 (add-to-list 'magic-mode-alist
-	     `(,(lambda ()
-		  (and (string= (file-name-extension buffer-file-name) "h")
-		       (or (re-search-forward "#include <\\w+>"
-					      magic-mode-regexp-match-limit t)
-			   (re-search-forward "std::"
-					      magic-mode-regexp-match-limit t))))
-	       . c++-mode))
+             `(,(lambda ()
+                  (and (string= (file-name-extension buffer-file-name) "h")
+                       (or (re-search-forward "#include <\\w+>"
+                                              magic-mode-regexp-match-limit t)
+                           (re-search-forward "std::"
+                                              magic-mode-regexp-match-limit t))))
+               . c++-mode))
 
-(add-to-list 'auto-mode-alist '("\.hpp$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\.cpp$" . c++-mode))
+(nconc auto-mode-alist '(("\.hpp$" . c++-mode)
+                         ("\.cpp$" . c++-mode)))
 
 (defun c++-search ()
   "Lookup C+++ symbol on cplusplus.com"
@@ -83,11 +83,11 @@
 (defun c++-jump-to-header ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
-		     ".h")))
+                     ".h")))
 
 (defun c++-jump-to-implementation ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
-		     ".cpp")))
+                     ".cpp")))
 
 (provide 'cpp-init)

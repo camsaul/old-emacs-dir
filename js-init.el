@@ -22,9 +22,9 @@
   "turns function into a fancy f symbol"
   (font-lock-add-keywords
    nil `(("\\(\\<function\\>\\)"
-	  (0 (progn (compose-region (match-beginning 1)
-				    (match-end 1)
-				    "\u0192"
-				    'decompose-region)))))))
+          (0 (progn (compose-region (match-beginning 1)
+                                    (match-end 1)
+                                    "\u0192"
+                                    'decompose-region)))))))
 
 (provide 'js-init)

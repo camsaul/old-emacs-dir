@@ -4,11 +4,11 @@
 
 ;; Automatically open .h files with @interface declarations as obj-c rather than c
 (add-to-list 'magic-mode-alist
-	     `(,(lambda ()
-		  (and (string= (file-name-extension buffer-file-name) "h")
-		       (re-search-forward "@\\<interface\\>" 
-					  magic-mode-regexp-match-limit t)))
-	       . objc-mode))
+             `(,(lambda ()
+                  (and (string= (file-name-extension buffer-file-name) "h")
+                       (re-search-forward "@\\<interface\\>"
+                                          magic-mode-regexp-match-limit t)))
+               . objc-mode))
 
 ;; .m and .mm files to cc-other-file-find-alist
 (nconc (cadr (assoc "\\.h\\'" cc-other-file-alist)) '(".m" ".mm"))
@@ -34,16 +34,16 @@
   (interactive)
   (let ((files (find-lisp-find-files dir "\\.[h\|m]")))
     (mapcar (lambda (f) (car (last (split-string f (file-truename dir)))))
-	    files)))
+            files)))
 
 (defun objc-jump-to-header ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
-		     ".h")))
+                     ".h")))
 
 (defun objc-jump-to-implementation ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
-		     ".m")))
+                     ".m")))
 
 (provide 'objc-init)
