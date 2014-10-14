@@ -241,23 +241,23 @@
 
 ;; load my various init files
 (mapc (lambda (init-file)
-	(condition-case err
-	    (require init-file)
-	    (error (message "%s" (error-message-string err))
-		   (switch-to-buffer "*Warnings*")
-		   (delete-other-windows)
-		   (split-window-below)
-		   (find-file init-file))))
+        (condition-case err
+            (require init-file)
+            (error (message "%s" (error-message-string err))
+                   (switch-to-buffer "*Warnings*")
+                   (delete-other-windows)
+                   (split-window-below)
+                   (find-file init-file))))
       '(clojure-init
-	cpp-init
-	elisp-init
-	erlang-init
-	html-init
-	js-init
-	markdown-init
-	objc-init
-	org-init
-	python-init
-	ruby-init
-	lisp-init
-	theme-init))
+        cpp-init
+        elisp-init
+        erlang-init
+        html-init
+        js-init
+        markdown-init
+        objc-init
+        org-init
+        python-init
+        ruby-init
+        lisp-init
+        theme-init))

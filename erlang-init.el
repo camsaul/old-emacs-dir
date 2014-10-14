@@ -1,3 +1,3 @@
-;; nothing just yet
+; nothing just yet
 
 (provide 'erlang-init)

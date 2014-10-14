@@ -1,17 +1,22 @@
-(require 'nxml-mode)
+(cam-setup-autoloads
+  ("nxml-mode" nxml-backward-element nxml-backward-up-element nxml-finish-element nxml-forward-element))
 
 (defun html-mode-setup ()
+  (require 'nxml-mode)
   (global-mode-setup)
   (nxml-mode)) ; fancy xml editing mode
 (add-hook 'html-mode-hook 'html-mode-setup)
 
-(define-keys nxml-mode-map
-  '(("C-c C-f" cam-nxml-finish-element)
-    ("C-M-k" cam-nxml-kill-sexp)
-    ("C-M-f" cam-nxml-forward-element-or-sexp)
-    ("C-M-b" cam-nxml-backward-element-or-sexp)
-    ("M-f" forward-sexp)
-    ("M-b" backward-sexp)))
+(eval-after-load "nxml"
+  '(progn
+     (define-keys nxml-mode-map
+       '(("C-c C-f" cam-nxml-finish-element)
+         ("C-M-k" cam-nxml-kill-sexp)
+         ("C-M-f" cam-nxml-forward-element-or-sexp)
+         ("C-M-b" cam-nxml-backward-element-or-sexp)
+         ("M-f" forward-sexp)
+         ("M-b" backward-sexp)))))
+
 
 (defun cam-nxml-finish-element ()
   "Call nxml-finish-element, but move point to inside the newly closed element if it is empty"
