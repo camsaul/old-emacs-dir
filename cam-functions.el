@@ -129,6 +129,7 @@
   "Face to show for the directory portion of the path in the list."
   :group 'cam-recentf-faces)
 
+;;;###autoload
 (define-generic-mode cam-recentf-mode
   nil                                                               ; comment-list
   nil                                                               ; keyword-list
@@ -249,12 +250,13 @@
 
 (defmacro cam-enable-minor-modes (&rest modes)
   "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
-  `(mapc (lambda (mode)
-           (funcall (if (consp mode) (car mode)   ; enable the mode
-                      mode)
-                    1)
-           (when (consp mode)                     ; diminish the mode if we were passed a cons cell
-             (diminish (car mode) (cdr mode))))
+  `(mapc (lambda (arg)
+           (let ((mode (if (consp arg) (car arg)
+                         arg)))
+             (unless nil
+               (funcall mode 1)                   ; enable mode if needed
+               (when (consp arg)                  ; diminish the mode if we were passed a cons cell
+                 (diminish mode (cdr arg))))))
          ',modes))
 (put 'cam-enable-minor-modes 'lisp-indent-function 0)
 
@@ -262,7 +264,7 @@
   "Disable specified minor modes (if they are bound)"
   `(mapc (lambda (mode)
            (when (fboundp mode)
-             (funcall mode -1)))
+             (funcall mode nil)))
          ',modes))
 (put 'cam-disable-minor-modes 'lisp-indent-function 0)
 

@@ -1,60 +1,53 @@
 ;; -*- comment-column: 50; -*-
 
-; Disable menu/scrollbar/toolbar first so they don't flash
+;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 (mapc (lambda (mode)
         (funcall mode -1))
       '(menu-bar-mode
         scroll-bar-mode
         tool-bar-mode))
 
-(nconc load-path '("~/.emacs.d/"
-                   "~/.emacs.d/auto-complete-clang"))
+;;;; LOAD PACKAGES
 
+(nconc load-path '("~/.emacs.d/"
+                   ;; "~/.emacs.d/auto-complete-clang"
+                   ))
 (require 'package-init)
 
-;; packages to always require on launch
-(mapc 'require '(
-                 ace-jump-buffer
-                 ace-jump-mode
-                 bm
-                 cam-functions
+
+;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
+
+(mapc 'require '(cam-functions
                  dired-details
-                 dired+
-                 evil
-                 evil-paredit
-                 evil-matchit
-                 find-things-fast
-                 flx-ido
-                 highlight-symbol
-                 loccur
-                 midnight
-                 multiple-cursors
-                 nav                              ; nav frame, better than speed bar
                  powerline
-                 powerline-evil
-                 rainbow-delimiters
-                 rainbow-mode
-                 recentf
-                 relative-line-numbers
-                 smex                             ; IDO-like completion for M-x
-                 undo-tree
-                 ))
+                 powerline-evil))
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (kill-buffer "*scratch*")
-            (setup-powerline)                     ; needs to be ran as part of startup hook or doesn't work (?)
-            ))
+;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
-;; minor modes to disable
+(defun make-autoloads (file &rest symbols)
+  (mapc (lambda (symbol)
+          (autoload symbol file nil t))
+        symbols))
+
+(mapc (lambda (args) (apply 'make-autoloads args))
+      '(("bytecomp" byte-recompile-file)
+        ("find-things-fast" ftf-find-file ftf-grepsource)
+        ("loccur" loccur loccur-current loccur-previous-match)
+        ("highlight-error-keywords" highlight-error-keywords-mode)
+        ("multiple-cursors" multiple-cursors-mode)))
+
+;;;; GLOBALLY DISABLED MINOR MODES
+
 (cam-disable-minor-modes
+  indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
   set-fringe-mode                                 ; disable fringes
   )
 
-;; minor modes to enable
+
+;;;; GLOBALLY ENABLED MINOR MODES
+
 (cam-enable-minor-modes
   delete-selection-mode                           ; typing will delete selected text
   electric-pair-mode
@@ -69,40 +62,58 @@
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   show-paren-mode                                 ; highlight matching parens
-  winner-mode
-  )
+  toggle-diredp-find-file-reuse-dir               ; reuse dired buffer
+  (undo-tree-mode . nil)
+  winner-mode)
 
-;; minor modes to diminish
-(cam-diminish-modes
- rainbow-mode
- undo-tree-mode)
 
-;; Enable other minor modes
-(toggle-diredp-find-file-reuse-dir 1)             ; reuse dired buffer
-(dired-details-install)                           ; enable dired details (hides file size, etc in dired by default)
+;;;; OTHER GLOBAL MINOR MODE SETUP FUNCTIONS
 
-;; function to call when setting up a major mode
-;; TODO - what hook to add this to?
+(dired-details-install)
+
+
+;;;; GLOBAL HOOKS
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (kill-buffer "*scratch*")
+            (setup-powerline)                     ; needs to be ran as part of startup hook or doesn't work (?)
+            ))
+
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (unless (boundp 'dired-details)
+              (require 'dired-details)
+              (dired-details-install))))
+
+(add-hook 'after-change-major-mode-hook
+          (lambda ()
+            (cam-enable-minor-modes
+              highlight-error-keywords-mode
+              rainbow-delimiters-mode
+              rainbow-mode)))
+
 (defun global-mode-setup ()
-  "Function that should be called to do some extra customization when setting up any major mode."
-  (cam-enable-minor-modes
-    rainbow-delimiters-mode
-    rainbow-mode)                                 ; colorize strings that represent colors, e.g. "#aabbcc" or "blue"
-  ;; highlight these words in bold warning face
-  (font-lock-add-keywords
-    nil '(("\\<\\(FIX\\(ME\\)?\\|TODO\\|HACK\\|REFACTOR\\|DEPRECATED\\|NOCOMMIT\\)"
-        1 font-lock-warning-face t))))
+  (error "global-mode-setup is deprecated"))
 
 
-;; general settings - etc
+;;;; GLOBAL EVAL-AFTER-LOADS
+
+(eval-after-load "find-things-fast"
+  '(nconc ftf-filetypes '("*.clj"
+                          "*.el"
+                          "*.js")))
+
+
+;; GENERAL SETTINGS
 (prefer-coding-system 'utf-8-auto-unix)
 (set-terminal-coding-system 'utf-8)               ; work better from Terminal
 (set-keyboard-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
-(set-default 'indent-tabs-mode nil)               ; Indentation can insert tabs if this is non-nil
 
-;; general settings w/ setq
 (setq
  ac-auto-show-menu t                              ; automatically show menu
  ac-quick-help-delay 0.5                          ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
@@ -112,7 +123,6 @@
  bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
  clean-buffer-list-delay-special 30
  ;; clean-buffer-list-kill-regexps                        ; Remove all starred buffers not currently in use
- ftf-filetypes (append ftf-filetypes '("*.js"))   ; Additional file types that should be recognized by ftf-grepsource (Super + F)
  global-auto-revert-non-file-buffers t            ; also refresh dired but be quiet about it
  inhibit-splash-screen t
  inhibit-startup-screen t

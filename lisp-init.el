@@ -3,7 +3,6 @@
 (require 'hl-sexp)
 
 (defun cam-lisp-mode-setup ()
-  (global-mode-setup)
   (cam-enable-minor-modes
     (auto-complete-mode . nil)
     (highlight-parentheses-mode . nil)    ; highlight parentheses that surround the current sexpr
