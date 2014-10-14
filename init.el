@@ -12,6 +12,34 @@
 
 (require 'package-init)
 
+;; packages to always require on launch
+(mapc 'require '(
+                 ace-jump-buffer
+                 ace-jump-mode
+                 bm
+                 cam-functions
+                 dired-details
+                 dired+
+                 evil
+                 evil-paredit
+                 evil-matchit
+                 find-things-fast
+                 flx-ido
+                 highlight-symbol
+                 loccur
+                 midnight
+                 multiple-cursors
+                 nav                              ; nav frame, better than speed bar
+                 powerline
+                 powerline-evil
+                 rainbow-delimiters
+                 rainbow-mode
+                 recentf
+                 relative-line-numbers
+                 smex                             ; IDO-like completion for M-x
+                 undo-tree
+                 ))
+
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (add-hook 'emacs-startup-hook
