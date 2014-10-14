@@ -1,5 +1,3 @@
-(provide 'markdown-init)
-
 (defun cam-markdown-mode-setup ()
   (setq imenu-generic-expression markdown-imenu-generic-expression))
 (add-hook 'markdown-mode-hook 'cam-markdown-mode-setup)
@@ -15,3 +13,5 @@
         ("h5"   "^##### \\(.*\\)$" 1)
         ("h6"   "^###### \\(.*\\)$" 1)
         ("fn"   "^\\[\\^\\(.*\\)\\]" 1)))
+
+(provide 'markdown-init)

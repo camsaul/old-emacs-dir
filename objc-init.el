@@ -1,6 +1,5 @@
-(require 'cc-mode)
-(require 'find-lisp)
-(require 'find-file)
+(cam-setup-autoloads
+  ("find-lisp" find-lisp-find-files))
 
 ;; Automatically open .h files with @interface declarations as obj-c rather than c
 (add-to-list 'magic-mode-alist
@@ -10,17 +9,32 @@
                                           magic-mode-regexp-match-limit t)))
                . objc-mode))
 
-;; .m and .mm files to cc-other-file-find-alist
-(nconc (cadr (assoc "\\.h\\'" cc-other-file-alist)) '(".m" ".mm"))
+;; add .m and .mm files to objc-mode
+(nconc auto-mode-alist
+       '((".m$" . objc-mode)
+         (".mm$" . objc-mode)))
 
 (defun objc-mode-setup ()
-  (setq tab-width 4)
-  (setq c-basic-indent 4)
-  (setq c-basic-offset 4)
-  (c-set-offset 'case 4)
-  (subword-mode 1)
-  (auto-complete-mode 1))
+  (cam-enable-minor-modes
+    auto-complete-mode
+    subword-mode))
+
 (eval-after-load "auto-complete" '(add-to-list 'ac-modes 'objc-mode))
+
+(eval-after-load "objc-mode"
+  '(progn
+     (require 'cc-mode)
+     (setq tab-width 4
+           c-basic-indent 4
+           c-basic-offset 4)
+     (c-set-offset 'case 4)
+
+     ;; tell cc-mode how to jump between .h <-> .m/.mm files
+     (nconc (cadr (assoc "\\.h\\'" cc-other-file-alist))
+            '(".m" ".mm"))
+     (nconc cc-other-file-alist
+            '(("\\.m\\'" (".h"))
+              ("\\.mm\\'" (".h"))))))
 
 (add-hook 'objc-mode-hook 'objc-mode-setup)
 
