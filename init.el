@@ -1,3 +1,5 @@
+;; -*- comment-column: 50; -*-
+
 ;; Disable menu/scrollbar/toolbar first so they don't flash
 (mapc (lambda (mode)
         (when (fboundp mode)
