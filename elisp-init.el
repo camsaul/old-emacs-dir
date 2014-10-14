@@ -1,8 +1,6 @@
 ;; -*- comment-column: 50; -*-
 
-(require 'ielm)
-(require 'lisp-init)
-(require 'elisp-slime-nav)
+;;;; .EL FILES / GENERAL
 
 (defun byte-recompile-this-file ()
   "Recompile the current Emacs Lisp file."
@@ -12,6 +10,7 @@
                        0))                        ; 0 = compile even if .elc does not exist
 
 (defun cam-elisp-mode-setup ()
+  (require 'lisp-init)
   (cam-lisp-mode-setup)
   (cam-enable-minor-modes
     elisp-slime-nav-mode)
@@ -35,10 +34,15 @@
       )))
 
 (cam-define-elisp-keys emacs-lisp-mode-map)
-(cam-define-elisp-keys ielm-map)
-(define-keys ielm-map
-  '(("RET" ielm-return)))
 
 (add-to-list 'ac-modes 'elisp-mode)
+
+;;;; IELM SPECIFIC
+
+(eval-after-load "ielm"
+  '(lambda ()
+     (cam-define-elisp-keys ielm-map)
+     (define-keys ielm-map
+       '(("RET" ielm-return)))))
 
 (provide 'elisp-init)
