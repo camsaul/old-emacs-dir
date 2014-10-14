@@ -1,4 +1,4 @@
-;; -*- no-byte-compile: nil; -*-
+;; -*- comment-column: 50; -*-
 
 (require 'ielm)
 (require 'lisp-init)
@@ -16,7 +16,14 @@
   (cam-enable-minor-modes
     elisp-slime-nav-mode)
   (setq completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
-  (add-hook 'after-save-hook 'byte-recompile-this-file nil t))
+  (add-hook 'before-save-hook 'untabify-current-buffer nil t)
+  (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
+
+  ;; use byte-compile-dynamic when compiling files in .emacs.d
+  (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
+           (expand-file-name "~/.emacs.d/"))
+    (make-local-variable 'byte-compile-dynamic)
+    (setq byte-compile-dynamic t)))
 
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)

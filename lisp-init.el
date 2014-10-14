@@ -13,7 +13,6 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
-  ;; (set-buffer-file-coding-system 'utf-8-auto-unix)
   (set-face-background 'hl-sexp-face "#DDFFDD"))
 
 (defun backward-paredit-kill ()
