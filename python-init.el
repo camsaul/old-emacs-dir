@@ -11,6 +11,17 @@
 (cam-setup-autoloads
   ("lisp-init" pretty-lambdas))
 
+;; KEY BINDINGS
+(defun cam/define-python-keys (mode-map)
+  (define-keys mode-map
+    '(("<f5>" flymake-display-err-menu-for-current-line)
+      ("<f6>" flymake-goto-next-error)
+      ("<f7>" flymake-mode)
+      ("<f8>" info-lookup-symbol)
+      ("<s-mouse-1>" elpy-goto-definition)
+      ("<M-mouse-1>" elpy-doc)
+      ("<S-mouse-1>" info-lookup-symbol))))
+
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
 
@@ -32,17 +43,10 @@
            python-shell-output-regexp "Out\\[[0-9]+\\]: "
            python-shell-prompt-regexp "In \\[[0-9]+\\]: "             ; some python modes are looking for keymap under alternate name (?)
            )
+     (cam/define-python-keys python-mode-map)))
 
-
-     ;; KEY BINDINGS
-     (define-keys py-mode-map
-       '(("<f5>" flymake-display-err-menu-for-current-line)
-         ("<f6>" flymake-goto-next-error)
-         ("<f7>" flymake-mode)
-         ("<f8>" info-lookup-symbol)
-         ("<s-mouse-1>" elpy-goto-definition)
-         ("<M-mouse-1>" elpy-doc)
-         ("<S-mouse-1>" info-lookup-symbol)))))
+(eval-after-load "django-mode"
+  '(cam/define-python-keys django-mode-map))
 
 
 ;;;; MODE SETUP

@@ -76,6 +76,10 @@
             (setup-powerline)                     ; needs to be ran as part of startup hook or doesn't work (?)
             ))
 
+(eval-after-load "dired"
+  '(unless (featurep 'dired+)
+     (require 'dired+)))
+
 (add-hook 'dired-mode-hook
           (lambda ()
             (unless (get 'dired-mode-hook '-setup-p)
