@@ -240,7 +240,6 @@
       '(;; load elisp stuff first so we can at least fix errors in other files more easily
         lisp-init
         elisp-init
-
         clojure-init
         cpp-init
         erlang-init

@@ -246,7 +246,7 @@
   (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
 
 (defun menu-edit-init-file (f)
-  (menu-edit-file (concat "Edit " f) f))
+  (menu-edit-file (file-name-base f) f))
 
 (defmacro cam-enable-minor-modes (&rest modes)
   "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
