@@ -289,4 +289,11 @@
                                autoloads))))
 (put 'cam-setup-autoloads 'lisp-indent-function 0)
 
+(defmacro cam/declare-vars (&rest vars)
+  "Declare a series of vairables so flycheck stops complaining about them being unbound."
+  `(progn
+     ,@(mapcar (lambda (var)
+                 `(defvar ,var))
+               vars)))
+
 (provide 'cam-functions)

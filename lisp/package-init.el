@@ -47,13 +47,14 @@
     loccur
     magit
     markdown-mode
+    morlock   	      	      ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
     outline-magic
     paredit
     powerline
     powerline-evil
-    projectile                ; this does ... ?
+    projectile
     py-autopep8
     pydoc-info
     pyflakes

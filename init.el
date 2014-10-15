@@ -1,7 +1,11 @@
+;;; init -- General Setup
+;;; Commentary:
+
 ;; -*- comment-column: 50; -*-
 
-;; (profiler-start 'cpu)
+;;; Code:
 
+;; (profiler-start 'cpu)
 
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 
@@ -18,12 +22,12 @@
 (setq load-prefer-newer t)                        ; Load from .el files if they are newer than matching .elc files
 
 (nconc load-path '("~/.emacs.d/lisp/"))
-(require 'package-init)
 
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
 (mapc 'require '(cam-functions
+                 package-init
                  powerline
                  powerline-evil))
 
@@ -244,11 +248,11 @@
 (mapc (lambda (init-file)
         (condition-case err
             (require init-file)
-            (error (message "%s" (error-message-string err))
+            (error (warn "%s" (error-message-string err))
                    (switch-to-buffer "*Warnings*")
                    (delete-other-windows)
                    (split-window-below)
-                   (find-file init-file))))
+                   (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file))))))
       '(;; load elisp stuff first so we can at least fix errors in other files more easily
         lisp-init
         elisp-init

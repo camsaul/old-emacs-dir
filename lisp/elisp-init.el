@@ -1,11 +1,19 @@
+;;; elisp-init -- Setup for editing Emacs Lisp
+;;; Commentary:
+
 ;; -*- comment-column: 50; -*-
+
+(require 'cam-functions)
+
+;;; Code:
 
 (cam-setup-autoloads
   ("flycheck" flycheck-mode)
   ("lisp-init" cam-define-lisp-keys cam-lisp-mode-setup)
   ("lisp-mode" emacs-lisp-mode lisp-mode))
 
-;;;; .EL FILES / GENERAL
+
+;;;; GENERAL
 
 (defun byte-recompile-this-file ()
   "Recompile the current Emacs Lisp file."
@@ -16,16 +24,24 @@
   (eval-buffer))
 
 (defun cam-elisp-mode-setup ()
+  "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
+  (require 'lisp-init)
+  (require 'morlock)
+
+  (cam/declare-vars cam-define-elisp-keys)
   (cam-lisp-mode-setup)
+
   (cam-enable-minor-modes
     elisp-slime-nav-mode
     flycheck-mode)
+  (turn-on-morlock-mode-if-desired)
+
+  (setq flycheck-emacs-lisp-load-path load-path)
+
+  (cam-define-elisp-keys emacs-lisp-mode-map)
+
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
-
-  ;; TODO - Extra font-lock keywords for elisp (e.g. cl- stuff)
-  ;; (require 'morlock)
-  ;; (turn-on-morlock-mode-if-desired)
 
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
@@ -35,6 +51,12 @@
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)
 
+
+;;;; SETTINGS
+
+(put 'add-hook 'lisp-indent-function 1)           ; nicer indentation for add-hook
+
+
 ;;;; FUNCTIONS
 
 (defun cam/wrapping-flycheck-next-error ()
@@ -42,7 +64,7 @@
   (interactive)
   (condition-case nil
       (flycheck-next-error)
-    (error (beginning-of-buffer))))
+    (error (goto-char (point-min)))))
 
 
 ;;;; KEY MAPS
@@ -56,16 +78,17 @@
       ("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
       ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point))))
 
-(add-hook 'emacs-lisp-mode-hook (lambda () (cam-define-elisp-keys emacs-lisp-mode-map)))
+(add-hook 'emacs-lisp-mode-hook (lambda () ))
 
 
 ;;;; IELM SPECIFIC
 
 (add-hook 'ielm-mode-hook
-          (lambda ()
-            (cam-define-elisp-keys ielm-map)
-            (define-keys ielm-map
-              '(("RET" ielm-return)))))
+  (lambda ()
+    (cam/declare-vars ielm-map)
+    (cam-define-elisp-keys ielm-map)
+    (define-keys ielm-map
+      '(("RET" ielm-return)))))
 
 (provide 'elisp-init)
 ;;; elisp-init ends here
