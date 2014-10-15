@@ -23,7 +23,6 @@
     clojurescript-mode
     company
     diminish
-    dired-details
     dired+
     django-mode
     editorconfig

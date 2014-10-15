@@ -32,7 +32,6 @@
 
 (cam-setup-autoloads
   ("bytecomp" byte-recompile-file)
-  ("dired-details" dired-details-install)
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
   ("highlight-error-keywords" highlight-error-keywords-mode)
@@ -79,26 +78,19 @@
             ))
 
 (eval-after-load "dired"
-  '(unless (featurep 'dired+)
-     (require 'dired+)))
+  '(progn
+     '(unless (featurep 'dired+)
+        (require 'dired+))
+     (toggle-diredp-find-file-reuse-dir t)))      ; reuse dired buffers
 
 (add-hook 'dired-mode-hook
           (lambda ()
-            (unless (get 'dired-mode-hook '-setup-p)
-              (toggle-diredp-find-file-reuse-dir t)  ; reuse dired buffer
-              (dired-details-install)
-              (put 'dired-mode-hook '-setup-p t))))
-(put 'dired-mode-hook '-setup-p nil)
-
-;; (defadvice dired (before dired-before)
-;;   "Load dired+ before running dired"
-;;   (unless (featurep 'dired+)
-;;     (require 'dired+)))
+            (dired-hide-details-mode 1)))
 
 (add-hook 'after-change-major-mode-hook
           (lambda ()
             (cam-enable-minor-modes
-              highlight-error-keywords-mode
+              highlight-error-keywords-mode       ; TODO ! Not working
               rainbow-delimiters-mode
               (rainbow-mode . nil))))
 
