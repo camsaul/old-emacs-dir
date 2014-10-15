@@ -98,23 +98,22 @@
     (package-refresh-contents)
     (setq cam-has-refreshed-packages-p t)))
 
-(defun cam/activate-package (package)
-  "Activate a locally installed package"
-  (let ((package-version (elt (cdr (assoc package package-alist)) 0)))
-    (package-activate package package-version)))
-
 
 ;;;; ADVICE / ETC
 
-(defadvice package-install (around package-install-around)
+(defadvice package-install (before package-install-before activate)
   "Make sure archives are loaded first"
-  (cam/load-archives-if-needed)
-   ad-do-it)
+  (cam/load-archives-if-needed))
 
-(defadvice package-list-packages-no-fetch (around package-list-packages-no-fetch-around)
+(defadvice package-list-packages-no-fetch (before package-list-packages-no-fetch-before activate)
   "Make sure archives are loaded first"
-  (cam/load-archives-if-needed)
-  ad-do-it)
+  (cam/load-archives-if-needed))
+
+(defadvice package-activate (around package-activate-around activate)
+  "Catch errors thrown by package-activate."
+  (condition-case err
+      ad-do-it
+    (error (warn (error-message-string err)))))
 
 
 ;;;; ACTIVATE/INSTALL PACKAGES
@@ -124,10 +123,11 @@
 
 ;;; loop through packages and initialize or install
 (mapc (lambda (package)
-        (if (package-installed-p package) (cam/activate-package package)
+        (if (package-installed-p package) (package-activate package)
           (progn
             (cam-refresh-package-contents-if-needed)
             (package-install package))))
       cam/packages)
 
 (provide 'package-init)
+;;; package-init.el ends here

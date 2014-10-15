@@ -12,3 +12,4 @@ el-get/
 bookmarks
 .achievements
 emacs-clang-complete-async
+*flycheck*

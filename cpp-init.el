@@ -9,8 +9,9 @@
                                               magic-mode-regexp-match-limit t))))
                . c++-mode))
 
-(nconc auto-mode-alist '(("\.hpp$" . c++-mode)
-                         ("\.cpp$" . c++-mode)))
+(mapc (lambda (ele) (add-to-list 'auto-mode-alist ele))
+      '(("\.hpp$" . c++-mode)
+        ("\.cpp$" . c++-mode)))
 
 (defun c++-search ()
   "Lookup C+++ symbol on cplusplus.com"

@@ -10,9 +10,9 @@
                . objc-mode))
 
 ;; add .m and .mm files to objc-mode
-(nconc auto-mode-alist
-       '((".m$" . objc-mode)
-         (".mm$" . objc-mode)))
+(mapc (lambda (item) (add-to-list 'auto-mode-alist item))
+      '((".m$" . objc-mode)
+        (".mm$" . objc-mode)))
 
 (defun objc-mode-setup ()
   (cam-enable-minor-modes
