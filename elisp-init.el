@@ -23,6 +23,10 @@
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
+  ;; TODO - Extra font-lock keywords for elisp (e.g. cl- stuff)
+  ;; (require 'morlock)
+  ;; (turn-on-morlock-mode-if-desired)
+
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
            (expand-file-name "~/.emacs.d/"))
@@ -30,7 +34,6 @@
 
 (add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)
-
 
 ;;;; FUNCTIONS
 
@@ -58,7 +61,7 @@
 
 ;;;; IELM SPECIFIC
 
-(add-hook 'emacs-lisp-mode-hook
+(add-hook 'ielm-mode-hook
           (lambda ()
             (cam-define-elisp-keys ielm-map)
             (define-keys ielm-map
