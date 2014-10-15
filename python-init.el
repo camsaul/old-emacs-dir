@@ -56,6 +56,7 @@
                    ;; django-mode
                    elpy
                    flymake
+                   ; jedi - see http://tkf.github.io/emacs-jedi/latest/#configuration
                    info-look
                    py-autopep8
                    pydoc-info ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
@@ -69,6 +70,7 @@
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
+  ;; (jedi:setup)
 
   ;; HOOKS
   (add-hook 'before-save-hook

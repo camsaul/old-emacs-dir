@@ -15,6 +15,7 @@
 
 ;;;; LOAD PACKAGES
 
+
 (nconc load-path '("~/.emacs.d/"))                ; do we need to do this ?
 (require 'package-init)
 
@@ -34,7 +35,8 @@
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
   ("highlight-error-keywords" highlight-error-keywords-mode)
-  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this))
+  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this)
+  ("theme-init" setup-powerline))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -122,9 +124,9 @@
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
- ac-auto-show-menu t                              ; automatically show menu
- ac-quick-help-delay 0.5                          ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
- ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers)
+ ;; ac-auto-show-menu t                              ; automatically show menu
+ ;; ac-quick-help-delay 0.5                          ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
+ ;; ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers)
  auto-revert-verbose nil
  auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
  bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
@@ -235,6 +237,7 @@
 
 
 ;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
+
 (let ((byte-compile-dynamic t))
   (mapc (lambda (file)
           (byte-recompile-file file
@@ -244,6 +247,7 @@
 
 
 ;;;; LOAD INIT FILES
+
 (mapc (lambda (init-file)
         (condition-case err
             (require init-file)
@@ -269,3 +273,6 @@
 
 ;; (profiler-report)
 ;; (profiler-stop)
+
+(provide 'init)
+;;; init.el ends here

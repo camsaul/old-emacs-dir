@@ -1,6 +1,7 @@
 ;; -*- comment-column: 50; -*-
 
 (cam-setup-autoloads
+  ("flycheck" flycheck-mode)
   ("lisp-init" cam-define-lisp-keys cam-lisp-mode-setup)
   ("lisp-mode" emacs-lisp-mode lisp-mode))
 
@@ -17,7 +18,8 @@
 (defun cam-elisp-mode-setup ()
   (cam-lisp-mode-setup)
   (cam-enable-minor-modes
-    elisp-slime-nav-mode)
+    elisp-slime-nav-mode
+    flycheck-mode)
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
@@ -30,25 +32,37 @@
 (add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)
 
 
+;;;; FUNCTIONS
+
+(defun cam/wrapping-flycheck-next-error ()
+  "Call flycheck-next-error, wrap around if we've reached end of buffer."
+  (interactive)
+  (condition-case nil
+      (flycheck-next-error)
+    (error (beginning-of-buffer))))
+
+
 ;;;; KEY MAPS
 
 (defun cam-define-elisp-keys (mode-map)
   (cam-define-lisp-keys mode-map)
   (define-keys mode-map
-    '(("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
+    '(("<f5>" flycheck-display-errors)
+      ("<f6>" cam/wrapping-flycheck-next-error)
+      ("<f7>" flycheck-mode)
+      ("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
       ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point))))
 
-(eval-after-load "emacs-lisp-mode"
-  '(progn
-     (cam-define-elisp-keys emacs-lisp-mode-map)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (cam-define-elisp-keys emacs-lisp-mode-map)))
 
 
 ;;;; IELM SPECIFIC
 
-(eval-after-load "ielm"
-  '(progn
-     (cam-define-elisp-keys ielm-map)
-     (define-keys ielm-map
-       '(("RET" ielm-return)))))
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (cam-define-elisp-keys ielm-map)
+            (define-keys ielm-map
+              '(("RET" ielm-return)))))
 
 (provide 'elisp-init)
+;;; elisp-init ends here

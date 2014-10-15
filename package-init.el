@@ -34,6 +34,7 @@
     evil-matchit
     evil-paredit
     find-things-fast
+    flycheck
     flx-ido
     fuzzy
     highlight-parentheses
@@ -87,6 +88,7 @@
   "Load package archives locally or fetch remotely if needed."
   (unless package-archive-contents
     (package-read-all-archive-contents)
+    (package-load-all-descriptors)
     (unless package-archive-contents
       (cam-refresh-package-contents-if-needed))))
 
