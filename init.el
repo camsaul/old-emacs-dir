@@ -17,7 +17,7 @@
 
 (setq load-prefer-newer t)                        ; Load from .el files if they are newer than matching .elc files
 
-(nconc load-path '("~/.emacs.d/"))
+(nconc load-path '("~/.emacs.d/lisp/"))
 (require 'package-init)
 
 
@@ -214,9 +214,10 @@
     ))
 
 (defvar init-files
-  (directory-files "~/.emacs.d"
-                   t ; return file's absolute (full) name
-                   "^[^#.].*.el$")
+  (cons "~/.emacs.d/init.el"
+        (directory-files "~/.emacs.d/lisp"
+                         t        ; return file's absolute (full) name
+                         "^[^#.].*.el$"))
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
 
 

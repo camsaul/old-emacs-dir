@@ -30,7 +30,7 @@
                               (cursor-var (intern (format "evil-%s-state-cursor" name)))
                               (cursor-val (list color 'box)))
                          `(setq ,cursor-var ',cursor-val)))
-                     evil-state-colors)))
+                     (eval 'evil-state-colors)))) ; defer lookup of evil-state-colors, otherwise compiler messes up sometimes
 (evil-set-cursor-colors)
 
 (defun mode-line-face-background ()
