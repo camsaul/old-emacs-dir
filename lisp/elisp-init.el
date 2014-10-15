@@ -15,20 +15,32 @@
 
 ;;;; GENERAL
 
+(defun cam/is-init-file-p (filename)
+  "Return t if FILENAME is ~/.emacs.d/init.el or in ~/.emacs.d/ directory; nil in any other case."
+  (condition-case nil
+      (or (file-equal-p filename "~/.emacs.d/init.el")
+          (and (string= (file-name-extension filename)
+                        "el")
+               (file-in-directory-p filename "~/.emacs.d/lisp")))
+    (error nil)))
+
 (defun byte-recompile-this-file ()
-  "Recompile the current Emacs Lisp file."
+  "Recompile the current Emacs Lisp file if it is an init file."
   (interactive)
-  (byte-recompile-file (buffer-file-name)
-                       t                          ; force recompile
-                       0)                         ; 0 = compile even if .elc does not exist
-  (eval-buffer))
+  (when (and (buffer-file-name)
+             (cam/is-init-file-p (buffer-file-name)))
+    (byte-recompile-file (buffer-file-name)
+                         t   ; force recompile
+                         0)  ; 0 = compile even if .elc does not exist
+    (eval-buffer)))
 
 (defun cam-elisp-mode-setup ()
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
   (require 'lisp-init)
   (require 'morlock)
 
-  (cam/declare-vars cam-define-elisp-keys)
+  (cam/declare-vars cam-define-elisp-keys
+                    flycheck-emacs-lisp-load-path)
   (cam-lisp-mode-setup)
 
   (cam-enable-minor-modes
