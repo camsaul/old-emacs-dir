@@ -20,7 +20,6 @@
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
 (mapc 'require '(cam-functions
-                 dired-details
                  powerline
                  powerline-evil))
 
@@ -29,10 +28,11 @@
 
 (cam-setup-autoloads
   ("bytecomp" byte-recompile-file)
+  ("dired-details" dired-details-install)
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
   ("highlight-error-keywords" highlight-error-keywords-mode)
-  ("multiple-cursors" multiple-cursors-mode))
+  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -56,18 +56,11 @@
   global-undo-tree-mode
   ido-everywhere
   ido-mode
-  multiple-cursors-mode
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   show-paren-mode                                 ; highlight matching parens
-  toggle-diredp-find-file-reuse-dir               ; reuse dired buffer
   (undo-tree-mode . nil)
   winner-mode)
-
-
-;;;; OTHER GLOBAL MINOR MODE SETUP FUNCTIONS
-
-(dired-details-install)
 
 
 ;;;; GLOBAL HOOKS
@@ -82,9 +75,17 @@
 
 (add-hook 'dired-mode-hook
           (lambda ()
-            (unless (boundp 'dired-details)
-              (require 'dired-details)
-              (dired-details-install))))
+            (unless (get 'dired-mode-hook '-setup-p)
+              (toggle-diredp-find-file-reuse-dir t)  ; reuse dired buffer
+              (dired-details-install)
+              (put 'dired-mode-hook '-setup-p t))))
+(put 'dired-mode-hook '-setup-p nil)
+
+(defadvice dired (around dired-around)
+  "Load dired+ before running dired"
+  (unless (featurep 'dired+)
+    (require 'dired+))
+  ad-do-it)
 
 (add-hook 'after-change-major-mode-hook
           (lambda ()
@@ -95,6 +96,9 @@
 
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
+
+(eval-after-load "multiple-cursors"
+  '(multiple-cursors-mode 1))
 
 (eval-after-load "find-things-fast"
   '(nconc ftf-filetypes '("*.clj"
