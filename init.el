@@ -15,6 +15,7 @@
 
 ;;;; LOAD PACKAGES
 
+(setq load-prefer-newer t)                        ; Load from .el files if they are newer than matching .elc files
 
 (nconc load-path '("~/.emacs.d/"))                ; do we need to do this ?
 (require 'package-init)
