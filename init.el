@@ -78,9 +78,9 @@
             (setup-powerline)                     ; needs to be ran as part of startup hook or doesn't work (?)
             ))
 
-;; (eval-after-load "dired"
-;;   '(unless (featurep 'dired+)
-;;      (require 'dired+)))
+(eval-after-load "dired"
+  '(unless (featurep 'dired+)
+     (require 'dired+)))
 
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -90,10 +90,10 @@
               (put 'dired-mode-hook '-setup-p t))))
 (put 'dired-mode-hook '-setup-p nil)
 
-(defadvice dired (before dired-before)
-  "Load dired+ before running dired"
-  (unless (featurep 'dired+)
-    (require 'dired+)))
+;; (defadvice dired (before dired-before)
+;;   "Load dired+ before running dired"
+;;   (unless (featurep 'dired+)
+;;     (require 'dired+)))
 
 (add-hook 'after-change-major-mode-hook
           (lambda ()
