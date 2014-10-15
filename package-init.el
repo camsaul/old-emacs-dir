@@ -38,6 +38,7 @@
         dired-details
         dired+
         django-mode
+        editorconfig
         elisp-slime-nav
         elpy
         erlang
