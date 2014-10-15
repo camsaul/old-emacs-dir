@@ -17,9 +17,7 @@
 (defun cam-elisp-mode-setup ()
   (cam-lisp-mode-setup)
   (cam-enable-minor-modes
-    (auto-complete-mode . nil)
     elisp-slime-nav-mode)
-  (setq-local completion-at-point-functions '(auto-complete)) ; make autocomplete a completion-at-point function
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
@@ -42,9 +40,7 @@
 
 (eval-after-load "emacs-lisp-mode"
   '(progn
-     (cam-define-elisp-keys emacs-lisp-mode-map)
-     (eval-after-load "auto-complete"
-       (add-to-list 'ac-modes 'emacs-lisp-mode))))
+     (cam-define-elisp-keys emacs-lisp-mode-map)))
 
 
 ;;;; IELM SPECIFIC

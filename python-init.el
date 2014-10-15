@@ -62,7 +62,7 @@
                    python-pep8
                    yasnippet))
   (cam-enable-minor-modes
-    (auto-complete-mode . nil)
+    (company-mode . " ¢")
     electric-pair-mode
     elpy-mode
     (highlight-parentheses-mode . nil))

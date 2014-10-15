@@ -1,17 +1,21 @@
+;; -*- comment-column: 50; -*-
+
 (defun cam-lisp-mode-setup ()
-  (mapc 'require '(auto-complete
-                   highlight-parentheses
-                   hl-sexp
-                   ))
+  (mapc 'require '(highlight-parentheses
+                   hl-sexp))
   (cam-enable-minor-modes
-    (auto-complete-mode . nil)
-    (highlight-parentheses-mode . nil)    ; highlight parentheses that surround the current sexpr
-    hl-sexp-mode                        ; hl-sexp-mode highlights the current sexp
+    (company-mode . " ¢")
+    (highlight-parentheses-mode . nil)            ; highlight parentheses that surround the current sexpr
+    hl-sexp-mode                                  ; hl-sexp-mode highlights the current sexp
     (paredit-mode . " π"))
   (turn-on-eldoc-mode)
   (diminish 'eldoc-mode)
   (pretty-lambdas)
-  (set-face-background 'hl-sexp-face "#DDFFDD"))
+  (set-face-background 'hl-sexp-face "#DDFFDD")
+  (add-hook 'before-save-hook '(lambda ()
+                                 (set-buffer-file-coding-system 'utf-8-auto-unix)
+                                 (untabify-current-buffer))
+            nil t))
 
 (defun backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."

@@ -1,12 +1,9 @@
 (defun cam-js-mode-setup ()
   (require 'js3-mode)
-  (require 'auto-complete)
-  (require 'jquery-doc)
   (cam-enable-minor-modes
-    auto-complete-mode
+    (company-mode . " ¢")
     highlight-parentheses-mode)
-  (pretty-function)
-  (setq ac-sources '(ac-source-jquery)))
+  (pretty-function))
 
 (eval-after-load "js3-mode"
   '(setq

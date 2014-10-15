@@ -16,10 +16,7 @@
 
 (defun objc-mode-setup ()
   (cam-enable-minor-modes
-    auto-complete-mode
     subword-mode))
-
-(eval-after-load "auto-complete" '(add-to-list 'ac-modes 'objc-mode))
 
 (eval-after-load "objc-mode"
   '(progn
@@ -38,10 +35,11 @@
 
 (add-hook 'objc-mode-hook 'objc-mode-setup)
 
-(define-keys objc-mode-map
-  '(("M-;" comment-region)
-    ("<C-M-up>" objc-jump-to-header)
-    ("<C-M-down>" objc-jump-to-implementation)))
+(eval-after-load "cc-mode"
+  '(define-keys objc-mode-map
+     '(("M-;" comment-region)
+       ("<C-M-up>" objc-jump-to-header)
+       ("<C-M-down>" objc-jump-to-implementation))))
 
 (defun find-h-and-m-files (dir)
   (interactive)

@@ -1,4 +1,4 @@
-;; -*- comment-column: 50; -*-
+;; -*- comment-column: 30; -*-
 
 ;; Init code relating to loading/setting up packages for use in Emacs
 
@@ -17,7 +17,6 @@
   '(ac-etags
     ace-jump-buffer
     ace-jump-mode
-    auto-complete-clang-async
     bm
     clojure-mode
     clojure-mode-extra-font-locking
@@ -42,7 +41,6 @@
     hl-sexp
     ido-ubiquitous
     ipython
-    jquery-doc
     js3-mode
     json
     less-css-mode
@@ -55,7 +53,7 @@
     paredit
     powerline
     powerline-evil
-    projectile
+    projectile                ; this does ... ?
     py-autopep8
     pydoc-info
     pyflakes

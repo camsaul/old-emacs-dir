@@ -15,9 +15,7 @@
 
 ;;;; LOAD PACKAGES
 
-(nconc load-path '("~/.emacs.d/"
-                   ;; "~/.emacs.d/auto-complete-clang"
-                   ))
+(nconc load-path '("~/.emacs.d/"))                ; do we need to do this ?
 (require 'package-init)
 
 
@@ -102,16 +100,6 @@
               rainbow-delimiters-mode
               (rainbow-mode . nil))))
 
-(add-hook 'auto-complete-mode-hook
-          (lambda ()
-            (when (and (boundp 'auto-complete-mode)
-                       auto-complete-mode)
-              (auto-complete-mode -1)
-              (company-mode 1)
-              (warn "Still using auto-complete-mode here! Need to switch over to company-mode instead.")
-              (with-output-to-temp-buffer "*auto-complete-mode backtrace*"
-                (backtrace)))))
-
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
 
@@ -127,6 +115,7 @@
 ;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
+
 (set-terminal-coding-system 'utf-8)               ; work better from Terminal
 (set-keyboard-coding-system 'utf-8)
 (ansi-color-for-comint-mode-on)
@@ -152,15 +141,19 @@
  ns-right-option-modifier 'alt
  query-replace-interactive t                      ; Use last incremental seach regexp for query in regexp-query-replace
  recentf-max-menu-items 20
+ redisplay-dont-pause t                           ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
  require-final-newline t                          ; add final newline on save
+ revert-without-query '(".*")                     ; disable revert-buffer confirmation prompts
  scroll-margin 1
  w32-apps-modifier 'hyper
  w32-lwindow-modifier 'super
  w32-pass-lwindow-to-system nil
  w32-rwindow-modifier 'alt
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
- x-select-enable-clipboard t                              ; Use the clipboard in addition to emacs kill ring
+ x-select-enable-clipboard t                      ; Use the clipboard in addition to emacs kill ring
  )
+
+(fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
 ;; custom key bindings
 (define-keys nil

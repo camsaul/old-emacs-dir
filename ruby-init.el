@@ -1,13 +1,14 @@
-(require 'auto-complete)
-(require 'ruby-mode)
-
 (defun cam-ruby-mode-setup ()
   (require 'rspec-mode)
   (require 'ruby-electric)
   (require 'ruby-block)
+  (cam-enable-minor-modes
+    (paredit-mode . " π")
+    ruby-block-mode
+    ruby-electric-mode
+    )
   (ruby-electric-mode t)
   (ruby-block-mode t) ; highlight corresponding openings when cursor is on a closing block statement
-  (auto-complete-mode t)
   (paredit-mode t))
 (add-hook 'ruby-mode-hook 'cam-ruby-mode-setup)
 
@@ -21,8 +22,9 @@
 (setq ruby-block-highlight-toggle 'overlay) ; highlight ruby block on screen instead of minibuffer
 (setq ruby-block-delay 0.01) ; delay before showing matching block; default is 0.5
 
-(define-keys ruby-mode-map
-  '(("C-c C-f" ruby-insert-end)))
+(eval-after-load "ruby-mode"
+  '(define-keys ruby-mode-map
+     '(("C-c C-f" ruby-insert-end))))
 
 ;; Apparently this function is missing from the version of ruby-electric on MELPA, although it attemps to call it;
 ;; work around http://stackoverflow.com/questions/10326255/emacs-ruby-electric-does-not-insert-end
