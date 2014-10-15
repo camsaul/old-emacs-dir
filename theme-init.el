@@ -111,6 +111,7 @@
   "Inactive face #3 for power line"
   :group 'pl-faces)
 
+;;;###autoload
 (defun setup-powerline ()
   (interactive)
   (setq

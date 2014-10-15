@@ -6,7 +6,8 @@
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 
 (mapc (lambda (mode)
-        (funcall mode -1))
+        (when (boundp mode)
+          (funcall mode -1)))
       '(menu-bar-mode
         scroll-bar-mode
         tool-bar-mode))
@@ -99,7 +100,17 @@
             (cam-enable-minor-modes
               highlight-error-keywords-mode
               rainbow-delimiters-mode
-              rainbow-mode)))
+              (rainbow-mode . nil))))
+
+(add-hook 'auto-complete-mode-hook
+          (lambda ()
+            (when (and (boundp 'auto-complete-mode)
+                       auto-complete-mode)
+              (auto-complete-mode -1)
+              (company-mode 1)
+              (warn "Still using auto-complete-mode here! Need to switch over to company-mode instead.")
+              (with-output-to-temp-buffer "*auto-complete-mode backtrace*"
+                (backtrace)))))
 
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
