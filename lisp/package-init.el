@@ -1,4 +1,9 @@
+;;; pacakge-init -- Code to load/installs packages on startup
 ;; -*- comment-column: 30; -*-
+
+;;; Commentary:
+
+;;; Code:
 
 ;; Init code relating to loading/setting up packages for use in Emacs
 
@@ -41,13 +46,14 @@
     hl-sexp
     ido-ubiquitous
     ipython
+    jedi
     js3-mode
     json
     less-css-mode
     loccur
     magit
     markdown-mode
-    morlock   	      	      ; extra font-lock keywords for elisp editing
+    morlock                   ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
     outline-magic

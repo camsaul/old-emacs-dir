@@ -50,8 +50,6 @@
 
   (setq flycheck-emacs-lisp-load-path load-path)
 
-  (cam-define-elisp-keys emacs-lisp-mode-map)
-
   (add-hook 'before-save-hook 'untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
@@ -82,15 +80,19 @@
 ;;;; KEY MAPS
 
 (defun cam-define-elisp-keys (mode-map)
+  "Add elisp-related key bindings to MODE-MAP."
   (cam-define-lisp-keys mode-map)
   (define-keys mode-map
     '(("<f5>" flycheck-display-errors)
       ("<f6>" cam/wrapping-flycheck-next-error)
       ("<f7>" flycheck-mode)
+      ("C-c RET" pp-macroexpand-last-sexp)
       ("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
       ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point))))
 
-(add-hook 'emacs-lisp-mode-hook (lambda () ))
+(add-hook 'emacs-lisp-mode-hook
+  (lambda ()
+    (cam-define-elisp-keys emacs-lisp-mode-map)))
 
 
 ;;;; IELM SPECIFIC

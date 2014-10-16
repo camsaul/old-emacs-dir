@@ -1,4 +1,12 @@
+;;; python-init -- Setup for editing Python
 ;; -*- comment-column: 70; -*-
+
+;;; Commentary:
+
+;;; Code:
+
+(require 'cam-functions)
+
 
 ;;;; FILE PATTERNS
 
@@ -13,6 +21,7 @@
 
 ;; KEY BINDINGS
 (defun cam/define-python-keys (mode-map)
+  "Add python-related key bindings to MODE-MAP."
   (define-keys mode-map
     '(("<f5>" flymake-display-err-menu-for-current-line)
       ("<f6>" flymake-goto-next-error)
@@ -25,52 +34,59 @@
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
 
-(eval-after-load "python-mode"
-  '(progn
-     (setq gud-pdb-command-name (symbol-name pdb-path)
-           pdb-path '/usr/lib/python2.7/pdb.py
-           py-mode-map python-mode-map
-           python-check-command "pyflakes"
-           py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
-           py-shell-name python-shell-interpreter
-           python-command python-shell-interpreter
-           python-pep8-options '("--format=pylint" "--ignore E501,E401")
-           python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
-           python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
-           python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
-           python-shell-interpreter "ipython"
-           python-shell-interpreter-args "-i --pylab=tk"              ; preload matplotlib and numpy for interactive use
-           python-shell-output-regexp "Out\\[[0-9]+\\]: "
-           python-shell-prompt-regexp "In \\[[0-9]+\\]: "             ; some python modes are looking for keymap under alternate name (?)
-           )
-     (cam/define-python-keys python-mode-map)))
+(cam/eval-after-load "python-mode"
+  (setq gud-pdb-command-name (symbol-name pdb-path)
+        pdb-path '/usr/lib/python2.7/pdb.py
+        py-mode-map python-mode-map
+        python-check-command "pyflakes"
+        py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
+        py-shell-name python-shell-interpreter
+        python-command python-shell-interpreter
+        python-pep8-options '("--format=pylint" "--ignore E501,E401")
+        python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
+        python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+        python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
+        python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
+        python-shell-output-regexp "Out\\[[0-9]+\\]: "
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
+        )
+  (cam/define-python-keys python-mode-map)
 
-(eval-after-load "django-mode"
-  '(cam/define-python-keys django-mode-map))
+  (require 'jedi)                                                     ; see http://tkf.github.io/emacs-jedi/latest/#configuration
+  (condition-case nil
+      (jedi:install-server)
+    ;; install pip requirements if jedi couldn't load
+    (error (call-process-shell-command "pip install -U pep8 autopep8 flake8 pyflakes rope ropemacs jedi epc"
+                nil ; input file
+                nil ; output. nil = discard, 0 = discard, return immediately (process runs async)
+                )
+           (jedi:install-server))))
+
+(cam/eval-after-load "django-mode"
+  (cam/define-python-keys django-mode-map))
 
 
 ;;;; MODE SETUP
 
 (defun cam-django-mode-setup ()
-  (mapc 'require '(
-                   ;; django-mode
-                   elpy
+  "Code to execute as part of python/django-mode-hook."
+  (mapc 'require '(elpy
                    flymake
-                   ; jedi - see http://tkf.github.io/emacs-jedi/latest/#configuration
                    info-look
                    py-autopep8
-                   pydoc-info ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
+                   pydoc-info                                         ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
                    python-pep8
                    yasnippet))
   (cam-enable-minor-modes
     (company-mode . " ¢")
+    eldoc-mode
     electric-pair-mode
     elpy-mode
     (highlight-parentheses-mode . nil))
-  (turn-on-eldoc-mode)
-  (diminish 'eldoc-mode)
+
   (pretty-lambdas)
-  ;; (jedi:setup)
+  (jedi:setup)                                                        ; make sure to do pip install jediepcserver
 
   ;; HOOKS
   (add-hook 'before-save-hook
@@ -97,6 +113,7 @@
 ;;;; FUNCTIONS
 
 (defun run-autopep8 ()
+  "Call py-autopep8 when \"major-mode\" is django-mode or python-mode."
   (interactive)
   (when (or (eq major-mode 'django-mode)
             (eq major-mode 'python-mode))
@@ -104,13 +121,13 @@
 
 
 (defun run-isort ()
-  "Runs isort on the current buffer in place"
+  "Run isort on the current buffer in place."
   (interactive)
   (call-process "isort" nil t nil (buffer-file-name) "--order-by-type" "--multi_line" "1" "--lines" "120")
   (revert-buffer t t))
 
 (defun insert-lines (lines)
-  "Insert a list of strings calling (newline-and-indent) after each."
+  "Insert a list of LINES calling (newline-and-indent) after each."
   (mapc (lambda (line)
           (insert line)
           (newline-and-indent))
@@ -149,3 +166,4 @@
   (insert-lines '("##### END PROFILING CODE - NOCOMMIT #####")))
 
 (provide 'python-init)
+;;; python-init.el ends here

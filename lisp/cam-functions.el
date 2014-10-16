@@ -296,4 +296,11 @@
                  `(defvar ,var))
                vars)))
 
+(defmacro cam/eval-after-load (file &rest forms)
+  "Execute multiple FORMS after FILE is loaded."
+  `(eval-after-load ,file
+     (quote (progn ,@forms))))
+(put 'cam/eval-after-load 'lisp-indent-function 1)
+
 (provide 'cam-functions)
+;;; cam-functions.el ends here
