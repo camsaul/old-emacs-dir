@@ -65,7 +65,11 @@
 
 ;;;; SETTINGS
 
-(put 'add-hook 'lisp-indent-function 1)           ; nicer indentation for add-hook
+;; nicer indentation
+(mapc (lambda (symb)
+        (put symb 'lisp-indent-function 1))
+      '(add-hook
+        setq))
 
 
 ;;;; FUNCTIONS

@@ -39,8 +39,7 @@
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
   ("highlight-error-keywords" highlight-error-keywords-mode)
-  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this)
-  ("theme-init" setup-powerline))
+  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -77,9 +76,7 @@
 
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (kill-buffer "*scratch*")
-            (setup-powerline)                     ; needs to be ran as part of startup hook or doesn't work (?)
-            ))
+            (kill-buffer "*scratch*")))
 
 (eval-after-load "dired"
   '(progn

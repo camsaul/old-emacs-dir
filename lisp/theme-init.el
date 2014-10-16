@@ -3,7 +3,6 @@
 
 ;;; Code:
 
-(require 'dash)
 (require 'moe-theme)
 
 (set-frame-font
@@ -40,7 +39,7 @@
                               (cursor-var (intern (format "evil-%s-state-cursor" name)))
                               (cursor-val (list color 'box)))
                          `(setq ,cursor-var ',cursor-val)))
-                     (eval 'evil-state-colors)))) ; defer lookup of evil-state-colors, otherwise compiler messes up sometimes
+                     evil-state-colors)))
 (evil-set-cursor-colors)
 
 (defun mode-line-face-background ()
@@ -73,8 +72,12 @@
 
 (defmacro def-pl-faces (name bg-color fg-color &rest rest)
   "Helper to create new face(s) via defface for powerline."
-  (let ((bg (eval bg-color))
-        (fg (eval fg-color)))
+  (let* ((bg-color (eval bg-color))
+         (fg-color (eval fg-color))
+         (bg (if (symbolp bg-color) (face-background bg-color)
+               bg-color))
+         (fg (if (symbolp fg-color) (face-foreground fg-color)
+               fg-color)))
     `(progn
        (defface ,name
          (quote ((t :background ,bg
@@ -87,74 +90,78 @@
        ,@(when rest
            (cdr (macroexpand `(def-pl-faces ,@rest))))))) ; cdr to skip the initial progn
 
+(symbolp 'region)
+
 (def-pl-faces
-  pl-active-1 (face-background 'region) (face-foreground 'region)
-  pl-active-2 (face-background 'secondary-selection) (face-foreground 'secondary-selection)
-  pl-active-3 (face-background 'hl-line) "black"
+  pl-active-1 'region 'region
+  pl-active-2 'secondary-selection 'secondary-selection
+  pl-active-3 'hl-line "black"
   pl-inactive-color-face "grey30" "grey90"
   pl-inactive-1 "grey20" "grey80"
   pl-inactive-2 "grey10" "grey70"
   pl-inactive-3 "black" "grey60")
 
-(defvar pl-separator-left
+(defvar separator-left
   (intern (format "powerline-%s-%s"
                   powerline-default-separator
                   (car powerline-default-separator-dir))))
 
-(defvar pl-separator-right
+(defvar separator-right
   (intern (format "powerline-%s-%s"
                   powerline-default-separator
                   (cdr powerline-default-separator-dir))))
 
-;;;###autoload
 (defun setup-powerline ()
   ;; (interactive)
-  (setq
-   mode-line-format
-   '("%e"
-     (:eval
-      (let* ((active (powerline-selected-window-active))
-             (color-face (if active nil 'pl-inactive-color-face))
-             (face1 (if active 'pl-active-1 'pl-inactive-1))
-             (face2 (if active 'pl-active-2 'pl-inactive-2))
-             (face3 (if active 'pl-active-3 'pl-inactive-3))
-             (separator-left pl-separator-left)
-             (separator-right pl-separator-right)
-             (lhs (list
-                   (powerline-raw (powerline-evil-tag) color-face 'l)
-                        (powerline-raw " " color-face)
-                        (funcall separator-left color-face face1)
+  )
+;; (setup-powerline)
 
-                        (powerline-buffer-id face1 'l)
-                        (powerline-raw " " face1)
-                        (funcall separator-left face1 face2)
+(setq-default mode-line-format
+  '("%e"
+    (:eval
+     (let* ((active (powerline-selected-window-active))
+            (color-face (if active nil 'pl-inactive-color-face))
+            (face1 (if active 'pl-active-1 'pl-inactive-1))
+            (face2 (if active 'pl-active-2 'pl-inactive-2))
+            (face3 (if active 'pl-active-3 'pl-inactive-3))
+            (lhs (list
+                  (powerline-raw (powerline-evil-tag) color-face 'l)
+                  (powerline-raw " " color-face)
+                  (funcall separator-left color-face face1)
 
-                        (powerline-major-mode face2 'l)
-                        (powerline-process face2)
-                        (powerline-raw " " face2)
-                        (funcall separator-left face2 face3)
+                  (powerline-buffer-id face1 'l)
+                  (powerline-raw " " face1)
+                  (funcall separator-left face1 face2)
 
-                        (powerline-minor-modes face3 'l)
-                        (powerline-narrow face3 'l)
-                        (powerline-raw " " face3)))
+                  (powerline-major-mode face2 'l)
+                  (powerline-process face2)
+                  (powerline-raw " " face2)
+                  (funcall separator-left face2 face3)
 
-             (rhs (list (funcall separator-right face3 face1)
-                        (powerline-raw " " face1)
-                        (powerline-raw "%l" face1 'r)
-                        (funcall separator-right face1 color-face)
+                  (powerline-minor-modes face3 'l)
+                  (powerline-narrow face3 'l)
+                  (powerline-raw " " face3)))
 
-                        (when global-mode-string
-                          (powerline-raw global-mode-string color-face)
-                          (powerline-raw " " color-face))
-                        (powerline-vc color-face 'r)))
-             )
-        (concat (powerline-render lhs)
-                (powerline-fill face3 (powerline-width rhs))
-                (powerline-render rhs)))))))
-(setup-powerline)
+            (rhs (list (funcall separator-right face3 face1)
+                       (powerline-raw " " face1)
+                       (powerline-raw "%l" face1 'r)
+                       (funcall separator-right face1 color-face)
 
+                       (when global-mode-string
+                         (powerline-raw global-mode-string color-face)
+                         (powerline-raw " " color-face))
+                       (powerline-vc color-face 'r))))
+       (concat (powerline-render lhs)
+               (powerline-fill face3 (powerline-width rhs))
+               (powerline-render rhs))))))
+
+;; remove buffer-local mode-line-formats if they pop up
 (add-hook 'window-configuration-change-hook
-          'setup-powerline)
+  (lambda ()
+    (mapc (lambda (buffer)
+            (when (local-variable-p 'mode-line-format)
+              (kill-local-variable 'mode-line-format)))
+          (buffer-list))))
 
 (provide 'theme-init)
 ;;; theme-init.el ends here
