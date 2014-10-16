@@ -262,6 +262,7 @@
         erlang-init
         html-init
         js-init
+        json-init
         markdown-init
         objc-init
         org-init

@@ -40,6 +40,7 @@
     evil-paredit
     find-things-fast
     flycheck
+    flymake-json
     flx-ido
     fuzzy
     highlight-parentheses
@@ -49,7 +50,8 @@
     ipython
     jedi
     js3-mode
-    json
+    ;; json
+    json-mode
     less-css-mode
     loccur
     magit
