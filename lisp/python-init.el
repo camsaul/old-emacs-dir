@@ -34,6 +34,13 @@
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
 
+(defun cam/python-install-pip-reqs ()
+  "Install pip requirements needed for running elpy, jedi, etc."
+  (call-process-shell-command
+   "pip install -U pep8 autopep8 flake8 pyflakes rope ropemacs jedi epc"
+   nil ; input file
+   nil)) ; output. nil = discard, 0 = discard, return immediately (process runs async)
+
 (defvar cam/has-initialized-python-p nil
   "Whether we've done the \"eval-after-load\" stuff for python/django mode yet.")
 
@@ -65,10 +72,7 @@
   (condition-case nil
       (jedi:install-server)
     ;; install pip requirements if jedi couldn't load
-    (error (call-process-shell-command "pip install -U pep8 autopep8 flake8 pyflakes rope ropemacs jedi epc"
-                nil ; input file
-                nil ; output. nil = discard, 0 = discard, return immediately (process runs async)
-                )
+    (error (cam/python-install-pip-reqs)
            (jedi:install-server)))))
 
 (cam/eval-after-load "python-mode"
@@ -84,6 +88,10 @@
 
 (defun cam-django-mode-setup ()
   "Code to execute as part of python/django-mode-hook."
+  (condition-case nil
+      (flymake-mode)
+    (error (cam/python-install-pip-reqs)))
+
   (cam-enable-minor-modes
     (company-mode . " ¢")
     eldoc-mode
