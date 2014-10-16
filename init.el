@@ -152,12 +152,18 @@
     ("<C-s-M-down>" windmove-down)
     ("<C-s-M-left>" windmove-left-or-other-frame)
     ("<C-s-M-return>" other-frame)
-    ("<escape>" evil-normal-state)
+    ("<deletechar>" ace-jump-same-mode-buffers)
+    ("<end>" ace-jump-buffer)
+    ("<escape>" (lambda () (interactive)
+                  (if (evil-normal-state-p) (evil-normal-state)
+                    (evil-emacs-state))))
     ("<f10>" switch-to-nav-buffer-other-window)   ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
     ("<f11>" paredit-mode)                        ; F11 is now global key for paredit-mode
     ("<f12> b" bing-search)
     ("<f12> s" stackoverflow-search)
     ("<f13>" popup-cam-menu)
+    ("<home>" ace-jump-mode)
+    ("<prior>" ace-jump-line-mode)
     ("<scroll>" popup-cam-menu)                   ; windows only
     ("<f9>" whitespace-mode)
     ("<insert>" nil)                              ; disable stupid insert key TODO maybe use as a prefix to insert something useful
