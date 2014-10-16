@@ -53,6 +53,7 @@
     loccur
     magit
     markdown-mode
+    moe-theme
     morlock                   ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
