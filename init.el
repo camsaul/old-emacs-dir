@@ -154,7 +154,6 @@
     ("<C-s-M-down>" windmove-down)
     ("<C-s-M-left>" windmove-left-or-other-frame)
     ("<C-s-M-return>" other-frame)
-    ("<deletechar>" ace-jump-same-mode-buffers)
     ("<end>" ace-jump-buffer)
     ("<escape>" (lambda () (interactive)
                   (if (evil-normal-state-p) (evil-normal-state)
