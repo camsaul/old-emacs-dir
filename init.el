@@ -35,6 +35,7 @@
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
 (cam-setup-autoloads
+  ("ace-jump-buffer" ace-jump-same-mode-buffers)
   ("bytecomp" byte-recompile-file)
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
