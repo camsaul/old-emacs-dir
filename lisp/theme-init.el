@@ -71,25 +71,25 @@
 (add-hook 'evil-emacs-state-entry-hook
           (cam-toggle-minor-modes linum-mode relative-line-numbers-mode))
 
-(defmacro def-pl-faces (name bg fg &rest rest)
+(defmacro def-pl-faces (name bg-color fg-color &rest rest)
   "Helper to create new face(s) via defface for powerline."
-  `(progn
-     (defface ,name
-       (quote ((t :background ,bg
-                  :foreground ,fg
-                  :weight bold)))
-       ,(concat (symbol-name name) " face for power line.")
-       :group 'pl-faces)
-     (set-face-background (quote ,name) ,bg)
-     (set-face-foreground (quote ,name) ,fg)
-     ,@(when rest
-         (cdr (macroexpand `(def-pl-faces ,@rest)))))) ; cdr to skip the initial progn
-
-(face-foreground 'hl-line)
+  (let ((bg (eval bg-color))
+        (fg (eval fg-color)))
+    `(progn
+       (defface ,name
+         (quote ((t :background ,bg
+                    :foreground ,fg
+                    :weight bold)))
+         ,(concat (symbol-name name) " face for power line.")
+         :group 'pl-faces)
+       (set-face-background (quote ,name) ,bg)
+       (set-face-foreground (quote ,name) ,fg)
+       ,@(when rest
+           (cdr (macroexpand `(def-pl-faces ,@rest))))))) ; cdr to skip the initial progn
 
 (def-pl-faces
-  pl-active-1 "grey80" "black"
-  pl-active-2 "grey70" "black"
+  pl-active-1 (face-background 'region) (face-foreground 'region)
+  pl-active-2 (face-background 'secondary-selection) (face-foreground 'secondary-selection)
   pl-active-3 (face-background 'hl-line) "black"
   pl-inactive-color-face "grey30" "grey90"
   pl-inactive-1 "grey20" "grey80"
@@ -115,8 +115,8 @@
      (:eval
       (let* ((active (powerline-selected-window-active))
              (color-face (if active nil 'pl-inactive-color-face))
-             (face1 (if active 'region 'pl-inactive-1))
-             (face2 (if active 'secondary-selection 'pl-inactive-2))
+             (face1 (if active 'pl-active-1 'pl-inactive-1))
+             (face2 (if active 'pl-active-2 'pl-inactive-2))
              (face3 (if active 'pl-active-3 'pl-inactive-3))
              (separator-left pl-separator-left)
              (separator-right pl-separator-right)
