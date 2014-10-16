@@ -22,6 +22,7 @@
   '(ac-etags
     ace-jump-buffer
     ace-jump-mode
+    ace-isearch
     bm
     clojure-mode
     clojure-mode-extra-font-locking

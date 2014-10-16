@@ -58,6 +58,7 @@
   electric-pair-mode
   evil-mode
   flx-ido-mode                                    ; fuzzy matching for ido
+  global-ace-isearch-mode
   global-auto-revert-mode
   global-hl-line-mode
   global-undo-tree-mode
