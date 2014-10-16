@@ -97,13 +97,21 @@
     (package-read-all-archive-contents)
     (package-load-all-descriptors)
     (unless package-archive-contents
-      (cam-refresh-package-contents-if-needed))))
+      (cam/package-refresh-contents-once))))
 
-(defun cam-refresh-package-contents-if-needed ()
+(defun cam/package-refresh-contents-once ()
   "Call package-refresh-contents the first time this function is called."
   (unless cam-has-refreshed-packages-p
     (package-refresh-contents)
-    (setq cam-has-refreshed-packages-p t)))
+    (setq cam-has-refreshed-packages-p t)
+
+    ; upgrade any packages that we can upgrade
+    (save-window-excursion
+      (package-list-packages-no-fetch)
+      (package-menu--find-upgrades)
+      (package-menu-mark-upgrades)
+      (package-menu-execute t) ; t = noquery
+      (kill-buffer-and-window))))
 
 
 ;;;; ADVICE / ETC
@@ -132,7 +140,7 @@
 (mapc (lambda (package)
         (if (package-installed-p package) (package-activate package)
           (progn
-            (cam-refresh-package-contents-if-needed)
+            (cam/package-refresh-contents-once)
             (package-install package))))
       cam/packages)
 
