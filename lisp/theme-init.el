@@ -97,24 +97,9 @@
   pl-active-2 'secondary-selection 'secondary-selection
   pl-active-3 'hl-line "black"
   pl-inactive-color-face "grey30" "grey90"
-  pl-inactive-1 "grey20" "grey80"
-  pl-inactive-2 "grey10" "grey70"
-  pl-inactive-3 "black" "grey60")
-
-(defvar separator-left
-  (intern (format "powerline-%s-%s"
-                  powerline-default-separator
-                  (car powerline-default-separator-dir))))
-
-(defvar separator-right
-  (intern (format "powerline-%s-%s"
-                  powerline-default-separator
-                  (cdr powerline-default-separator-dir))))
-
-(defun setup-powerline ()
-  ;; (interactive)
-  )
-;; (setup-powerline)
+  pl-inactive-1 "grey80" "grey20"
+  pl-inactive-2 "grey70" "grey10"
+  pl-inactive-3 "grey60" "black")
 
 (setq-default mode-line-format
   '("%e"
@@ -127,25 +112,25 @@
             (lhs (list
                   (powerline-raw (powerline-evil-tag) color-face 'l)
                   (powerline-raw " " color-face)
-                  (funcall separator-left color-face face1)
+                  (powerline-arrow-left color-face face1)
 
                   (powerline-buffer-id face1 'l)
                   (powerline-raw " " face1)
-                  (funcall separator-left face1 face2)
+                  (powerline-arrow-left face1 face2)
 
                   (powerline-major-mode face2 'l)
                   (powerline-process face2)
                   (powerline-raw " " face2)
-                  (funcall separator-left face2 face3)
+                  (powerline-arrow-left face2 face3)
 
                   (powerline-minor-modes face3 'l)
                   (powerline-narrow face3 'l)
                   (powerline-raw " " face3)))
 
-            (rhs (list (funcall separator-right face3 face1)
+            (rhs (list (powerline-arrow-right face3 face1)
                        (powerline-raw " " face1)
                        (powerline-raw "%l" face1 'r)
-                       (funcall separator-right face1 color-face)
+                       (powerline-arrow-right face1 color-face)
 
                        (when global-mode-string
                          (powerline-raw global-mode-string color-face)
