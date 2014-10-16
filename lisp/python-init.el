@@ -34,26 +34,34 @@
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
 
-(cam/eval-after-load "python-mode"
-  (setq gud-pdb-command-name (symbol-name pdb-path)
-        pdb-path '/usr/lib/python2.7/pdb.py
-        py-mode-map python-mode-map
-        python-check-command "pyflakes"
-        py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
-        py-shell-name python-shell-interpreter
-        python-command python-shell-interpreter
-        python-pep8-options '("--format=pylint" "--ignore E501,E401")
-        python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
-        python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
-        python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
-        python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
-        python-shell-output-regexp "Out\\[[0-9]+\\]: "
-        python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
-        )
-  (cam/define-python-keys python-mode-map)
+(defvar cam/has-initialized-python-p nil
+  "Whether we've done the \"eval-after-load\" stuff for python/django mode yet.")
 
-  (require 'jedi)                                                     ; see http://tkf.github.io/emacs-jedi/latest/#configuration
+(defun cam/initialize-python-if-needed ()
+  "Initial (one-time) setup for python-mode/django-mode/etc."
+  (unless cam/has-initialized-python-p
+    (mapc 'require '(elpy
+                     flymake
+                     info-look
+                     py-autopep8
+                     pydoc-info                                         ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
+                     python-pep8
+                     yasnippet))
+
+    (setq cam/has-initialized-python-p t
+          flycheck-flake8-maximum-line-length 200
+          py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
+          python-check-command "pyflakes"
+          python-pep8-options '("--format=pylint" "--ignore E501,E401")
+          python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+          python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
+          python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
+          python-shell-interpreter "ipython"
+          python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
+          python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
+        )
+
+  (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
   (condition-case nil
       (jedi:install-server)
     ;; install pip requirements if jedi couldn't load
@@ -61,9 +69,14 @@
                 nil ; input file
                 nil ; output. nil = discard, 0 = discard, return immediately (process runs async)
                 )
-           (jedi:install-server))))
+           (jedi:install-server)))))
+
+(cam/eval-after-load "python-mode"
+  (cam/initialize-python-if-needed)
+  (cam/define-python-keys python-mode-map))
 
 (cam/eval-after-load "django-mode"
+  (cam/initialize-python-if-needed)
   (cam/define-python-keys django-mode-map))
 
 
@@ -71,13 +84,6 @@
 
 (defun cam-django-mode-setup ()
   "Code to execute as part of python/django-mode-hook."
-  (mapc 'require '(elpy
-                   flymake
-                   info-look
-                   py-autopep8
-                   pydoc-info                                         ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
-                   python-pep8
-                   yasnippet))
   (cam-enable-minor-modes
     (company-mode . " ¢")
     eldoc-mode
@@ -86,7 +92,12 @@
     (highlight-parentheses-mode . nil))
 
   (pretty-lambdas)
-  (jedi:setup)                                                        ; make sure to do pip install jediepcserver
+  (jedi:setup)
+
+  ;; seriously, I don't want to use auto-complete-mode
+  (when (and (boundp 'auto-complete-mode)
+             auto-complete-mode)
+    (auto-complete-mode -1))
 
   ;; HOOKS
   (add-hook 'before-save-hook

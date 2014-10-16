@@ -120,14 +120,10 @@
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
- ;; ac-auto-show-menu t                              ; automatically show menu
- ;; ac-quick-help-delay 0.5                          ; shorter delay before showing quick help. Default is 1.5, 0 makes it crash
- ;; ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers)
  auto-revert-verbose nil
  auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
  bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
  clean-buffer-list-delay-special 30
- ;; clean-buffer-list-kill-regexps                ; Remove all starred buffers not currently in use
  global-auto-revert-non-file-buffers t            ; also refresh dired but be quiet about it
  inhibit-splash-screen t
  inhibit-startup-screen t
