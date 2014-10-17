@@ -1,7 +1,7 @@
+;; -*- comment-column: 50; -*-
+
 ;;; js-init -- Settings for editing JavaScript
 ;;; Commentary:
-
-;; -*- comment-column: 50; -*-
 
 ;;; Code:
 
@@ -17,17 +17,18 @@
       highlight-parentheses-mode)
     (pretty-function)))
 
-(eval-after-load "js3-mode"
-  '(progn
-     (require 'editorconfig)
+(cam/eval-after-load "js3-mode"
+  (require 'editorconfig)
      (cam/declare-vars js3-auto-indent-p
                        js3-enter-indents-newline
                        js3-consistent-level-indent-inner-bracket)
      (setq
-      js3-auto-indent-p t                         ; commas "right themselves" (?)
-      js3-enter-indents-newline t
-      js3-consistent-level-indent-inner-bracket t ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
-      )))
+         js3-auto-indent-p t                           ; commas "right themselves" (?)
+         js3-enter-indents-newline t
+         js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
+
+     (define-keys js3-mode-map
+       '(("M-q" cam/js-reindent-previous-sexp))))
 
 
 (defun pretty-function ()
@@ -38,6 +39,20 @@
                                     (match-end 1)
                                     "\u0192"
                                     'decompose-region)))))))
+
+(defun cam/js-reindent-previous-sexp ()
+  "Reindent sexp before point."
+  (interactive)
+  (save-excursion
+    (let ((end-line-num (line-number-at-pos (point))))
+      (backward-sexp)
+      (let ((line-nums (number-sequence (line-number-at-pos (point))
+                                        end-line-num)))
+        (mapc (lambda (line)
+                (goto-line line)
+                (indent-according-to-mode))
+              line-nums)))))
+
 
 (provide 'js-init)
 ;;; js-init.el ends here
