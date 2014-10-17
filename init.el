@@ -80,11 +80,19 @@
           (lambda ()
             (kill-buffer "*scratch*")))
 
-(eval-after-load "dired"
-  '(progn
-     '(unless (featurep 'dired+)
-        (require 'dired+))
-     (toggle-diredp-find-file-reuse-dir t)))      ; reuse dired buffers
+(cam/eval-after-load "dired"
+  '(unless (featurep 'dired+)
+     (require 'dired+))
+  (toggle-diredp-find-file-reuse-dir t)) ; reuse dired buffers
+
+;; Install editorconfig via homebrew if possible
+(cam/eval-after-load "editorconfig"
+  (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
+    (warn "EditorConfig is not installed. This is needed by editorconfig package.")
+    (when (= system-type
+           "darwin")
+        (warn "Attempting to install via 'brew install editorconfig'...")
+        (call-process-shell-command "brew install editorconfig" nil nil))))
 
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -155,9 +163,10 @@
     ("<C-s-M-left>" windmove-left-or-other-frame)
     ("<C-s-M-return>" other-frame)
     ("<end>" ace-jump-buffer)
-    ("<escape>" (lambda () (interactive)
-                  (if (evil-normal-state-p) (evil-normal-state)
-                    (evil-emacs-state))))
+    ("<escape>" (lambda ()
+                  (interactive)
+                  (if (evil-normal-state-p) (evil-emacs-state)
+                    (evil-normal-state))))
     ("<f10>" switch-to-nav-buffer-other-window)   ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
     ("<f11>" paredit-mode)                        ; F11 is now global key for paredit-mode
     ("<f12> b" bing-search)
