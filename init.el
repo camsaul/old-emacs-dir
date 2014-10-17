@@ -25,10 +25,10 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc 'require '(cl                               ; YUP		 
-		 package-init			  ; needs to be loaded before we can load ELPA packages like dash or powerline
-                 dash				  ; load this next so cam-functions can build on it
-		 cam-functions
+(mapc 'require '(cl                               ; YUP
+                 package-init                     ; needs to be loaded before we can load ELPA packages like dash or powerline
+                 dash                             ; load this next so cam-functions can build on it
+                 cam-functions
                  powerline
                  powerline-evil))
 
@@ -66,6 +66,7 @@
   global-undo-tree-mode
   ido-everywhere
   ido-mode
+  ;; (magit-auto-revert-mode . nil)                  ; auto revert buffers that change on disk as result of magit command
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   show-paren-mode                                 ; highlight matching parens
@@ -157,6 +158,8 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
+(put 'upcase-region 'disabled nil)
+
 ;; custom key bindings
 (define-keys nil
   '(
@@ -180,6 +183,7 @@
     ("<insert>" nil)                              ; disable stupid insert key TODO maybe use as a prefix to insert something useful
     ("C-H-a" mc/mark-all-like-this)
     ("C-H-e" mc/edit-lines)
+    ("C-M-:" eval-print-last-sexp)
     ("C-M-S-k" backward-kill-sexp)                ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
     ("C-M-y" popup-yank-menu)
     ("C-S-k" backward-kill-line)

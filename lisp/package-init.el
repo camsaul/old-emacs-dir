@@ -85,7 +85,7 @@
     slime
     smartparens
     smex
-    tommyh-theme
+    ;; tommyh-theme
     undo-tree
     xmlgen
     yaml-mode

@@ -1,4 +1,4 @@
-;; -*- comment-column: 50; -*-
+;; -*- comment-column: 60; -*-
 
 ;;; theme-init -- Setup Emacs theme
 ;;; Commentary:
@@ -14,10 +14,54 @@
                (darwin . "Menlo-11")))))
 
 (require 'moe-theme)
+(setq moe-light-pure-white-background-in-terminal t
+      moe-theme-highlight-buffer-id nil)
 (moe-light)
 
 
-;; Evil Mode Configuration
+;;;; COMPANY TOOLTIP TWEAKS
+
+(eval-after-load "company"
+  '(let ((h-1 (face-background 'hl-line))                   ; #d7ff87
+         (h-2 (face-background 'lazy-highlight))            ; #ff1f8b
+         (c-1 (face-background 'secondary-selection))       ; #005f87
+         (c-2 (face-background 'isearch))                   ; #ff5d17
+         (c-3 (face-background 'region))                    ; #5fafd7
+         )
+
+     (set-face-attribute 'mode-line nil
+                         :foreground "white"
+                         :background h-1)
+     (set-face-attribute 'minibuffer-prompt nil
+                         :background nil
+                         :foreground c-1
+                         :bold t)
+     (set-face-attribute 'company-tooltip nil
+                         :background "white")
+     (set-face-attribute 'company-tooltip-common nil
+                         :background "white"
+                         :foreground c-1
+                         :bold t)
+     (set-face-attribute 'company-tooltip-annotation nil
+                         :background "white"
+                         :foreground c-2)
+     (set-face-attribute 'company-preview-common nil
+                         :background "white")
+     (set-face-attribute 'company-tooltip-common-selection nil
+                         :background h-1
+                         :foreground h-2
+                         :bold t
+                         :italic t)
+     (set-face-attribute 'company-tooltip-selection nil
+                         :background h-1
+                         :foreground c-2)
+     (set-face-attribute 'company-scrollbar-bg nil
+                         :background h-1)
+     (set-face-attribute 'company-scrollbar-fg nil
+                         :background c-2)))
+
+
+;;;; EVIL MODE CONFIGURATION
 
 (global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
 
@@ -104,7 +148,6 @@
 
 (set-face-bold 'mode-line t)
 (set-face-bold 'mode-line-inactive nil)
-
 ;; #5fafd7
 (pl/hex-color
  (face-background 'region))
@@ -121,7 +164,10 @@
                   (powerline-raw (concat (powerline-evil-tag) " ") color-face 'l)
                   (powerline-slant-left color-face face1)
 
-                  (powerline-raw (concat " " (buffer-name) " ") face1 '1)
+                  (powerline-raw (concat " " (buffer-name)
+                                         (if buffer-read-only " (readonly)"
+                                           (when (buffer-modified-p) "*"))
+                                         " ") face1 '1)
                   (powerline-slant-left face1 face2)
 
                   (powerline-major-mode face2 'l)
@@ -132,14 +178,14 @@
                   (powerline-minor-modes face3 'l)
                   (powerline-narrow face3 'l)
                   (powerline-raw " " face3)))
+            (rhs (list
+                  (powerline-raw "%n " face3)
+                  (powerline-slant-left face3 face1)
+                  (powerline-raw (concat " ♠ %3l ♣  ♥ %3c ♦") face1 'r)
+                  (powerline-slant-left face1 color-face)
 
-            (rhs (list (powerline-slant-left face3 face1)
-                       (powerline-raw " %l" face1 'r)
-                       (powerline-slant-left face1 color-face)
-
-                       (when global-mode-string
-                         (powerline-raw (concat global-mode-string " ") color-face))
-                       (powerline-vc color-face 'r))))
+                  (powerline-raw " %M" color-face) ; %M -> global-mode-string
+                  (powerline-vc color-face 'r))))
        (concat (powerline-render lhs)
                (powerline-fill face3 (powerline-width rhs))
                (powerline-render rhs))))))

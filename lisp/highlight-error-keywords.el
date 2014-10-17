@@ -13,6 +13,8 @@
         (enabled highlight-error-keywords-mode-is-enabled-p))
     (unless (equal enable enabled)
       (setq highlight-error-keywords-mode-is-enabled-p enable)
-      (funcall (if enable 'font-lock-add-keywords 'font-lock-remove-keywords) nil highlight-error-keywords-pattern))))
+      (funcall (if enable 'font-lock-add-keywords 'font-lock-remove-keywords) major-mode highlight-error-keywords-pattern))))
+
+(highlight-error-keywords-mode 1)
 
 (provide 'highlight-error-keywords)

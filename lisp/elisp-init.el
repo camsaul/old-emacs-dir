@@ -35,8 +35,8 @@
   (cam-lisp-mode-setup)
 
   (cam-enable-minor-modes
-    elisp-slime-nav-mode
-    flycheck-mode)
+    (elisp-slime-nav-mode . " ☸")
+    (flycheck-mode . " ✔"))
   (turn-on-morlock-mode-if-desired)
 
   (setq flycheck-emacs-lisp-load-path load-path)
@@ -59,7 +59,8 @@
 (mapc (lambda (symb)
         (put symb 'lisp-indent-function 1))
       '(add-hook
-        setq))
+         setq
+         setq-default))
 
 
 ;;;; FUNCTIONS
@@ -70,6 +71,12 @@
   (condition-case nil
       (flycheck-next-error)
     (error (goto-char (point-min)))))
+
+(defun cam/elisp-overkill-tab-command ()
+  "Indent, autocomplete, show dox, etc. when hitting tab."
+  (interactive)
+  (indent-for-tab-command)
+  (company-complete))
 
 
 ;;;; KEY MAPS
@@ -83,7 +90,8 @@
       ("<f7>" flycheck-mode)
       ("C-c RET" pp-macroexpand-last-sexp)
       ("C-x C-e" pp-eval-last-sexp)  ; pretty-print eval'd expressions
-      ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point))))
+      ("<s-mouse-1>" elisp-slime-nav-find-elisp-thing-at-point)
+      ("<tab>" cam/elisp-overkill-tab-command))))
 
 (add-hook 'emacs-lisp-mode-hook
   (lambda ()
