@@ -40,7 +40,7 @@
                               (cursor-var (intern (format "evil-%s-state-cursor" name)))
                               (cursor-val (list color 'box)))
                          `(setq ,cursor-var ',cursor-val)))
-                     (eval 'evil-state-colors))))
+                     (eval (intern "evil-state-colors")))))
 (evil-set-cursor-colors)
 
 (defun mode-line-face-background ()

@@ -25,10 +25,10 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc 'require '(cl                               ; YUP
-                 dash
-                 cam-functions
-                 package-init
+(mapc 'require '(cl                               ; YUP		 
+		 package-init			  ; needs to be loaded before we can load ELPA packages like dash or powerline
+                 dash				  ; load this next so cam-functions can build on it
+		 cam-functions
                  powerline
                  powerline-evil))
 

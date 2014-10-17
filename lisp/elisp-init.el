@@ -15,16 +15,6 @@
 
 ;;;; GENERAL
 
-(defun cam/is-init-file-p (filename)
-  "Return t if FILENAME is ~/.emacs.d/init.el or in ~/.emacs.d/ directory; nil in any other case."
-  (condition-case nil
-      (or (file-equal-p filename "~/.emacs.d/init.el")
-          (unless (string-match "flycheck" filename)
-            (and (string= (file-name-extension filename)
-                          "el")
-                 (file-in-directory-p filename "~/.emacs.d/lisp"))))
-    (error nil)))
-
 (defun byte-recompile-this-file ()
   "Recompile the current Emacs Lisp file if it is an init file."
   (interactive)

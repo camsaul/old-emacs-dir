@@ -307,5 +307,15 @@
      (quote (progn ,@forms))))
 (put 'cam/eval-after-load 'lisp-indent-function 1)
 
+(defun cam/is-init-file-p (filename)
+  "Return t if FILENAME is ~/.emacs.d/init.el or in ~/.emacs.d/ directory; nil in any other case."
+  (condition-case nil
+      (or (file-equal-p filename "~/.emacs.d/init.el")
+          (unless (string-match "flycheck" filename)
+            (and (string= (file-name-extension filename)
+                          "el")
+                 (file-in-directory-p filename "~/.emacs.d/lisp"))))
+    (error nil)))
+
 (provide 'cam-functions)
 ;;; cam-functions.el ends here

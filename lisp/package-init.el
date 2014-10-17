@@ -2,6 +2,9 @@
 ;; -*- comment-column: 30; -*-
 
 ;;; Commentary:
+;;; !!!!! IMPORTANT !!!!!!
+;;; This is the very first customization file we're loading, so don't try to use anything non-standard function from any library except for cl
+;;; (that means no dash and no cam-functions)
 
 ;;; Code:
 
