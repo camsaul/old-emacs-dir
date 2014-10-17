@@ -1,7 +1,12 @@
+;; -*- comment-column: 50; -*-
+
 ;;; theme-init -- Setup Emacs theme
 ;;; Commentary:
 
 ;;; Code:
+
+(when (string= system-type "darwin")               ; enable sRGB on OS X (why ?)
+  (setq ns-use-srgb-colorspace t))
 
 (set-frame-font
  (cdr (assoc system-type

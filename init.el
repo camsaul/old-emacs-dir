@@ -1,7 +1,7 @@
+;; -*- comment-column: 50; -*-
+
 ;;; init -- General Setup
 ;;; Commentary:
-
-;; -*- comment-column: 50; -*-
 
 ;;; Code:
 
@@ -16,7 +16,6 @@
         scroll-bar-mode
         tool-bar-mode))
 
-
 ;;;; LOAD PACKAGES
 
 (setq load-prefer-newer t)                        ; Load from .el files if they are newer than matching .elc files
@@ -26,7 +25,9 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc 'require '(cam-functions
+(mapc 'require '(cl                               ; YUP
+                 dash
+                 cam-functions
                  package-init
                  powerline
                  powerline-evil))
@@ -227,10 +228,11 @@
     ))
 
 (defvar init-files
-  (cons "~/.emacs.d/init.el"
-        (directory-files "~/.emacs.d/lisp"
-                         t        ; return file's absolute (full) name
-                         "^[^#.].*.el$"))
+  (-filter 'cam/is-init-file-p
+           (cons "~/.emacs.d/init.el"
+                 (directory-files "~/.emacs.d/lisp"
+                                  t ; return file's absolute (full) name
+                                  "^[^#.].*.el$")))
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
 
 

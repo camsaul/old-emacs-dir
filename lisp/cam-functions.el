@@ -1,3 +1,8 @@
+;;; cam-functions -- Utility function used by other init files
+;;; Commentary:
+
+;;; Code:
+
 (defun cygwin-shell ()
   "Run cygwin bash in shell mode."
   (interactive)

@@ -28,6 +28,7 @@
     clojure-mode-extra-font-locking
     clojurescript-mode
     company
+    dash
     diminish
     dired+
     django-mode
