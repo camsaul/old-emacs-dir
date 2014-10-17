@@ -22,13 +22,16 @@
      (cam/declare-vars js3-auto-indent-p
                        js3-enter-indents-newline
                        js3-consistent-level-indent-inner-bracket)
-     (setq
+     (setq-default
          js3-auto-indent-p t                           ; commas "right themselves" (?)
          js3-enter-indents-newline t
          js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
 
      (define-keys js3-mode-map
-       '(("M-q" cam/js-reindent-previous-sexp))))
+       '(("<return>" js3-insert-and-indent)
+         ;; ("C-j" (lambda () (interactive)
+         ;;           (call-interactively 'js3-insert-and-indent)))
+         ("M-q" cam/js-reindent-previous-sexp))))
 
 
 (defun pretty-function ()
