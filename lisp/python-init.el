@@ -143,7 +143,7 @@
   "Run isort on the current buffer in place."
   (interactive)
   (call-process "isort" nil t nil (buffer-file-name) "--order-by-type" "--multi_line" "1" "--lines" "120")
-  (revert-buffer t t))
+  (revert-buffer t t t))
 
 (defun insert-lines (lines)
   "Insert a list of LINES calling (newline-and-indent) after each."
