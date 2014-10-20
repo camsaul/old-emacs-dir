@@ -66,7 +66,6 @@
   global-undo-tree-mode
   ido-everywhere
   ido-mode
-  ;; (magit-auto-revert-mode . nil)                  ; auto revert buffers that change on disk as result of magit command
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   show-paren-mode                                 ; highlight matching parens
@@ -82,19 +81,6 @@
           (lambda ()
             (kill-buffer "*scratch*")))
 
-(cam/eval-after-load "dired"
-  '(unless (featurep 'dired+)
-     (require 'dired+))
-  (toggle-diredp-find-file-reuse-dir t)) ; reuse dired buffers
-
-;; Install editorconfig via homebrew if possible
-(cam/eval-after-load "editorconfig"
-  (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
-    (warn "EditorConfig is not installed. This is needed by editorconfig package.")
-    (when (= system-type
-           "darwin")
-        (warn "Attempting to install via 'brew install editorconfig'...")
-        (call-process-shell-command "brew install editorconfig" nil nil))))
 
 (add-hook 'dired-mode-hook
           (lambda ()
@@ -110,14 +96,32 @@
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
 
+(cam/eval-after-load "dired"
+  '(unless (featurep 'dired+)
+     (require 'dired+))
+  (toggle-diredp-find-file-reuse-dir t)) ; reuse dired buffers
+
+;; Install editorconfig via homebrew if possible
+(cam/eval-after-load "editorconfig"
+  (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
+    (warn "EditorConfig is not installed. This is needed by editorconfig package.")
+    (when (= system-type
+           "darwin")
+        (warn "Attempting to install via 'brew install editorconfig'...")
+        (call-process-shell-command "brew install editorconfig" nil nil))))
+
 (eval-after-load "multiple-cursors"
   '(multiple-cursors-mode 1))
+
+(eval-after-load "magit"
+  '(cam-enable-minor-modes
+     ;; (global-magit-wip-save-mode t)            ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
+     (magit-auto-revert-mode . nil)))             ; auto-revert buffers that change on disk as result of magit command
 
 (eval-after-load "find-things-fast"
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
                           "*.js")))
-
 
 ;; GENERAL SETTINGS
 
@@ -142,7 +146,6 @@
  ns-right-command-modifier 'hyper
  ns-right-control-modifier 'hyper
  ns-right-option-modifier 'alt
- query-replace-interactive t                      ; Use last incremental seach regexp for query in regexp-query-replace
  recentf-max-menu-items 20
  redisplay-dont-pause t                           ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
  require-final-newline t                          ; add final newline on save

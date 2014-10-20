@@ -66,14 +66,18 @@
           python-shell-interpreter "ipython"
           python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
           python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
-        )
+          )
 
-  (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
-  (condition-case nil
-      (jedi:install-server)
-    ;; install pip requirements if jedi couldn't load
-    (error (cam/python-install-pip-reqs)
-           (jedi:install-server)))))
+
+
+    (process-list)
+
+    (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
+    (condition-case nil
+        (jedi:install-server)
+      ;; install pip requirements if jedi couldn't load
+      (error (cam/python-install-pip-reqs)
+             (jedi:install-server)))))
 
 (cam/eval-after-load "python-mode"
   (cam/initialize-python-if-needed)
@@ -102,6 +106,12 @@
   (pretty-lambdas)
   (jedi:setup)
 
+  ;; don't prompt for confirmation when killing elpy process
+  (mapc (lambda (process)
+          (when (string-match-p "elpy-rpc" (process-name process))
+            (set-process-query-on-exit-flag process nil)))
+        (process-list))
+
   ;; seriously, I don't want to use auto-complete-mode
   (when (and (boundp 'auto-complete-mode)
              auto-complete-mode)
@@ -109,10 +119,10 @@
 
   ;; HOOKS
   (add-hook 'before-save-hook
-            (lambda ()
-              (untabify-current-buffer)
-              (run-autopep8))
-            nil t)
+    (lambda ()
+      (untabify-current-buffer)
+      (run-autopep8))
+    nil t)
   (add-hook 'after-save-hook 'run-isort nil t))
 
 (defalias 'cam-python-mode-setup 'cam-django-mode-setup)
