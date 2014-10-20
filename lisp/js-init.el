@@ -17,6 +17,11 @@
       highlight-parentheses-mode)
     (pretty-function)))
 
+(cl-defun cam/interactivify (func)
+  (cl-lambda ()
+    (interactive)
+    (eval `(call-interactively ,func))))
+
 (cam/eval-after-load "js3-mode"
   (require 'editorconfig)
      (cam/declare-vars js3-auto-indent-p
@@ -28,7 +33,7 @@
          js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
 
      (define-keys js3-mode-map
-       '(("<return>" js3-insert-and-indent)
+       '(("C-j" (cam/interactivify 'js3-insert-and-indent))
          ;; ("C-j" (lambda () (interactive)
          ;;           (call-interactively 'js3-insert-and-indent)))
          ("M-q" cam/js-reindent-previous-sexp))))
