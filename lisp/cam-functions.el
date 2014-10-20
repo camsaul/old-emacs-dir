@@ -9,11 +9,24 @@
   (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
     (call-interactively 'shell)))
 
+
+(defmacro cam/define-keys (map-or-nil key fn &rest more)
+  "If MAP-OR-NIL is non-nil, map pairs of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
+  (let ((k (list 'kbd key)))
+    `(progn
+       ,@(when more
+           (cdr (macroexpand `(cam/define-keys ,map-or-nil ,@more))))
+       ,(if map-or-nil `(define-key ,map-or-nil ,k ,fn)
+          `(global-set-key ,k ,fn)))))
+(put 'cam/define-keys 'lisp-indent-function 1)
+
 (defun define-keys (map-or-nil keys)
+  (eval-when-compile
+    '(warn "define-keys is deprecated, prefer cam/define-keys instead."))
   (cl-flet ((set-key-fn (ks a)
                         (let ((k (eval (list 'kbd ks))))
                           (if map-or-nil
-                              (define-key map-or-nil k a)
+                              (define-key map-or-nil k (macroexpand a))
                             (global-set-key k a)))))
     (mapc (lambda (ka)
             (set-key-fn (car ka) (cadr ka)))

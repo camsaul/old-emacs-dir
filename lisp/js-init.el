@@ -17,10 +17,10 @@
       highlight-parentheses-mode)
     (pretty-function)))
 
-(cl-defun cam/interactivify (func)
-  (cl-lambda ()
-    (interactive)
-    (eval `(call-interactively ,func))))
+(defmacro cam/interactivify (func)
+  `(lambda ()
+     (interactive)
+     (call-interactively ,func)))
 
 (cam/eval-after-load "js3-mode"
   (require 'editorconfig)
@@ -32,12 +32,9 @@
          js3-enter-indents-newline t
          js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
 
-     (define-keys js3-mode-map
-       '(("C-j" (cam/interactivify 'js3-insert-and-indent))
-         ;; ("C-j" (lambda () (interactive)
-         ;;           (call-interactively 'js3-insert-and-indent)))
-         ("M-q" cam/js-reindent-previous-sexp))))
-
+     (cam/define-keys js3-mode-map
+       "C-j" (cam/interactivify 'js3-insert-and-indent)
+       "M-q" 'cam/js-reindent-previous-sexp))
 
 (defun pretty-function ()
   "Turn function into a fancy f symbol."

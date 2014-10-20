@@ -58,9 +58,11 @@
 ;; nicer indentation
 (mapc (lambda (symb)
         (put symb 'lisp-indent-function 1))
-      '(add-hook
-         setq
-         setq-default))
+      '(-lambda
+        add-hook
+        cl-lambda
+        setq
+        setq-default))
 
 
 ;;;; FUNCTIONS
