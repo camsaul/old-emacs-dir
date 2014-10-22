@@ -61,7 +61,7 @@
     magit
     markdown-mode
     moe-theme
-    morlock                   ; extra font-lock keywords for elisp editing
+    morlock                             ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
     outline-magic
@@ -79,6 +79,7 @@
     rainbow-delimiters
     rainbow-mode
     relative-line-numbers
+    rotate                              ; rotate-window, rotate-layout, etc.
     rspec-mode
     ruby-block
     ruby-electric
