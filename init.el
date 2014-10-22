@@ -73,7 +73,10 @@
 
 ;;;; GLOBAL HOOKS
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook
+  (lambda ()
+    (delete-trailing-whitespace)
+    (set-buffer-file-coding-system 'utf-8-auto-unix)))
 
 (add-hook 'emacs-startup-hook
           (lambda ()

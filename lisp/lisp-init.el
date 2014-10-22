@@ -11,11 +11,7 @@
     (paredit-mode . " π"))
   (pretty-lambdas)
   (set-face-background 'hl-sexp-face "#DDFFDD")
-  (add-hook 'before-save-hook
-    '(lambda ()
-       (set-buffer-file-coding-system 'utf-8-auto-unix)
-       (untabify-current-buffer))
-    nil t))
+  (add-hook 'before-save-hook 'untabify-current-buffer t t))
 
 (defun backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."
