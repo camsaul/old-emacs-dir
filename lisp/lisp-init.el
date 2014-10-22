@@ -5,22 +5,33 @@
                    hl-sexp))
   (cam-enable-minor-modes
     (company-mode . " ¢")
+    (eldoc-mode . nil)
     (highlight-parentheses-mode . nil)            ; highlight parentheses that surround the current sexpr
     hl-sexp-mode                                  ; hl-sexp-mode highlights the current sexp
     (paredit-mode . " π"))
-  (turn-on-eldoc-mode)
-  (diminish 'eldoc-mode)
   (pretty-lambdas)
   (set-face-background 'hl-sexp-face "#DDFFDD")
-  (add-hook 'before-save-hook '(lambda ()
-                                 (set-buffer-file-coding-system 'utf-8-auto-unix)
-                                 (untabify-current-buffer))
-            nil t))
+  (add-hook 'before-save-hook
+    '(lambda ()
+       (set-buffer-file-coding-system 'utf-8-auto-unix)
+       (untabify-current-buffer))
+    nil t))
 
 (defun backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."
   (interactive)
   (paredit-kill 0))
+
+(eval-after-load 'paredit
+  '(progn
+     (mapc (-lambda ((cmd val))
+             (put cmd 'delete-selection val))
+           '((paredit-forward-delete supersede)
+             (paredit-backward-delete superscede)
+             (paredit-open-round t)
+             (paredit-open-square t)
+             (paredit-doublequote t)
+             (paredit-newline t)))))
 
 (defun cam-define-lisp-keys (mode-map)
   (define-keys mode-map
