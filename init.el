@@ -79,6 +79,14 @@
     (delete-trailing-whitespace)
     (set-buffer-file-coding-system 'utf-8-auto-unix)))
 
+(add-hook 'after-save-hook 'angry-police-captain t)
+(eval-after-load "angry-police-captain"
+  '(-map-when (-lambda (p) (->> p
+                             process-name
+                             (string-match-p "angry-police-captain")))
+              (-rpartial 'set-process-query-on-exit-flag nil)
+              (process-list)))
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (kill-buffer "*scratch*")))
@@ -216,6 +224,7 @@
   "<C-s-M-return>" 'other-frame
   "<end>" 'ace-jump-buffer
   "<escape>" 'evil-normal-state
+  "<f2>" (lambda () (interactive) (call-interactively 'helm-swoop))
   "<f10>" 'switch-to-nav-buffer-other-window      ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
   "<f11>" 'paredit-mode                           ; F11 is now global key for paredit-mode
   "<f12> b" 'bing-search

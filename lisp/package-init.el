@@ -26,6 +26,7 @@
     ace-jump-buffer
     ace-jump-mode
     ace-isearch
+    angry-police-captain
     bm
     clojure-mode
     clojure-mode-extra-font-locking
