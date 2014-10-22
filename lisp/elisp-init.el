@@ -38,6 +38,7 @@
     (elisp-slime-nav-mode . " ☸")
     (flycheck-mode . " ✔"))
   (turn-on-morlock-mode-if-desired)
+  (dash-enable-font-lock)
 
   (setq flycheck-emacs-lisp-load-path load-path)
 
