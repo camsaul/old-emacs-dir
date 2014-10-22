@@ -161,7 +161,11 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
-(put 'upcase-region 'disabled nil)
+;; Commands to enable
+(mapc (lambda (fn)
+        (put fn 'disabled nil))
+      '(downcase-region
+        upcase-region))
 
 ;; Commands to always run fullscreen
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
