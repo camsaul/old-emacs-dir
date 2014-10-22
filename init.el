@@ -26,6 +26,7 @@
 (mapc 'require '(cl                               ; YUP
                  package-init                     ; needs to be loaded before we can load ELPA packages like dash or powerline
                  dash                             ; load this next so cam-functions can build on it
+                 dash-functional
                  cam-functions
                  powerline
                  powerline-evil))
