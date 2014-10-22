@@ -52,7 +52,6 @@
   set-fringe-mode                                 ; disable fringes
   )
 
-
 ;;;; GLOBALLY ENABLED MINOR MODES
 
 (cam-enable-minor-modes

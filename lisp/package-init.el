@@ -85,7 +85,6 @@
     slime
     smartparens
     smex
-    ;; tommyh-theme
     undo-tree
     xmlgen
     yaml-mode
@@ -117,8 +116,7 @@
       (package-list-packages-no-fetch)
       (package-menu--find-upgrades)
       (package-menu-mark-upgrades)
-      (package-menu-execute t) ; t = noquery
-      (kill-buffer-and-window))))
+      (package-menu-execute t)))) ; t = noquery
 
 
 ;;;; ADVICE / ETC
