@@ -5,8 +5,6 @@
 
 ;;; Code:
 
-;; (profiler-start 'cpu)
-
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 
 (mapc (lambda (mode)
@@ -65,6 +63,7 @@
   global-undo-tree-mode
   ido-everywhere
   ido-mode
+  ido-ubiquitous-mode
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   show-paren-mode                                 ; highlight matching parens
@@ -90,7 +89,8 @@
             (cam-enable-minor-modes
               highlight-error-keywords-mode       ; TODO ! Not working
               rainbow-delimiters-mode
-              (rainbow-mode . nil))))
+              (rainbow-mode . nil)))
+          t)
 
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
@@ -121,6 +121,8 @@
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
                           "*.js")))
+
+
 ;;;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
@@ -160,6 +162,11 @@
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
 (put 'upcase-region 'disabled nil)
+
+;; Commands to always run fullscreen
+(mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
+      '(("magit" magit-status)
+        ("package" package-list-packages package-list-packages-no-fetch)))
 
 
 ;;;; EVIL CONFIG (CURSOR COLORS IN THEME-INIT.EL)
@@ -314,8 +321,6 @@
         ruby-init
         theme-init))
 
-;; (profiler-report)
-;; (profiler-stop)
 
 (provide 'init)
 ;;; init.el ends here

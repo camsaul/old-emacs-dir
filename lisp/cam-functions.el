@@ -330,5 +330,21 @@
                  (file-in-directory-p filename "~/.emacs.d/lisp"))))
     (error nil)))
 
+(defmacro cam/run-fullscreen (package &rest fns)
+  "Add advice to FNS to always run fullscreen and restore window configuration after buffer is killed.  Advice is added via 'eval-after-load' after PACKAGE is loaded."
+  `(eval-after-load ,package
+     (quote (progn
+              ,@(mapcar (lambda (fn)
+                          (let ((window-config (intern (concat ":" (symbol-name fn) "-fullscreen"))))
+                            `(defadvice ,fn (around run-fullscreen activate)
+                               (window-configuration-to-register ,window-config)
+                               ad-do-it
+                               (delete-other-windows)
+                               (add-hook 'kill-buffer-hook
+                                 (lambda ()
+                                   (jump-to-register ,window-config))
+                                 t t))))
+                        fns)))))
+
 (provide 'cam-functions)
 ;;; cam-functions.el ends here
