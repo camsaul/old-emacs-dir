@@ -55,22 +55,22 @@
                      python-pep8
                      yasnippet))
 
-    (setq cam/has-initialized-python-p t
-          flycheck-flake8-maximum-line-length 200
-          py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
-          python-check-command "pyflakes"
-          python-pep8-options '("--format=pylint" "--ignore E501,E401")
-          python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
-          python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
-          python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
-          python-shell-interpreter "ipython"
-          python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
-          python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
-          )
+    (setq-default
+        cam/has-initialized-python-p t
+        py-autopep8-options '("--aggressive" "--ignore" "E501,E401" "-j" "0")
+        python-check-command "pyflakes"
+        python-pep8-options '("--format=pylint" "--ignore E501,E401")
+        python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
+        python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
+        python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
+        python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
+        )
 
-
-
-    (process-list)
+    (eval-after-load "flycheck"
+      '(setq-default
+           flycheck-flake8-maximum-line-length 200))
 
     (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
     (condition-case nil
