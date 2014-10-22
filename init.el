@@ -170,11 +170,16 @@
 (setq evil-default-state 'emacs)
 (global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
 
-(defadvice evil-insert-state (around cam/intercept-evil-insert-state activate)
-  "Intercept calls to evil-insert-state, and instead switch to evil-emacs-state."
-  (interactive)
-  (evil-emacs-state))
-
+(mapc (lambda (fn)
+        (eval `(defadvice ,fn (around cam/intercept-evil-state activate)
+                 "Intercept any switch to this evil state, and switch to Emacs state instead."
+                 (interactive)
+                 (evil-emacs-state))))
+      '(evil-insert-state
+        evil-motion-state
+        evil-operator-state
+        evil-replace-state
+        evil-visual-state))
 
 (defadvice evil-normal-state (after cam/enable-rel-line-nums-for-normal-mode activate)
   "Switch to relative-line-numbers mode after entering evil normal mode."
