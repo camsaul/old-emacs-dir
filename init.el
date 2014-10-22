@@ -121,8 +121,7 @@
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
                           "*.js")))
-
-;; GENERAL SETTINGS
+;;;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
 
@@ -162,10 +161,35 @@
 
 (put 'upcase-region 'disabled nil)
 
+
+;;;; EVIL CONFIG (CURSOR COLORS IN THEME-INIT.EL)
+
 (cam/define-keys evil-normal-state-map
   "<escape>" 'evil-emacs-state)
 
-;; custom key bindings
+(setq evil-default-state 'emacs)
+(global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
+
+(defadvice evil-insert-state (around cam/intercept-evil-insert-state activate)
+  "Intercept calls to evil-insert-state, and instead switch to evil-emacs-state."
+  (interactive)
+  (evil-emacs-state))
+
+
+(defadvice evil-normal-state (after cam/enable-rel-line-nums-for-normal-mode activate)
+  "Switch to relative-line-numbers mode after entering evil normal mode."
+  (interactive)
+  (relative-line-numbers-mode 1))
+
+(defadvice evil-emacs-state (after cam/disable-rel-line-nums-for-emacs-mode activate)
+  "Switch relative-line-numbers-mode off when entering Emacs mode."
+  (interactive)
+  (relative-line-numbers-mode -1)
+  (linum-mode 1))
+
+
+;;;; GLOBAL KEY-BINDINGS
+
 (cam/define-keys nil
   "<C-s-M-down>" 'windmove-down
   "<C-s-M-left>" 'windmove-left-or-other-frame

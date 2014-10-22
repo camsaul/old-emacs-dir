@@ -63,8 +63,6 @@
 
 ;;;; EVIL MODE CONFIGURATION
 
-(global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
-
 (defvar evil-state-colors
   '(("emacs" . "#dd0000")
     ("normal" . "#0000dd")
@@ -97,23 +95,12 @@
   (lambda ()
     (set-face-background 'mode-line (mode-line-face-background))))
 
-(defmacro cam-toggle-minor-modes (on-mode off-mode &rest body)
-  "Enable on-mode and disable off-mode."
-  `(lambda ()
-    (,on-mode 1)
-    (,off-mode -1)
-    ,@body))
 
 (set-default 'linum-format "%3d")
 (set-default 'relative-line-numbers-format
              (lambda (offset)
                (format "%3d" (abs offset))))
 
-(add-hook 'evil-normal-state-entry-hook
-          (cam-toggle-minor-modes relative-line-numbers-mode linum-mode))
-
-(add-hook 'evil-emacs-state-entry-hook
-          (cam-toggle-minor-modes linum-mode relative-line-numbers-mode))
 
 (defmacro def-pl-faces (name bg-color fg-color &rest rest)
   "Helper to create new face(s) via defface for powerline. Calls set-face-background/foreground as well."
