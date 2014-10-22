@@ -173,8 +173,8 @@
   "<C-s-M-return>" 'other-frame
   "<end>" 'ace-jump-buffer
   "<escape>" 'evil-normal-state
-  "<f10>" 'switch-to-nav-buffer-other-window ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
-  "<f11>" 'paredit-mode       ; F11 is now global key for paredit-mode
+  "<f10>" 'switch-to-nav-buffer-other-window      ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
+  "<f11>" 'paredit-mode                           ; F11 is now global key for paredit-mode
   "<f12> b" 'bing-search
   "<f12> s" 'stackoverflow-search
   "<f13>" 'popup-cam-menu
@@ -182,24 +182,24 @@
   "<prior>" 'ace-jump-line-mode
   "<scroll>" 'popup-cam-menu                      ; windows only
   "<f9>" 'whitespace-mode
-  "<insert>" nil ; disable stupid insert key TODO maybe use as a prefix to insert something useful
+  "<insert>" nil                                  ; disable stupid insert key TODO maybe use as a prefix to insert something useful
   "C-H-a" 'mc/mark-all-like-this
   "C-H-e" 'mc/edit-lines
   "C-M-:" 'eval-print-last-sexp
-  "C-M-S-k" 'backward-kill-sexp ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
+  "C-M-S-k" 'backward-kill-sexp                   ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
   "C-M-y" 'popup-yank-menu
   "C-S-k" 'backward-kill-line
-  "C-c e" 'eval-and-replace ; eval previous elisp expression at point, replace with results
-  "C-v" 'yank        ; C-v -> yank instead of whatever it usually does
-  "C-x C-b" 'buffer-menu  ; C-x C-b shows buffer menu
-  "C-x C-d" 'ido-dired    ; C-x C-d -> dired instead of list directory
-  "C-x C-r" 'recentf-open-files ; C-x C-r -> display recent files (overrides open file in read-only mode)
-  "C-x k" 'kill-this-buffer ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
-  "C-x u" nil ; disable emacs default keybinding for undo, use C-z instead
-  "C-x z" nil ; disable minimize emacs
-  "C-x C-z" nil                               ; disable minimize emacs
+  "C-c e" 'eval-and-replace                       ; eval previous elisp expression at point, replace with results
+  "C-v" 'yank                                     ;      ; C-v -> yank instead of whatever it usually does
+  "C-x C-b" 'buffer-menu                          ;  C-x C-b shows buffer menu
+  "C-x C-d" 'ido-dired                            ;  ; C-x C-d -> dired instead of list directory
+  "C-x C-r" 'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
+  "C-x k" 'kill-this-buffer                       ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
+  "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
+  "C-x z" nil                                     ; disable minimize emacs
+  "C-x C-z" nil                                   ; disable minimize emacs
   "H-A" 'mc/mark-previous-like-this
-  "H-E" 'mc/mark-next-like-this ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
+  "H-E" 'mc/mark-next-like-this                   ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
   "H-h" 'highlight-symbol-at-point
   "M-j" 'join-next-line
   "S-<f10>" 'nav                                  ; Open nav buffer
@@ -220,17 +220,17 @@
   "<H-return>" 'mc/mark-next-lines
   "<H-right>" 'windmove-right-or-other-frame
   "<H-up>" 'windmove-up
-  "A-;" 'loccur         ; activate loccur-mode (prompt for word/regex)
+  "A-;" 'loccur                                   ; activate loccur-mode (prompt for word/regex)
   "A-<tab>" 'ace-jump-buffer
-  "A-H-;" 'loccur-previous-match ; jump batch to previous loccur search
-  "A-H-b" 'bm-show-all        ; Show all visual bookmarks in all files
-  "A-b" 'bm-toggle            ; Toggle visual bookmark on this line
+  "A-H-;" 'loccur-previous-match                  ; jump batch to previous loccur search
+  "A-H-b" 'bm-show-all                            ; disable minimize emacs
+  "A-b" 'bm-toggle                                ; Toggle visual bookmark on this line
   "A-n" 'bm-next
   "A-p" 'bm-previous
-  "C-x C-g" 'keyboard-quit ; Quit commands that I started typing with C-x
-  "H-;" 'loccur-current ; folder current buffer to lines containing the current word
+  "C-x C-g" 'keyboard-quit                        ; Quit commands that I started typing with C-x
+  "H-;" 'loccur-current                           ; folder current buffer to lines containing the current word
   "H-k" 'kill-this-buffer
-  "M-x" 'smex                     ; smex is IDO-mode like M-x behavior
+  "M-x" 'smex                                     ; smex is IDO-mode like M-x behavior
   )
 
 (defvar init-files
