@@ -32,6 +32,7 @@
     clojurescript-mode
     company
     dash
+    dash-functional
     diminish
     dired+
     django-mode
@@ -54,7 +55,6 @@
     ipython
     jedi
     js3-mode
-    ;; json
     json-mode
     less-css-mode
     loccur
