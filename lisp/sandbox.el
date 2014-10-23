@@ -42,7 +42,8 @@
 (sandbox/install-and-require 'angry-police-captain)
 (add-hook 'after-save-hook
   (lambda ()
-    (unless (active-minibuffer-window)
+    (unless (or (active-minibuffer-window)
+                (current-message))
       (angry-police-captain))))
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
@@ -129,6 +130,19 @@
    )
  (lambda (result)
    (message "::auto-update-packages finished. -- %s" result)))
+
+;; Major modes for editing .gitignore, .git/config files... do I really need these ?
+(sandbox/install-and-require 'gitignore-mode
+                             'gitconfig-mode)
+
+;; diff-hl - THIS IS CLUTCH
+;; diff-hl-diff-goto-hunk C-x v =
+;; diff-hl-revert-hunk C-x v n
+;; diff-hl-previous-hunk C-x v [
+;; diff-hl-next-hunk C-x v ]
+(sandbox/install-and-require 'diff-hl)
+(global-diff-hl-mode 1)
+
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
