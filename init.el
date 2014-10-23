@@ -14,6 +14,10 @@
         scroll-bar-mode
         tool-bar-mode))
 
+(setq-default default-frame-alist
+  '((fullscreen . maximized)))                    ; no fringes, no scroll bar
+
+
 ;;;; LOAD PACKAGES
 
 (setq load-prefer-newer t)                        ; Load from .el files if they are newer than matching .elc files
@@ -67,6 +71,7 @@
   ido-ubiquitous-mode
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
+  savehist-mode                                   ; save minibuffer history periodically
   show-paren-mode                                 ; highlight matching parens
   (undo-tree-mode . nil)
   winner-mode)
@@ -78,14 +83,6 @@
   (lambda ()
     (delete-trailing-whitespace)
     (set-buffer-file-coding-system 'utf-8-auto-unix)))
-
-(add-hook 'after-save-hook 'angry-police-captain t)
-(eval-after-load "angry-police-captain"
-  '(-map-when (-lambda (p) (->> p
-                             process-name
-                             (string-match-p "angry-police-captain")))
-              (-rpartial 'set-process-query-on-exit-flag nil)
-              (process-list)))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -99,7 +96,7 @@
 (add-hook 'after-change-major-mode-hook
           (lambda ()
             (cam-enable-minor-modes
-              highlight-error-keywords-mode       ; TODO ! Not working
+              highlight-error-keywords-mode
               rainbow-delimiters-mode
               (rainbow-mode . nil)))
           t)
@@ -133,15 +130,14 @@
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
                           "*.js")))
-
-
 ;;;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
 
-(set-terminal-coding-system 'utf-8)               ; work better from Terminal
+(ansi-color-for-comint-mode-on)                   ; Works better in Terminal or something like that
 (set-keyboard-coding-system 'utf-8)
-(ansi-color-for-comint-mode-on)
+(set-selection-coding-system 'utf-8-auto-unix)
+(set-terminal-coding-system 'utf-8-auto-unix)
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
@@ -149,16 +145,18 @@
  auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
  bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
  clean-buffer-list-delay-special 30
+ echo-keystrokes 0.1                              ; shorter delay before showing keystrokes in progress
  global-auto-revert-non-file-buffers t            ; also refresh dired but be quiet about it
+ history-length 1000                              ; (default is 30) save more history in history lists
  inhibit-splash-screen t
  inhibit-startup-screen t
- initial-frame-alist (quote ((fullscreen . maximized)))
+ locale-coding-system 'utf-8-auto-unix
  mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
  nav-width 30                                     ; nav should be 30 chars wide (default is 18)
  ns-right-command-modifier 'hyper
  ns-right-control-modifier 'hyper
  ns-right-option-modifier 'alt
- recentf-max-menu-items 20
+ recentf-max-menu-items 50
  redisplay-dont-pause t                           ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
  require-final-newline t                          ; add final newline on save
  revert-without-query '(".*")                     ; disable revert-buffer confirmation prompts
@@ -193,11 +191,8 @@
 (setq evil-default-state 'emacs)
 (global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
 
-(mapc (lambda (fn)
-        (eval `(defadvice ,fn (around cam/intercept-evil-state activate)
-                 "Intercept any switch to this evil state, and switch to Emacs state instead."
-                 (interactive)
-                 (evil-emacs-state))))
+;; Swoop on calls to any Evil states besides normal and emacs and redirect them to emacs
+(mapc (-rpartial 'fset 'evil-emacs-state)
       '(evil-insert-state
         evil-motion-state
         evil-operator-state
@@ -336,8 +331,8 @@
         org-init
         python-init
         ruby-init
-        theme-init))
-
+        theme-init
+        sandbox))
 
 (provide 'init)
 ;;; init.el ends here
