@@ -44,4 +44,9 @@
                                     ,(make-char 'greek-iso8859-7 107))
                     nil))))))
 
+;; (font-lock-add-keywords
+;;    'emacs-lisp-mode '(("\\(defun\\>\\)" . 'font-lock-doc-string-face)))
+
+;; (regexp-opt '("::cam-auto-update-all-packages" "::cam" "::fish" "::ok-nice") t)
+
 (provide 'lisp-init)

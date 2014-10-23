@@ -85,6 +85,7 @@
     slime
     smartparens
     smex
+    s
     undo-tree
     xmlgen
     yaml-mode
@@ -103,22 +104,30 @@
     (package-read-all-archive-contents)
     (package-load-all-descriptors)
     (unless package-archive-contents
-      (cam/package-refresh-contents-once))))
+      (cam/refresh-package-contents-once))))
 
-(defun cam/package-refresh-contents-once ()
+(defun cam/refresh-package-contents-once ()
   "Call package-refresh-contents the first time this function is called."
   (unless cam-has-refreshed-packages-p
     (setq cam-has-refreshed-packages-p t)
     (setq package--initialized nil)     ; stop trying to fool package.el so it can do its thing
-    (package-initialize)
-    (package-refresh-contents)
-    ; upgrade any packages that we can upgrade
-    (save-window-excursion
-      (package-list-packages-no-fetch)
-      (package-menu--find-upgrades)
-      (package-menu-mark-upgrades)
-      (package-menu-execute t)))) ; t = noquery
+    (::auto-update-packages)))
 
+(defun ::auto-update-packages ()
+  "Fetch packages, and upgrade any packages that can be upgraded."
+  (interactive)
+  (package-initialize)
+  (condition-case err
+      (save-window-excursion
+        (progn
+          (package-list-packages)
+          (package-menu--find-upgrades)
+          (package-menu-mark-upgrades)
+          (package-menu-execute t) ; t = noquery
+          (ignore-errors
+            (kill-buffer-and-window))
+          (message "%s" "Successfully auto-updated packages.")))
+    (error (warn "Couldn't auto-update packages: %s" (error-message-string err)))))
 
 ;;;; ADVICE / ETC
 
@@ -148,7 +157,7 @@
           (if (package-installed-p package) (package-activate package)
             (progn
               (message "Installiing %s..." (symbol-name package))
-              (cam/package-refresh-contents-once)
+              (cam/refresh-package-contents-once)
               (package-install package)))
           (error (warn "Failed to install %s: %s" (symbol-name package) (error-message-string err)))))
       cam/packages)

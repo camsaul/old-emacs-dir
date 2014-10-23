@@ -49,13 +49,13 @@
 ;; sentences don't need 2 spaces to end
 (setq sentence-end-double-space nil)
 
-(defalias #'pretty-lambdas #'::noop)
-(global-prettify-symbols-mode 1)
-(kill-local-variable 'prettify-symbols-alist)
-(setq-default prettify-symbols-alist
-  '(("nil" . ?¿)
-    ("defun" . ?ƒ)))
-(prettify-symbols-mode 1)
+;; (defalias #'pretty-lambdas #'::noop)
+;; (global-prettify-symbols-mode 1)
+;; (kill-local-variable 'prettify-symbols-alist)
+;; (setq-default prettify-symbols-alist
+;;   '(("nil" . ?¿)
+;;     ("defun" . ?ƒ)))
+;; (prettify-symbols-mode 1)
 
 ;; color tweaks
 ;; #ef2929 - TODO use this for something cool
@@ -104,6 +104,31 @@
 (projectile-mode 1)
 (cam/define-keys nil
   "M-`" 'projectile-recentf)
+
+;; anzu - show number of matches in mode line while searching
+;; this would be pretty cool if helm-swoop wasn't swooping
+(sandbox/install-and-require 'anzu)
+(anzu-mode 1)
+
+;; is this annoying or not?
+(setq visible-bell t)
+
+;;;; EXPERIMENTAL KEYBINDINGS (!)
+(::define-keys nil
+  "`" 'helm-buffers-list                ; Seeing how I switch buffers more often than typing a `. Can still do C-q `
+  )
+
+;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
+(sandbox/install-and-require 'async)
+(async-start
+ (lambda ()
+   (message "STARTING")
+   (nconc load-path '("~/.emacs.d/lisp/"))
+   (require 'package-init)
+   (::auto-update-packages)
+   )
+ (lambda (result)
+   (message "::auto-update-packages finished. -- %s" result)))
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

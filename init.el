@@ -189,7 +189,8 @@
 ;;;; EVIL CONFIG (CURSOR COLORS IN THEME-INIT.EL)
 
 (cam/define-keys evil-normal-state-map
-  "<escape>" 'evil-emacs-state)
+  "<escape>" 'evil-emacs-state
+  "C-z" 'evil-emacs-state)                        ; instead of minimizing Emacs
 
 (setq evil-default-state 'emacs)
 (global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
