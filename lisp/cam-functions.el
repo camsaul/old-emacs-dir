@@ -3,22 +3,16 @@
 
 ;;; Code:
 
-(defun cygwin-shell ()
-  "Run cygwin bash in shell mode."
-  (interactive)
-  (let ((explicit-shell-file-name "C:/cygwin/bin/bash"))
-    (call-interactively 'shell)))
-
-
-(defmacro cam/define-keys (map-or-nil key fn &rest more)
-  "If MAP-OR-NIL is non-nil, map pairs of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
-  (let ((k (list 'kbd key)))
+(defmacro ::define-keys (keymap &rest pairs)
+  "If KEYMAP is non-nil, map pairs of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
+  (let ((def-key (if keymap `(define-key ,keymap)
+                   '(global-set-key))))
     `(progn
-       ,@(when more
-           (cdr (macroexpand `(cam/define-keys ,map-or-nil ,@more))))
-       ,(if map-or-nil `(define-key ,map-or-nil ,k ,fn)
-          `(global-set-key ,k ,fn)))))
-(put 'cam/define-keys 'lisp-indent-function 1)
+       ,@(mapcar (-lambda ((key fn))
+                   `(,@def-key ,key ,fn))
+                 (-partition 2 pairs)))))
+(defalias #'cam/define-keys ::define-keys) ; TODO - stop using old fn
+(put '::define-keys 'lisp-indent-function 1)
 
 (defun define-keys (map-or-nil keys)
   (eval-when-compile
