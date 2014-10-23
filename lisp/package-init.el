@@ -85,7 +85,6 @@
     slime
     smartparens
     smex
-    s
     undo-tree
     xmlgen
     yaml-mode
