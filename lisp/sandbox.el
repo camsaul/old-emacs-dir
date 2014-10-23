@@ -81,6 +81,61 @@
 (eval-after-load "term"
   (setq term-ansi-default-program "/usr/local/bin/bash"))
 
+;; CAR-AZY SYNTAX HIGHLIGHTING
+(defmacro ::add-keywords-patterns (face &rest patterns)
+  `(progn
+     ,@(mapcar (lambda (pattern)
+               (list 'font-lock-add-keywords ''emacs-lisp-mode
+                     `(quote ((,pattern 1 ,face)))))
+               patterns)))
+
+(defmacro ::add-keywords (face &rest kws)
+  `(::add-keywords-patterns
+    ,face ,@(mapcar (lambda (kw)
+                      (concat "\\<\\(" kw "\\)\\>"))
+                    kws)))
+
+(set-face-attribute 'font-lock-builtin-face nil
+                    :foreground "cc6633"
+                    :bold nil)
+
+(set-face-attribute 'font-lock-function-name-face nil
+                    :foreground "#008FD7"
+                    :bold t)
+
+(::add-keywords 'font-lock-builtin-face
+                "add-hook"
+                "defmacro"
+                "defun"
+                "eval-after-load"
+                "message"
+                "nconc"
+                "require"
+                "set-face-attribute"
+                "setq"
+                )
+
+(::add-keywords 'font-lock-warning-face
+                "sandbox/[a-z-:/]+")
+(::add-keywords-patterns 'font-lock-constant-face
+                         "(?\\(::[a-z-/:]+\\)\\>")
+
+(::add-keywords 'font-lock-constant-face
+                "::[a-z-:/]+"
+                "cam/[a-z-:/]+"
+                "cam-[a-z-:/]+")
+
+(set-face-attribute 'font-lock-preprocessor-face nil
+                    :bold nil
+                    :italic t)
+
+(::add-keywords 'font-lock-doc-face
+                "t"
+                "nil")
+
+(::add-keywords-patterns 'font-lock-preprocessor-face
+                         "setq \\<\\([a-z-:/]+\\)\\>"
+                         "'\\<\\([a-z-:/]+\\)\\>")
 
 ;; ido tweaks
 (setq ido-enable-flex-matching t)
