@@ -31,6 +31,7 @@
                  package-init                     ; needs to be loaded before we can load ELPA packages like dash or powerline
                  dash                             ; load this next so cam-functions can build on it
                  dash-functional
+                 noflet
                  cam-functions
                  powerline
                  powerline-evil))
@@ -57,24 +58,25 @@
 
 ;;;; GLOBALLY ENABLED MINOR MODES
 
-(cam-enable-minor-modes
-  delete-selection-mode                           ; typing will delete selected text
-  electric-pair-mode
-  evil-mode
-  global-ace-isearch-mode
-  global-auto-revert-mode
-  global-hl-line-mode
-  global-undo-tree-mode
-  ido-mode
-  ido-ubiquitous-mode
-  ido-everywhere
-  flx-ido-mode                                    ; fuzzy matching for ido
-  (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
-  recentf-mode
-  savehist-mode                                   ; save minibuffer history periodically
-  show-paren-mode                                 ; highlight matching parens
-  (undo-tree-mode . nil)
-  winner-mode)
+(::suppress-messages
+ (cam-enable-minor-modes
+   delete-selection-mode                           ; typing will delete selected text
+   electric-pair-mode
+   evil-mode
+   global-ace-isearch-mode
+   global-auto-revert-mode
+   global-hl-line-mode
+   global-undo-tree-mode
+   ido-mode
+   ido-ubiquitous-mode
+   ido-everywhere
+   flx-ido-mode                                    ; fuzzy matching for ido
+   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
+   recentf-mode
+   savehist-mode                                   ; save minibuffer history periodically
+   show-paren-mode                                 ; highlight matching parens
+   (undo-tree-mode . nil)
+   winner-mode))
 
 
 ;;;; GLOBAL HOOKS
@@ -90,8 +92,8 @@
 
 
 (add-hook 'dired-mode-hook
-          (lambda ()
-            (dired-hide-details-mode 1)))
+  (lambda ()
+    (dired-hide-details-mode 1)))
 
 (add-hook 'after-change-major-mode-hook
           (lambda ()
@@ -107,7 +109,8 @@
 (cam/eval-after-load "dired"
   '(unless (featurep 'dired+)
      (require 'dired+))
-  (toggle-diredp-find-file-reuse-dir t)) ; reuse dired buffers
+  (::suppress-messages
+   (toggle-diredp-find-file-reuse-dir t))) ; reuse dired buffers
 
 ;; Install editorconfig via homebrew if possible
 (cam/eval-after-load "editorconfig"
@@ -213,7 +216,7 @@
 
 ;;;; GLOBAL KEY-BINDINGS
 
-(cam/define-keys nil
+(::define-keys nil
   "<C-s-M-down>" 'windmove-down
   "<C-s-M-left>" 'windmove-left-or-other-frame
   "<C-s-M-return>" 'other-frame

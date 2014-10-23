@@ -1,5 +1,5 @@
+;; -*- comment-column: 50; -*-
 ;;; pacakge-init -- Code to load/installs packages on startup
-;; -*- comment-column: 30; -*-
 
 ;;; Commentary:
 ;;; !!!!! IMPORTANT !!!!!!
@@ -15,9 +15,10 @@
 (setq package--initialized t)                     ; fake that we've called package-initialize
 
 ;;;; SETTINGS
+(unless (assoc "melpa" package-archives)          ; make sure we don't add repos more than once
+  (nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
+                            ("marmalade" . "http://marmalade-repo.org/packages/"))))
 
-(nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
-                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 
 (defvar cam/packages
   '(ac-etags
@@ -59,9 +60,10 @@
     magit
     markdown-mode
     moe-theme
-    morlock                             ; extra font-lock keywords for elisp editing
+    morlock                                       ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
+    noflet                                        ; locally override function definitions
     outline-magic
     paredit
     powerline
@@ -76,7 +78,7 @@
     rainbow-delimiters
     rainbow-mode
     relative-line-numbers
-    rotate                              ; rotate-window, rotate-layout, etc.
+    rotate                                        ; rotate-window, rotate-layout, etc.
     rspec-mode
     ruby-block
     ruby-electric
@@ -107,6 +109,7 @@
   "Call package-refresh-contents the first time this function is called."
   (unless cam-has-refreshed-packages-p
     (setq cam-has-refreshed-packages-p t)
+    (setq package--initialized nil)     ; stop trying to fool package.el so it can do its thing
     (package-initialize)
     (package-refresh-contents)
     ; upgrade any packages that we can upgrade

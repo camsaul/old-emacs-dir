@@ -49,6 +49,7 @@
 ;; sentences don't need 2 spaces to end
 (setq sentence-end-double-space nil)
 
+(defalias #'pretty-lambdas #'::noop)
 (global-prettify-symbols-mode 1)
 (kill-local-variable 'prettify-symbols-alist)
 (setq-default prettify-symbols-alist

@@ -9,7 +9,7 @@
                    '(global-set-key))))
     `(progn
        ,@(mapcar (-lambda ((key fn))
-                   `(,@def-key ,key ,fn))
+                   `(,@def-key ,(list 'kbd key) ,fn))
                  (-partition 2 pairs)))))
 (defalias #'cam/define-keys ::define-keys) ; TODO - stop using old fn
 (put '::define-keys 'lisp-indent-function 1)
@@ -339,6 +339,15 @@
                                    (jump-to-register ,window-config))
                                  t t))))
                         fns)))))
+
+(defmacro ::suppress-messages (&rest body)
+  "Suppress messages inside BODY"
+  `(noflet ((message (&rest) nil))
+     ,@body))
+
+(defun ::noop (&rest args)
+  "A function that ignores ARGS and doesn't do anything."
+  nil)
 
 (provide 'cam-functions)
 ;;; cam-functions.el ends here
