@@ -61,14 +61,14 @@
   delete-selection-mode                           ; typing will delete selected text
   electric-pair-mode
   evil-mode
-  flx-ido-mode                                    ; fuzzy matching for ido
   global-ace-isearch-mode
   global-auto-revert-mode
   global-hl-line-mode
   global-undo-tree-mode
-  ido-everywhere
   ido-mode
   ido-ubiquitous-mode
+  ido-everywhere
+  flx-ido-mode                                    ; fuzzy matching for ido
   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
   recentf-mode
   savehist-mode                                   ; save minibuffer history periodically

@@ -12,9 +12,7 @@
 
 (require 'package)
 
-(setq package-alist nil                           ; these vars would get replicated in package-initialize, but we're going to replicate the behaviour in a little faster fashion
-      package-obsolete-alist nil
-      package--initialized t)                     ; fake that we've called package-initialize
+(setq package--initialized t)                     ; fake that we've called package-initialize
 
 ;;;; SETTINGS
 
@@ -108,9 +106,9 @@
 (defun cam/package-refresh-contents-once ()
   "Call package-refresh-contents the first time this function is called."
   (unless cam-has-refreshed-packages-p
-    (package-refresh-contents)
     (setq cam-has-refreshed-packages-p t)
-
+    (package-initialize)
+    (package-refresh-contents)
     ; upgrade any packages that we can upgrade
     (save-window-excursion
       (package-list-packages-no-fetch)
@@ -143,10 +141,13 @@
 
 ;;; loop through packages and initialize or install
 (mapc (lambda (package)
-        (if (package-installed-p package) (package-activate package)
-          (progn
-            (cam/package-refresh-contents-once)
-            (package-install package))))
+        (condition-case err
+          (if (package-installed-p package) (package-activate package)
+            (progn
+              (message "Installiing %s..." (symbol-name package))
+              (cam/package-refresh-contents-once)
+              (package-install package)))
+          (error (warn "Failed to install %s: %s" (symbol-name package) (error-message-string err)))))
       cam/packages)
 
 (provide 'package-init)
