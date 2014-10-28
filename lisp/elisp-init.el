@@ -3,6 +3,7 @@
 
 ;; -*- comment-column: 50; -*-
 
+
 (require 'cam-functions)
 
 ;;; Code:
@@ -29,6 +30,7 @@
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
   (require 'lisp-init)
   (require 'morlock)
+  (require 'highlight-cl)
 
   (cam/declare-vars cam-define-elisp-keys
                     flycheck-emacs-lisp-load-path)
@@ -37,7 +39,10 @@
   (cam-enable-minor-modes
     (elisp-slime-nav-mode . " ☸")
     (flycheck-mode . " ✔"))
+
+  ;; additional font-locking
   (turn-on-morlock-mode-if-desired)
+  (highlight-cl-add-font-lock-keywords)
   (dash-enable-font-lock)
 
   (setq flycheck-emacs-lisp-load-path load-path)

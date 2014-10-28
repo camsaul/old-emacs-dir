@@ -100,8 +100,10 @@
     (company-mode . " ¢")
     eldoc-mode
     electric-pair-mode
-    elpy-mode
     (highlight-parentheses-mode . nil))
+
+  (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
+    (elpy-mode))
 
   (pretty-lambdas)
   (jedi:setup)

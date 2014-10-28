@@ -13,9 +13,11 @@
       '(menu-bar-mode
         scroll-bar-mode
         tool-bar-mode))
+(toggle-frame-maximized)
 
-(setq-default default-frame-alist
-  '((fullscreen . maximized)))                    ; no fringes, no scroll bar
+(setq-default default-frame-alist nil)
+;; (setq-default default-frame-alist
+;;   '((fullscreen . maximized)))                    ; no fringes, no scroll bar
 
 
 ;;;; LOAD PACKAGES
@@ -65,6 +67,7 @@
    evil-mode
    global-ace-isearch-mode
    global-auto-revert-mode
+   global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
    global-hl-line-mode
    global-undo-tree-mode
    ido-mode
@@ -89,7 +92,6 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             (kill-buffer "*scratch*")))
-
 
 (add-hook 'dired-mode-hook
   (lambda ()
@@ -133,14 +135,19 @@
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
                           "*.js")))
+
+(eval-after-load "company"
+  '(setq company-idle-delay 0.01                  ; default is 0.5
+         company-minimum-prefix-length 1))        ; default is 3
+
 ;;;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
 
 (ansi-color-for-comint-mode-on)                   ; Works better in Terminal or something like that
 (set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8-auto-unix)
-(set-terminal-coding-system 'utf-8-auto-unix)
+(set-selection-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
@@ -154,6 +161,7 @@
  inhibit-splash-screen t
  inhibit-startup-screen t
  locale-coding-system 'utf-8-auto-unix
+ gc-cons-threshold (* 1024 1024 1024 4)           ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
  mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
  nav-width 30                                     ; nav should be 30 chars wide (default is 18)
  ns-right-command-modifier 'hyper
@@ -169,6 +177,7 @@
  w32-pass-lwindow-to-system nil
  w32-rwindow-modifier 'alt
  whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
+ visible-bell t
  x-select-enable-clipboard t                      ; Use the clipboard in addition to emacs kill ring
  )
 

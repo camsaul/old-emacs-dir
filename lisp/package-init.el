@@ -1,4 +1,4 @@
-;; -*- comment-column: 50; -*-
+;; -*- comment-column: 30; -*-
 ;;; pacakge-init -- Code to load/installs packages on startup
 
 ;;; Commentary:
@@ -12,10 +12,10 @@
 
 (require 'package)
 
-(setq package--initialized t)                     ; fake that we've called package-initialize
+(setq package--initialized t)            ; fake that we've called package-initialize
 
 ;;;; SETTINGS
-(unless (assoc "melpa" package-archives)          ; make sure we don't add repos more than once
+(unless (assoc "melpa" package-archives) ; make sure we don't add repos more than once
   (nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                             ("marmalade" . "http://marmalade-repo.org/packages/"))))
 
@@ -32,6 +32,7 @@
     company
     dash
     dash-functional
+    diff-hl
     diminish
     dired+
     django-mode
@@ -44,9 +45,12 @@
     evil-paredit
     find-things-fast
     flycheck
+    flymake                   ; version on Marmalade is newer than one bundled w/ Emacs
     flymake-json
     flx-ido
     fuzzy
+    git-timemachine
+    highlight-cl              ; font-lock the cl- functions in  ELisp Mode
     highlight-parentheses
     highlight-symbol
     hl-sexp
@@ -60,10 +64,10 @@
     magit
     markdown-mode
     moe-theme
-    morlock                                       ; extra font-lock keywords for elisp editing
+    morlock                   ; extra font-lock keywords for elisp editing
     multiple-cursors
     nav
-    noflet                                        ; locally override function definitions
+    noflet                    ; locally override function definitions
     outline-magic
     paredit
     powerline
@@ -78,7 +82,7 @@
     rainbow-delimiters
     rainbow-mode
     relative-line-numbers
-    rotate                                        ; rotate-window, rotate-layout, etc.
+    rotate                    ; rotate-window, rotate-layout, etc.
     rspec-mode
     ruby-block
     ruby-electric
@@ -86,12 +90,11 @@
     smartparens
     smex
     undo-tree
+    web-beautify               ; run js-beautify when saving JS files
     xmlgen
     yaml-mode
     yasnippet)
-  "List of packages to be installed or activated when Emacs is launched.")
-
-
+  "List of packages to be installed or activated when Emacs is lau")
 ;;;; HELPER FUNCTIONS
 
 (defvar cam-has-refreshed-packages-p nil

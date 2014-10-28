@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+;; [[<sandbox/install-and-require]]
+
 (defun sandbox/install-and-require (package &rest more-packages)
   "Install PACKAGE if needed, require it for sandbox testing."
   (let ((package-name (symbol-name package)))
@@ -32,11 +34,6 @@
 
 ;; smooth scrolling
 (sandbox/install-and-require 'smooth-scrolling)
-
-
-;; number of bytes of consing before garbage collection
-;; default is ~800k, we can use a little bit more than that these days
-(setq gc-cons-threshold (* 1024 1024 1024 4)) ; 4 GB
 
 ;;; Show AngryPoliceCaptain.com quotes when saving
 (sandbox/install-and-require 'angry-police-captain)
@@ -77,9 +74,10 @@
 
 ;; term tweaks
 (dont-prompt-about-killing "term" "*ansi-term*")
-(setq shell-file-name "/usr/local/bin/bash") ; why don't these work
-(eval-after-load "term"
-  (setq term-ansi-default-program "/usr/local/bin/bash"))
+;; (setq shell-file-name "/usr/local/bin/bash")
+                                        ; why don't these work
+;; (eval-after-load "term"
+;;   (setq term-ansi-default-program "/usr/local/bin/bash"))
 
 ;; CAR-AZY SYNTAX HIGHLIGHTING
 (defmacro ::add-keywords-patterns (face &rest patterns)
@@ -138,36 +136,22 @@
                          "'\\<\\([a-z-:/]+\\)\\>")
 
 ;; ido tweaks
-(setq ido-enable-flex-matching t)
+;; (setq ido-enable-flex-matching t)
 (sandbox/install-and-require
  'ido-vertical-mode
- 'ido-at-point)
+ ;; 'ido-at-point
+ )
 (ido-vertical-mode)
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
-(ido-at-point-mode)                     ; what does this do ?
-
-
-;; company tweaks
-(eval-after-load "company"
-  '(setq company-idle-delay 0.01        ; default is 0.5
-         company-minimum-prefix-length 1 ; default is 3
-         ))
+;; (ido-at-point-mode)                     ; what does this do ?
 
 ;; projectile ?
 (sandbox/install-and-require 'projectile)
 (projectile-mode 1)
 (cam/define-keys nil
   "M-`" 'projectile-recentf)
-
-;; anzu - show number of matches in mode line while searching
-;; this would be pretty cool if helm-swoop wasn't swooping
-(sandbox/install-and-require 'anzu)
-(anzu-mode 1)
-
-;; is this annoying or not?
-(setq visible-bell t)
 
 ;;;; EXPERIMENTAL KEYBINDINGS (!)
 (::define-keys nil
@@ -190,14 +174,28 @@
 (sandbox/install-and-require 'gitignore-mode
                              'gitconfig-mode)
 
-;; diff-hl - THIS IS CLUTCH
-;; diff-hl-diff-goto-hunk C-x v =
-;; diff-hl-revert-hunk C-x v n
-;; diff-hl-previous-hunk C-x v [
-;; diff-hl-next-hunk C-x v ]
-(sandbox/install-and-require 'diff-hl)
-(global-diff-hl-mode 1)
+;; write backup files to own directory(setq backup - directory - alist `(("." . ,(expand-file-name
+;; (concat user-emacs-directory "backups")))))
+;; (setq vc-make-backup-files t) ;; make backups even if files are under VC
 
+;; WIKI NAV
+(sandbox/install-and-require 'wiki-nav)
+(global-wiki-nav-mode 1)
+(diminish 'button-lock-mode)
+(diminish 'wiki-nav-mode)
+;; see [[sandbox/install-and-require]]
+
+(setq pp-escape-newlines t)
+
+(defadvice make-frame-command (after make-frame-set-font activate)
+  (interactive)
+  ;; (toggle-frame-maximized)
+  (set-frame-font "Source Code Pro-10")
+  (toggle-frame-maximized))
+
+;; (pp (font-family-list))
+(set-frame-font "Source Code Pro-10")
+;; (set-frame-font "Lucida Sans Typewriter-10")
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

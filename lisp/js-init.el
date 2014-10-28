@@ -11,11 +11,15 @@
 
 (add-hook 'js3-mode-hook
   (lambda ()
+    (require 'web-beautify)
     (cam/declare-vars highlight-parentheses-mode)
     (cam-enable-minor-modes
       (company-mode . " ¢")
       highlight-parentheses-mode)
-    (pretty-function)))
+    (pretty-function)
+    ;; run js-beautify on buffer when saving, requires npm install -g js-beautify
+    ;; TODO: web-beautfiy-js-buffer for json-mode, web-beautify-html-buffer for html-mode; web-beautify-css-buffer for css-mode ?
+    (add-hook 'before-save-hook 'web-beautify-js-buffer t t)))
 
 (defmacro cam/interactivify (func)
   `(lambda ()

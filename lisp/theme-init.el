@@ -139,6 +139,9 @@
 (pl/hex-color
  (face-background 'region))
 
+(set-face-foreground 'mode-line-buffer-id "white")
+(set-face-background 'mode-line-buffer-id nil)
+
 (setq-default mode-line-format
   '("%e"
     (:eval
@@ -150,9 +153,8 @@
             (lhs (list
                   (powerline-raw (concat (powerline-evil-tag) " ") color-face 'l)
                   (powerline-slant-left color-face face1)
-
-                  (powerline-raw (concat " " (buffer-name)
-                                         (if buffer-read-only " (readonly)"
+                  (powerline-buffer-id face1 'l)
+                  (powerline-raw (concat (if buffer-read-only " (readonly)"
                                            (when (buffer-modified-p) "*"))
                                          " ") face1 '1)
                   (powerline-slant-left face1 face2)
@@ -166,12 +168,13 @@
                   (powerline-narrow face3 'l)
                   (powerline-raw " " face3)))
             (rhs (list
-                  (powerline-raw "%n " face3)
+                  (powerline-raw "%n " face3)               ; 'Narrow' when narrowing is in effect
                   (powerline-slant-left face3 face1)
                   (powerline-raw (concat " ♠ %3l ♣  ♥ %3c ♦") face1 'r)
                   (powerline-slant-left face1 color-face)
 
-                  (powerline-raw " %M" color-face) ; %M -> global-mode-string
+
+                  (powerline-raw " %M" color-face)          ; %M -> global-mode-string
                   (powerline-vc color-face 'r))))
        (concat (powerline-render lhs)
                (powerline-fill face3 (powerline-width rhs))

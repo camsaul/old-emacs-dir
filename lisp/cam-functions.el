@@ -342,7 +342,7 @@
 
 (defmacro ::suppress-messages (&rest body)
   "Suppress messages inside BODY"
-  `(noflet ((message (&rest) nil))
+  `(noflet ((message (&rest args) nil))
      ,@body))
 
 (defun ::noop (&rest args)
