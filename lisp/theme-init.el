@@ -69,10 +69,9 @@
     ("visual" . "#cc6633")
     ("insert" . "#336600")
     ("replace" . "#663399")
-    ("operator" . "black")
+    ("operator" . "#000000")
     ("motion" . "#ff0099"))
   "Association list of colors to use for cursor + modeline for each evil state.")
-
 
 ;; set variables like evil-emacs-state-cursor to ("#dd0000" box)
 (defmacro evil-set-cursor-colors ()

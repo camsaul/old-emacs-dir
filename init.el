@@ -2,7 +2,6 @@
 
 ;;; init -- General Setup
 ;;; Commentary:
-
 ;;; Code:
 
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
@@ -208,7 +207,7 @@
 (mapc (-rpartial 'fset 'evil-emacs-state)
       '(evil-insert-state
         evil-motion-state
-        evil-operator-state
+        ;; evil-operator-state
         evil-replace-state
         evil-visual-state))
 
