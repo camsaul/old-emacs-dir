@@ -198,6 +198,10 @@
 ;; (set-frame-font "Lucida Sans Typewriter-10")
 
 
+;; save the position of point when killing a buffer
+(sandbox/install-and-require 'saveplace)
+(setq-default save-place t)                     ; enable save-place
+
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 (provide 'sandbox)
 ;;; sandbox.el ends here

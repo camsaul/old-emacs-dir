@@ -15,5 +15,5 @@ emacs-clang-complete-async
 *flycheck*
 .python-environments
 history
-.places
+*places
 async-*.log
