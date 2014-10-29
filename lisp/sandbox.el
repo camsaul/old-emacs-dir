@@ -40,20 +40,13 @@
 (add-hook 'after-save-hook
   (lambda ()
     (unless (or (active-minibuffer-window)
-                (current-message))
+                ;; (current-message)
+                )
       (angry-police-captain))))
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
 ;; sentences don't need 2 spaces to end
 (setq sentence-end-double-space nil)
-
-;; (defalias #'pretty-lambdas #'::noop)
-;; (global-prettify-symbols-mode 1)
-;; (kill-local-variable 'prettify-symbols-alist)
-;; (setq-default prettify-symbols-alist
-;;   '(("nil" . ?¿)
-;;     ("defun" . ?ƒ)))
-;; (prettify-symbols-mode 1)
 
 ;; color tweaks
 ;; #ef2929 - TODO use this for something cool
@@ -68,9 +61,6 @@
 
 
 ;; (setq ediff-split-window-function 'split-window-horizontally)
-
-;; Save point position between sessions
-;; (what was the command ?)
 
 ;; term tweaks
 (dont-prompt-about-killing "term" "*ansi-term*")
@@ -150,12 +140,10 @@
 ;; projectile ?
 (sandbox/install-and-require 'projectile)
 (projectile-mode 1)
-(cam/define-keys nil
-  "M-`" 'projectile-recentf)
+(::define-keys nil "M-`" #'projectile-recentf)
 
 ;;;; EXPERIMENTAL KEYBINDINGS (!)
-(::define-keys nil
-  "<next>" 'helm-buffers-list)
+(::define-keys nil "<next>" 'helm-buffers-list)
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
@@ -208,7 +196,7 @@
 ;; discover-my-major: more useful than whatever C-h m usually does
 (sandbox/install-and-require 'discover-my-major)
 (cam/run-fullscreen "discover-my-major" discover-my-major)
-(global-set-key (kbd "C-h m") 'discover-my-major)
+(::define-keys nil "C-h m" #'discover-my-major)
 
 ;; highlight symbol under point after a short delay
 (sandbox/install-and-require 'idle-highlight-mode)
@@ -256,9 +244,17 @@
     (jump-to-register :git-timemachine-fullscreen-window-config)
     (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit)))
 
+;;; show help when showing magit-status
 (defadvice magit-status (after magit-status-show-help activate)
   (magit-key-mode-popup-dispatch)       ; show help
   (call-interactively #'other-window))  ; switch back to magit status window
+
+;;;
+(defun ::outline-enable-or-toggle-children ()
+  (interactive)
+  (if (not outline-minor-mode) (outline-minor-mode)
+    (outline-toggle-children)))
+(::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
