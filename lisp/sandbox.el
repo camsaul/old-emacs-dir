@@ -238,5 +238,9 @@
 
 ;;; Dockerfile Mode !
 (sandbox/install-and-require 'dockerfile-mode)
+
+;; Maybe we don't want the cursor to blink all the time obnoxiously
+(blink-cursor-mode -1)
+
 (provide 'sandbox)
 ;;; sandbox.el ends here
