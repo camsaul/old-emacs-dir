@@ -62,7 +62,7 @@
                     :foreground "black"
                     :bold t)
 (set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#ff0099"
+                    :foreground "#5fafd7"
                     :bold t
                     :italic t)
 
