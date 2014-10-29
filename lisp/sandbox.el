@@ -232,5 +232,8 @@
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
+
+;;; Dockerfile Mode !
+(sandbox/install-and-require 'dockerfile-mode)
 (provide 'sandbox)
 ;;; sandbox.el ends here
