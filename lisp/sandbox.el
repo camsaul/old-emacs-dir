@@ -30,7 +30,7 @@
                        (process-list)))))
 
 ;; Do I want this?
-(setq enable-recursive-minibuffers t)
+(setq enable-recursive-minibuffers nil)
 
 ;; smooth scrolling
 (sandbox/install-and-require 'smooth-scrolling)
