@@ -218,6 +218,9 @@
 (sandbox/install-and-require 'saveplace)
 (setq-default save-place t)                     ; enable save-place
 
+;; Cool things like C-x C-j for dired-jump
+(require 'dired-x)
+
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 (provide 'sandbox)
 ;;; sandbox.el ends here
