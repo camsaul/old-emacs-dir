@@ -159,7 +159,6 @@
  clean-buffer-list-delay-special 30
  echo-keystrokes 0.1                              ; shorter delay before showing keystrokes in progress
  global-auto-revert-non-file-buffers t            ; also refresh dired but be quiet about it
- history-length 1000                              ; (default is 30) save more history in history lists
  inhibit-splash-screen t
  inhibit-startup-screen t
  locale-coding-system 'utf-8-auto-unix
