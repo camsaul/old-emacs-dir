@@ -126,7 +126,7 @@
                          "'\\<\\([a-z-:/]+\\)\\>")
 
 ;; ido tweaks
-;; (setq ido-enable-flex-matching t)
+(setq ido-enable-flex-matching t)
 (sandbox/install-and-require
  'ido-vertical-mode
  ;; 'ido-at-point
@@ -144,6 +144,7 @@
 
 ;;;; EXPERIMENTAL KEYBINDINGS (!)
 (::define-keys nil "<next>" 'helm-buffers-list)
+(::define-keys nil "C-=" 'magit-status)
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
@@ -177,7 +178,8 @@
   (interactive)
   ;; (toggle-frame-maximized)
   (set-frame-font "Source Code Pro-10")
-  (toggle-frame-maximized))
+  ;; (toggle-frame-maximized)
+  )
 
 ;; (pp (font-family-list))
 (set-frame-font "Source Code Pro-10")
@@ -250,11 +252,17 @@
   (call-interactively #'other-window))  ; switch back to magit status window
 
 ;;;
+
+;; outlined ELisp
 (defun ::outline-enable-or-toggle-children ()
   (interactive)
   (if (not outline-minor-mode) (outline-minor-mode)
-    (outline-toggle-children)))
+    (ignore-errors
+      (outline-toggle-children))))
 (::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
+
+;; (sandbox/install-and-require 'outlined-elisp-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
