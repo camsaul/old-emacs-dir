@@ -197,5 +197,7 @@
 (set-frame-font "Source Code Pro-10")
 ;; (set-frame-font "Lucida Sans Typewriter-10")
 
+
+(add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 (provide 'sandbox)
 ;;; sandbox.el ends here
