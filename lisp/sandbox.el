@@ -221,6 +221,9 @@
 ;; Cool things like C-x C-j for dired-jump
 (require 'dired-x)
 
+;; clean up obsolete buffers automatically
+(require 'midnight)
+
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 (provide 'sandbox)
 ;;; sandbox.el ends here
