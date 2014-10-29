@@ -221,6 +221,8 @@
 (sandbox/install-and-require 'anaconda-mode)
 (sandbox/install-and-require 'company-anaconda)
 
+(set-background-color "#F4F4F4")
+
 ;; Cool things like C-x C-j for dired-jump
 (require 'dired-x)
 
