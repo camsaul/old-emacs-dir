@@ -228,6 +228,9 @@
 ;; clean up obsolete buffers automatically
 (require 'midnight)
 
+;; Automatically make shell scripts executable on save
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 (provide 'sandbox)
 ;;; sandbox.el ends here
