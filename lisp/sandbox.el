@@ -161,11 +161,10 @@
 (sandbox/install-and-require 'async)
 (async-start
  (lambda ()
-   (message "STARTING")
+   (message "STARTING PACKAGE AUTO-UPDATE...")
    (nconc load-path '("~/.emacs.d/lisp/"))
    (require 'package-init)
-   (::auto-update-packages)
-   )
+   (::auto-update-packages))
  (lambda (result)
    (message "::auto-update-packages finished. -- %s" result)))
 
