@@ -343,6 +343,7 @@
         markdown-init
         objc-init
         org-init
+        perl-init
         python-init
         ruby-init
         theme-init
