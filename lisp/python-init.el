@@ -171,10 +171,19 @@
                   "import pdb"
                   "import pprint"
                   "import traceback"
-                  "pp = lambda o: pprint.PrettyPrinter(indent=2).pprint(o)"
-                  "ppo = lambda o: pprint.PrettyPrinter(indent=2).pprint(o.__dict__)"
+                  "_pp = lambda o: pprint.PrettyPrinter(indent=2).pprint(o)"
+                  "pp = lambda o: _pp(o.__dict__) if hasattr(o, '__dict__') else _pp(o)"
                   "traceback.print_stack()"
                   "pdb.set_trace()"
+                  "##### END DEBUGGING CODE - NOCOMMIT #####")))
+
+(defun insert-pretty-print-code ()
+  "Insert code print a stacktrace and run the Python debugger at location."
+  (interactive)
+  (insert-lines '("##### DEBUGGING CODE - NOCOMMIT #####"
+                  "import pprint"
+                  "_pp = lambda o: pprint.PrettyPrinter(indent=2).pprint(o)"
+                  "pp = lambda o: _pp(o.__dict__) if hasattr(o, '__dict__') else _pp(o)"
                   "##### END DEBUGGING CODE - NOCOMMIT #####")))
 
 (defun insert-time-code ()
