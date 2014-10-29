@@ -193,7 +193,7 @@
 ;; Commands to always run fullscreen
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
       '(("magit" magit-status)
-        ("package" package-list-packages package-list-packages-no-fetch)))
+        ("package" list-packages package-list-packages package-list-packages-no-fetch)))
 
 
 ;;;; EVIL CONFIG (CURSOR COLORS IN THEME-INIT.EL)
