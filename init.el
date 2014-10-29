@@ -111,7 +111,9 @@
   '(unless (featurep 'dired+)
      (require 'dired+))
   (::suppress-messages
-   (toggle-diredp-find-file-reuse-dir t))) ; reuse dired buffers
+   (toggle-diredp-find-file-reuse-dir t))         ; reuse dired buffers
+  (setq dired-recursive-copies 'always
+        dired-recursive-deletes 'always))
 
 ;; Install editorconfig via homebrew if possible
 (cam/eval-after-load "editorconfig"
