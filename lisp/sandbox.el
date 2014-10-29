@@ -155,8 +155,7 @@
 
 ;;;; EXPERIMENTAL KEYBINDINGS (!)
 (::define-keys nil
-  "`" 'helm-buffers-list                ; Seeing how I switch buffers more often than typing a `. Can still do C-q `
-  )
+  "<next>" 'helm-buffers-list)
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
