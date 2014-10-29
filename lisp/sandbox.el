@@ -196,6 +196,11 @@
 ;; (set-frame-font "Lucida Sans Typewriter-10")
 
 
+;; discover-my-major: more useful than whatever C-h m usually does
+(sandbox/install-and-require 'discover-my-major)
+(cam/run-fullscreen "discover-my-major" discover-my-major)
+(global-set-key (kbd "C-h m") 'discover-my-major)
+
 ;; save the position of point when killing a buffer
 (sandbox/install-and-require 'saveplace)
 (setq-default save-place t)                     ; enable save-place
