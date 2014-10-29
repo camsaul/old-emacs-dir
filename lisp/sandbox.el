@@ -221,6 +221,10 @@
 ;; Cool things like C-x C-j for dired-jump
 (require 'dired-x)
 
+;; browse-kill-ring seems to be a bit better than my own popup-yank-menu
+(sandbox/install-and-require 'browse-kill-ring)
+(global-set-key (kbd "C-M-y") #'browse-kill-ring)
+
 ;; clean up obsolete buffers automatically
 (require 'midnight)
 
