@@ -33,6 +33,7 @@
                  dash                             ; load this next so cam-functions can build on it
                  dash-functional
                  noflet
+                 cam-macros
                  cam-functions
                  powerline
                  powerline-evil))
