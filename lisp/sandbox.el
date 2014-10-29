@@ -210,6 +210,10 @@
 (cam/run-fullscreen "discover-my-major" discover-my-major)
 (global-set-key (kbd "C-h m") 'discover-my-major)
 
+;; highlight symbol under point after a short delay
+(sandbox/install-and-require 'idle-highlight-mode)
+(idle-highlight-mode +1)
+
 ;; save the position of point when killing a buffer
 (sandbox/install-and-require 'saveplace)
 (setq-default save-place t)                     ; enable save-place
