@@ -196,6 +196,15 @@
 ;; (set-frame-font "Lucida Sans Typewriter-10")
 
 
+(when (string= system-type "darwin")
+  (menu-bar-mode +1)                    ; actually go ahead and enable menu bar on OS X since
+
+  ;; proced doesn't work on OS X, load up vkill instead
+  (sandbox/install-and-require 'vkill)
+  (cam-setup-autoloads ("vkill" vkill))
+  (fset #'proced #'vkill)               ; swoop proced -> vkill
+  (cam/run-fullscreen "vkill" vkill))
+
 ;; discover-my-major: more useful than whatever C-h m usually does
 (sandbox/install-and-require 'discover-my-major)
 (cam/run-fullscreen "discover-my-major" discover-my-major)
