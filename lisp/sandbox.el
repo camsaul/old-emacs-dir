@@ -218,6 +218,9 @@
 (sandbox/install-and-require 'saveplace)
 (setq-default save-place t)                     ; enable save-place
 
+(sandbox/install-and-require 'anaconda-mode)
+(sandbox/install-and-require 'company-anaconda)
+
 ;; Cool things like C-x C-j for dired-jump
 (require 'dired-x)
 

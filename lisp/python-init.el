@@ -47,13 +47,16 @@
 (defun cam/initialize-python-if-needed ()
   "Initial (one-time) setup for python-mode/django-mode/etc."
   (unless cam/has-initialized-python-p
+    (cam/python-install-pip-reqs)
     (mapc 'require '(elpy
                      flymake
                      info-look
                      py-autopep8
                      pydoc-info                                         ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
                      python-pep8
-                     yasnippet))
+                     yasnippet
+                     anaconda-mode
+                     company-anaconda))
 
     (setq-default
         cam/has-initialized-python-p t
@@ -73,11 +76,7 @@
            flycheck-flake8-maximum-line-length 200))
 
     (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
-    (condition-case nil
-        (jedi:install-server)
-      ;; install pip requirements if jedi couldn't load
-      (error (cam/python-install-pip-reqs)
-             (jedi:install-server)))))
+    (jedi:install-server)))
 
 (cam/eval-after-load "python-mode"
   (cam/initialize-python-if-needed)
@@ -100,7 +99,8 @@
     (company-mode . " ¢")
     eldoc-mode
     electric-pair-mode
-    (highlight-parentheses-mode . nil))
+    (highlight-parentheses-mode . nil)
+    anaconda-mode)
 
   (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
     (elpy-mode))
