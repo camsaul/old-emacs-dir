@@ -244,5 +244,21 @@
 ;; Maybe we don't want the cursor to blink all the time obnoxiously
 (blink-cursor-mode -1)
 
+(defadvice git-timemachine (around git-timemachine-split-fullscreen activate)
+  "Run git-timemachine for the current buffer in a special temporary fullscreen session"
+  (window-configuration-to-register :git-timemachine-fullscreen-window-config)
+  (delete-other-windows)
+  (split-window-right)
+  (call-interactively #'other-window)
+  ad-do-it
+  (defadvice git-timemachine-quit (after git-timemachine-fullscreen-quit activate)
+    (message "DONE <3")
+    (jump-to-register :git-timemachine-fullscreen-window-config)
+    (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit)))
+
+(defadvice magit-status (after magit-status-show-help activate)
+  (magit-key-mode-popup-dispatch)       ; show help
+  (call-interactively #'other-window))  ; switch back to magit status window
+
 (provide 'sandbox)
 ;;; sandbox.el ends here
