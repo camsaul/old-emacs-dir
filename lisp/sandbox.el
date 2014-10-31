@@ -40,6 +40,7 @@
 (add-hook 'after-save-hook
   (lambda ()
     (unless (or (active-minibuffer-window)
+                (minibufferp(current-buffer))
                 ;; (current-message)
                 )
       (angry-police-captain))))
@@ -143,8 +144,16 @@
 (::define-keys nil "M-`" #'projectile-recentf)
 
 ;;;; EXPERIMENTAL KEYBINDINGS (!)
-(::define-keys nil "<next>" 'helm-buffers-list)
-(::define-keys nil "C-=" 'magit-status)
+(::define-keys nil
+  "<next>" 'helm-buffers-list
+  "C-=" 'magit-status
+  "s-Z" #'undo-tree-redo
+  "s-y" #'undo-tree-redo
+  "A-r w" #'rotate-window
+  "A-r l" #'rotate-layout
+  "A-r t" #'rotate:tiled
+  "A-r h" #'rotate:even-horizontal
+  "A-r v" #'rotate:even-vertical)
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
@@ -263,6 +272,33 @@
 
 ;; (sandbox/install-and-require 'outlined-elisp-mode)
 ;; (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
+
+;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
+(sandbox/install-and-require 'recentf-ext)
+
+;; REGISTER LIST <3
+(sandbox/install-and-require 'register-list)
+(::define-keys nil "C-x r r" #'register-list)  ; overrides copy-rectangle-to-register, which I don't think I will ever user
+
+;; (defun cam/cheatsheet ()
+;;   (interactive)
+;;   (let ((buf (get-buffer-create "*cheatsheet*")))
+;;     (switch-to-buffer buf)
+;;     (setq buffer-read-only t)
+;;     ;; (window-configuration-to-register :cheatsheet-window-conf)
+;;     ;; (delete-other-windows)
+;;     ;; (add-hook 'kill-buffer-hook
+;;     ;;   (lambda ()
+;;     ;;     (jump-to-register :cheatsheet-window-conf))
+;;     ;;   t t))
+;;   )
+;; (cam/fullscreen "sandbox" cam/cheatsheet)
+
+;; ---------------- TO INVESTIGATE ----------------
+;;   map-regexp         20130522.... available  melpa      map over matches of a regular expression
+
+(sandbox/install-and-require 'dired-rainbow)
+
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
