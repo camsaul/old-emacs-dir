@@ -30,6 +30,7 @@
     clojure-mode-extra-font-locking
     clojurescript-mode
     company
+    cperl-mode
     dash
     dash-functional
     diff-hl
