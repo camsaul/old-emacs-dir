@@ -304,5 +304,9 @@
 (require 'clojure-cheatsheet)
 ;; (clojure-cheatsheet)
 
+;; maximize-frame
+(sandbox/install-and-require 'maxframe)
+
+
 (provide 'sandbox)
 ;;; sandbox.el ends here
