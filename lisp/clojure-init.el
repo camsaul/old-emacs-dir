@@ -22,15 +22,15 @@
 ;; custom keyboard shortcuts
 (defun cam-define-clojure-keys (mode-map)
   (cam-define-lisp-keys mode-map)
-  (define-keys mode-map
-    '(("<f12> c" clojure-docs-search)
-      ("<f12> i" instant-clojure-cheatsheet-search)
-      ("<f12> j" javadocs-search)
-      ("<f12> s" stackoverflow-search)
-      ("<f12> <f12> p" paredit-cheatsheet)
-      ("<f12> <f12> c" clojure-cheatsheet)
-      ("C-c C-d" ac-nrepl-popup-doc)
-      ("<C-M-return>" switch-to-nrepl-in-current-ns))))
+  (::define-keys mode-map
+    "<f12> c" #'clojure-docs-search
+      "<f12> i" #'instant-clojure-cheatsheet-search
+      "<f12> j" #'javadocs-search
+      "<f12> s" #'stackoverflow-search
+      "<f12> <f12> p" #'paredit-cheatsheet
+      ;; "<f12> <f12> c" #'clojure-cheatsheet
+      "C-c C-d" #'ac-nrepl-popup-doc
+      "<C-M-return>" #'switch-to-nrepl-in-current-ns))
 
 (eval-after-load "clojure-mode"
   '(progn
@@ -114,9 +114,9 @@
   (interactive)
   (browse-url "http://www.emacswiki.org/emacs/PareditCheatsheet"))
 
-(defun clojure-cheatsheet ()
-  (interactive)
-  (browse-url "http://clojuredocs.org/quickref/Clojure%20Core"))
+;; (defun clojure-cheatsheet ()
+;;   (interactive)
+;;   (browse-url "http://clojuredocs.org/quickref/Clojure%20Core"))
 
 (defun clojure-docs-search ()
   "Searches clojuredocs.org for a query or selected region if any."

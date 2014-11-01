@@ -299,6 +299,10 @@
 
 (sandbox/install-and-require 'dired-rainbow)
 
+;; NICE <3
+(sandbox/install-and-require 'clojure-cheatsheet)
+(require 'clojure-cheatsheet)
+;; (clojure-cheatsheet)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
