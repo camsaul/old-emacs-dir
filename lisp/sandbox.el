@@ -26,9 +26,6 @@
       (angry-police-captain))))
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
-;; sentences don't need 2 spaces to end
-;; (setq sentence-end-double-space nil)
-
 ;; color tweaks
 ;; #ef2929 - TODO use this for something cool
 
@@ -40,15 +37,8 @@
                     :bold t
                     :italic t)
 
-
-;; (setq ediff-split-window-function 'split-window-horizontally)
-
 ;; term tweaks
 (dont-prompt-about-killing "term" "*ansi-term*")
-;; (setq shell-file-name "/usr/local/bin/bash")
-                                        ; why don't these work
-;; (eval-after-load "term"
-;;   (setq term-ansi-default-program "/usr/local/bin/bash"))
 
 ;; CAR-AZY SYNTAX HIGHLIGHTING
 (defmacro ::add-keywords-patterns (face &rest patterns)
@@ -105,6 +95,7 @@
 (::add-keywords-patterns 'font-lock-preprocessor-face
                          "setq \\<\\([a-z-:/]+\\)\\>"
                          "'\\<\\([a-z-:/]+\\)\\>")
+
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
@@ -139,15 +130,10 @@
 
 (defadvice make-frame-command (after make-frame-set-font activate)
   (interactive)
-  ;; (toggle-frame-maximized)
   (set-background-color "#f4f4f4")
-  (set-frame-font "Source Code Pro-11")
-  ;; (toggle-frame-maximized)
-  )
+  (set-frame-font "Source Code Pro-11"))
 
-;; (pp (font-family-list))
 (set-frame-font "Source Code Pro-11")
-;; (set-frame-font "Lucida Sans Typewriter-10")
 
 
 (when (string= system-type "darwin")
@@ -159,9 +145,9 @@
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
-;; highlight symbol under point after a short delay
-(sandbox/install-and-require 'idle-highlight-mode)
-(idle-highlight-mode +1)
+;; ;; highlight symbol under point after a short delay
+;; (sandbox/install-and-require 'idle-highlight-mode)
+;; (idle-highlight-mode +1)
 
 ;; save the position of point when killing a buffer
 (sandbox/install-and-require 'saveplace)
@@ -191,10 +177,6 @@
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
 
-;; REGISTER LIST <3
-(sandbox/install-and-require 'register-list)
-(::define-keys nil "C-x r r" #'register-list)  ; overrides copy-rectangle-to-register, which I don't think I will ever user
-
 ;; (defun cam/cheatsheet ()
 ;;   (interactive)
 ;;   (let ((buf (get-buffer-create "*cheatsheet*")))
@@ -213,11 +195,6 @@
 ;;   map-regexp         20130522.... available  melpa      map over matches of a regular expression
 
 (sandbox/install-and-require 'dired-rainbow)
-
-;; NICE <3
-(sandbox/install-and-require 'clojure-cheatsheet)
-(require 'clojure-cheatsheet)
-;; (clojure-cheatsheet)
 
 ;; maximize-frame
 (sandbox/install-and-require 'maxframe)

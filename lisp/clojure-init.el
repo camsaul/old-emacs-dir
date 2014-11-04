@@ -7,6 +7,7 @@
   (require 'cider)
   (require 'company)
   (require 'clojure-mode-extra-font-locking)
+  (require 'clojure-cheatsheet)
   (cam-lisp-mode-setup)
   (cam-enable-minor-modes
     cider-mode

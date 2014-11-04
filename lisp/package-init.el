@@ -27,6 +27,7 @@
     ace-isearch
     bm
     browse-kill-ring          ; opens new buffer for browsing kill ring
+    clojure-cheatsheet
     clojure-mode
     clojure-mode-extra-font-locking
     clojurescript-mode
@@ -88,6 +89,7 @@
     python-pep8
     rainbow-delimiters
     rainbow-mode
+    register-list             ; dired-like editing of Emacs registers
     relative-line-numbers
     rotate                    ; rotate-window, rotate-layout, etc.
     rspec-mode
