@@ -278,9 +278,10 @@
   "C-M-y" #'browse-kill-ring
   "C-S-k" 'backward-kill-line
   "C-c e" 'eval-and-replace                       ; eval previous elisp expression at point, replace with results
-  "C-v" 'yank                                     ;      ; C-v -> yank instead of whatever it usually does
+  "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
+  "C-v" 'yank                                     ; C-v -> yank instead of whatever it usually does
   "C-x C-b" 'buffer-menu                          ;  C-x C-b shows buffer menu
-  "C-x C-d" 'ido-dired                            ;  ; C-x C-d -> dired instead of list directory
+  "C-x C-d" 'ido-dired                            ; C-x C-d -> dired instead of list directory
   "C-x C-g" 'keyboard-quit                        ; Quit commands that I started typing with C-x
   "C-x C-r" 'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs

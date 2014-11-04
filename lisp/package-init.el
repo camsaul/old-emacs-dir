@@ -37,6 +37,7 @@
     diff-hl
     diminish
     dired+
+    discover-my-major
     django-mode
     editorconfig
     elisp-slime-nav

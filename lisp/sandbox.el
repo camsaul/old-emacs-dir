@@ -187,11 +187,6 @@
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
-;; discover-my-major: more useful than whatever C-h m usually does
-(sandbox/install-and-require 'discover-my-major)
-(cam/run-fullscreen "discover-my-major" discover-my-major)
-(::define-keys nil "C-h m" #'discover-my-major)
-
 ;; highlight symbol under point after a short delay
 (sandbox/install-and-require 'idle-highlight-mode)
 (idle-highlight-mode +1)
