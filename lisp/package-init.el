@@ -82,6 +82,7 @@
     paredit
     powerline
     powerline-evil
+    projectile                ; things like projectile-recentf (recently edited files in current Git project)
     py-autopep8
     pydoc-info
     pyflakes

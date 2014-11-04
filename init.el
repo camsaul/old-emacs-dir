@@ -324,6 +324,10 @@
   "H-E" 'mc/mark-next-like-this                   ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
   "H-h" 'highlight-symbol-at-point
   "H-k" 'kill-this-buffer
+  "M-`" (lambda ()
+          (interactive)
+          (projectile-mode 1)
+          (projectile-recentf))
   "M-j" 'join-next-line
   "M-x" 'smex                                     ; smex is IDO-mode like M-x behavior
   "S-<f10>" 'nav                                  ; Open nav buffer

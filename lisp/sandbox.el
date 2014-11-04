@@ -12,8 +12,8 @@
                                       (string-match-p ,process)))
                        (-rpartial 'set-process-query-on-exit-flag nil)
                        (process-list)))))
-;; smooth scrolling
-(sandbox/install-and-require 'smooth-scrolling)
+
+;; (sandbox/install-and-require 'smooth-scrolling)
 
 ;;; Show AngryPoliceCaptain.com quotes when saving
 (add-hook 'after-save-hook
@@ -96,10 +96,6 @@
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
-;; projectile ?
-(sandbox/install-and-require 'projectile)
-(projectile-mode 1)
-(::define-keys nil "M-`" #'projectile-recentf)
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
