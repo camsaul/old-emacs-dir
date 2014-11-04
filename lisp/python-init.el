@@ -71,6 +71,7 @@
         python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
         )
 
+    ;; TODO we're not even using flycheck w/ python, we're using flymake
     (eval-after-load "flycheck"
       '(setq-default
            flycheck-flake8-maximum-line-length 200))
@@ -118,6 +119,19 @@
   (when (and (boundp 'auto-complete-mode)
              auto-complete-mode)
     (auto-complete-mode -1))
+
+  ;; delete vars that might be buffer local and overriding our settings
+  (mapc #'kill-local-variable
+        '(py-autopep8-options
+          flycheck-flake8-maximum-line-length
+          python-check-command
+          python-pep8-options
+          python-shell-completion-setup-code
+          python-shell-completion-string-code
+          python-shell-completion-string-code
+          python-shell-interpreter
+          python-shell-interpreter-args
+          python-shell-prompt-regexp))
 
   ;; HOOKS
   (add-hook 'before-save-hook

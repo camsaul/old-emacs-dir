@@ -186,12 +186,13 @@
 (defadvice make-frame-command (after make-frame-set-font activate)
   (interactive)
   ;; (toggle-frame-maximized)
-  (set-frame-font "Source Code Pro-10")
+  (set-background-color "#f4f4f4")
+  (set-frame-font "Source Code Pro-11")
   ;; (toggle-frame-maximized)
   )
 
 ;; (pp (font-family-list))
-(set-frame-font "Source Code Pro-10")
+(set-frame-font "Source Code Pro-11")
 ;; (set-frame-font "Lucida Sans Typewriter-10")
 
 
