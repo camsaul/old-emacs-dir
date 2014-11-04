@@ -192,11 +192,6 @@
     (jump-to-register :git-timemachine-fullscreen-window-config)
     (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit)))
 
-;;; show help when showing magit-status
-(defadvice magit-status (after magit-status-show-help activate)
-  (magit-key-mode-popup-dispatch)       ; show help
-  (call-interactively #'other-window))  ; switch back to magit status window
-
 ;; outlined ELisp
 (defun ::outline-enable-or-toggle-children ()
   (interactive)

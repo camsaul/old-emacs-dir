@@ -144,6 +144,13 @@
   '(setq company-idle-delay 0.01                  ; default is 0.5
          company-minimum-prefix-length 1))        ; default is 3
 
+;; show help when showing magit-status
+(eval-after-load "magit"
+  '(defadvice magit-status (after magit-status-show-help activate)
+     (magit-key-mode-popup-dispatch)              ; show help
+     (call-interactively #'other-window)))        ; switch back to magit status window
+
+
 ;;;; GENERAL SETTINGS
 
 (prefer-coding-system 'utf-8-auto-unix)
@@ -186,13 +193,17 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
-;; Commands to enable
+
+;;;; COMMANDS TO ENABLE
+
 (mapc (lambda (fn)
         (put fn 'disabled nil))
       '(downcase-region
         upcase-region))
 
-;; Commands to always run fullscreen
+
+;;;; COMMANDS TO ALWAYS RUN FULLSCREEN
+
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
       '(("magit" magit-status)
         ("package" list-packages package-list-packages package-list-packages-no-fetch)))
