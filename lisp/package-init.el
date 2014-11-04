@@ -98,6 +98,7 @@
     rspec-mode
     ruby-block
     ruby-electric
+    saveplace                 ; save the position of point when killing a buffer
     slime
     smartparens
     smex

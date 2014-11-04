@@ -136,10 +136,6 @@
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
-;; save the position of point when killing a buffer
-(sandbox/install-and-require 'saveplace)
-(setq-default save-place t)                     ; enable save-place
-
 (sandbox/install-and-require 'anaconda-mode)
 (sandbox/install-and-require 'company-anaconda)
 

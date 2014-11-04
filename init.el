@@ -36,7 +36,8 @@
                  cam-macros
                  cam-functions
                  powerline
-                 powerline-evil))
+                 powerline-evil
+                 saveplace))
 
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
@@ -180,34 +181,38 @@
 (midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
- auto-revert-verbose nil
- auto-window-vscroll nil                          ; don't 'automatically adjust window to view tall lines'
- bm-cycle-all-buffers t                           ; visual bookmarks bm-next and bm-previous should cycle all buffers
- clean-buffer-list-delay-special 30
- echo-keystrokes 0.1                              ; shorter delay before showing keystrokes in progress
- global-auto-revert-non-file-buffers t            ; also refresh dired but be quiet about it
- inhibit-splash-screen t
- inhibit-startup-screen t
- locale-coding-system 'utf-8-auto-unix
- gc-cons-threshold (* 1024 1024 1024 4)           ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
- mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
- nav-width 30                                     ; nav should be 30 chars wide (default is 18)
- ns-right-command-modifier 'hyper
- ns-right-control-modifier 'hyper
- ns-right-option-modifier 'alt
- recentf-max-menu-items 50
- redisplay-dont-pause t                           ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
- require-final-newline t                          ; add final newline on save
- revert-without-query '(".*")                     ; disable revert-buffer confirmation prompts
- scroll-margin 1
- w32-apps-modifier 'hyper
- w32-lwindow-modifier 'super
- w32-pass-lwindow-to-system nil
- w32-rwindow-modifier 'alt
- whitespace-line-column 200                       ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
- visible-bell t
- x-select-enable-clipboard t                      ; Use the clipboard in addition to emacs kill ring
+    auto-revert-verbose nil
+    auto-window-vscroll nil                       ; don't 'automatically adjust window to view tall lines'
+    bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
+    clean-buffer-list-delay-special 30
+    echo-keystrokes 0.1                           ; shorter delay before showing keystrokes in progress
+    global-auto-revert-non-file-buffers t         ; also refresh dired but be quiet about it
+    inhibit-splash-screen t
+    inhibit-startup-screen t
+    locale-coding-system 'utf-8-auto-unix
+    gc-cons-threshold (* 1024 1024 1024 4)        ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
+    mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
+    nav-width 30                                  ; nav should be 30 chars wide (default is 18)
+    ns-right-command-modifier 'hyper
+    ns-right-control-modifier 'hyper
+    ns-right-option-modifier 'alt
+    recentf-max-menu-items 50
+    redisplay-dont-pause t                        ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
+    require-final-newline t                       ; add final newline on save
+    revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
+    scroll-margin 1
+    w32-apps-modifier 'hyper
+    w32-lwindow-modifier 'super
+    w32-pass-lwindow-to-system nil
+    w32-rwindow-modifier 'alt
+    whitespace-line-column 200                    ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
+    visible-bell t
+    x-select-enable-clipboard t                   ; Use the clipboard in addition to emacs kill ring
  )
+
+(setq-default
+    save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
+    )
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
