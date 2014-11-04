@@ -53,6 +53,7 @@
 ;;;; GLOBALLY DISABLED MINOR MODES
 
 (cam-disable-minor-modes
+  blink-cursor-mode                               ; disable blinking cursor
   indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
   set-fringe-mode                                 ; disable fringes

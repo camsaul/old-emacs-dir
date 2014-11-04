@@ -4,22 +4,6 @@
 
 ;; [[<sandbox/install-and-require]]
 
-(defun sandbox/install-and-require (package &rest more-packages)
-  "Install PACKAGE if needed, require it for sandbox testing."
-  (let ((package-name (symbol-name package)))
-    (condition-case err
-        (progn
-          (unless (package-installed-p package)
-            (message "--SANDBOX-- Installing package: %s..." package-name)
-            (cam/refresh-package-contents-once)
-            (package-install package))
-          (package-activate package)
-          (require package)
-          (message "--SANDBOX-- Loaded package %s." package-name))
-      (error (warn "--SANDBOX-- Failed to install %s: %s" package-name (error-message-string err)))))
-  (when more-packages
-    (apply 'sandbox/install-and-require more-packages)))
-
 (defmacro dont-prompt-about-killing (package process)
   "Don't prompt before killing PROCESS with matching string name from PACKAGE with string name."
   `(eval-after-load ,package
@@ -43,7 +27,7 @@
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
 ;; sentences don't need 2 spaces to end
-(setq sentence-end-double-space nil)
+;; (setq sentence-end-double-space nil)
 
 ;; color tweaks
 ;; #ef2929 - TODO use this for something cool
@@ -196,9 +180,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-;; Maybe we don't want the cursor to blink all the time obnoxiously
-(blink-cursor-mode -1)
-
 (defadvice git-timemachine (around git-timemachine-split-fullscreen activate)
   "Run git-timemachine for the current buffer in a special temporary fullscreen session"
   (window-configuration-to-register :git-timemachine-fullscreen-window-config)
@@ -215,8 +196,6 @@
 (defadvice magit-status (after magit-status-show-help activate)
   (magit-key-mode-popup-dispatch)       ; show help
   (call-interactively #'other-window))  ; switch back to magit status window
-
-;;;
 
 ;; outlined ELisp
 (defun ::outline-enable-or-toggle-children ()

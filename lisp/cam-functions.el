@@ -257,5 +257,21 @@
   "A function that ignores ARGS and doesn't do anything."
   nil)
 
+(defun sandbox/install-and-require (package &rest more-packages)
+  "Install PACKAGE if needed, require it for sandbox testing."
+  (let ((package-name (symbol-name package)))
+    (condition-case err
+        (progn
+          (unless (package-installed-p package)
+            (message "--SANDBOX-- Installing package: %s..." package-name)
+            (cam/refresh-package-contents-once)
+            (package-install package))
+          (package-activate package)
+          (require package)
+          (message "--SANDBOX-- Loaded package %s." package-name))
+      (error (warn "--SANDBOX-- Failed to install %s: %s" package-name (error-message-string err)))))
+  (when more-packages
+    (apply 'sandbox/install-and-require more-packages)))
+
 (provide 'cam-functions)
 ;;; cam-functions.el ends here
