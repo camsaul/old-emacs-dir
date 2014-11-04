@@ -180,18 +180,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-(defadvice git-timemachine (around git-timemachine-split-fullscreen activate)
-  "Run git-timemachine for the current buffer in a special temporary fullscreen session"
-  (window-configuration-to-register :git-timemachine-fullscreen-window-config)
-  (delete-other-windows)
-  (split-window-right)
-  (call-interactively #'other-window)
-  ad-do-it
-  (defadvice git-timemachine-quit (after git-timemachine-fullscreen-quit activate)
-    (message "DONE <3")
-    (jump-to-register :git-timemachine-fullscreen-window-config)
-    (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit)))
-
 ;; outlined ELisp
 (defun ::outline-enable-or-toggle-children ()
   (interactive)
