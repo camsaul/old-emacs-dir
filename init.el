@@ -73,6 +73,7 @@
    ido-mode
    ido-ubiquitous-mode
    ido-everywhere
+   ido-vertical-mode
    flx-ido-mode                                    ; fuzzy matching for ido
    (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
    recentf-mode

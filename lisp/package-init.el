@@ -57,6 +57,7 @@
     highlight-symbol
     hl-sexp
     ido-ubiquitous
+    ido-vertical-mode
     ipython
     jedi
     js3-mode

@@ -28,12 +28,8 @@
                                       (string-match-p ,process)))
                        (-rpartial 'set-process-query-on-exit-flag nil)
                        (process-list)))))
-
-;; Do I want this?
-(setq enable-recursive-minibuffers nil)
-
 ;; smooth scrolling
-(sandbox/install-and-require 'smooth-scrolling)
+;; (sandbox/install-and-require 'smooth-scrolling)
 
 ;;; Show AngryPoliceCaptain.com quotes when saving
 (sandbox/install-and-require 'angry-police-captain)
@@ -127,12 +123,10 @@
                          "'\\<\\([a-z-:/]+\\)\\>")
 
 ;; ido tweaks
-(setq ido-enable-flex-matching t)
-(sandbox/install-and-require
- 'ido-vertical-mode
- ;; 'ido-at-point
- )
-(ido-vertical-mode)
+;; (setq ido-enable-flex-matching t)
+;; (sandbox/install-and-require
+;;  ;; 'ido-at-point
+;;  )
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
