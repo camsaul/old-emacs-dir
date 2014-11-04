@@ -143,18 +143,6 @@
 (projectile-mode 1)
 (::define-keys nil "M-`" #'projectile-recentf)
 
-;;;; EXPERIMENTAL KEYBINDINGS (!)
-(::define-keys nil
-  "<next>" 'helm-buffers-list
-  "C-=" 'magit-status
-  "s-Z" #'undo-tree-redo
-  "s-y" #'undo-tree-redo
-  "A-r w" #'rotate-window
-  "A-r l" #'rotate-layout
-  "A-r t" #'rotate:tiled
-  "A-r h" #'rotate:even-horizontal
-  "A-r v" #'rotate:even-vertical)
-
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
 (sandbox/install-and-require 'async)
 (async-start
@@ -222,9 +210,6 @@
 (sandbox/install-and-require 'company-anaconda)
 
 (set-background-color "#F4F4F4")
-
-;; Cool things like C-x C-j for dired-jump
-(require 'dired-x)
 
 ;; clean up obsolete buffers automatically
 (require 'midnight)
