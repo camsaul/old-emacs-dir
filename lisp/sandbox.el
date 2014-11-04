@@ -152,40 +152,17 @@
 ;; clean up obsolete buffers automatically
 (require 'midnight)
 
-;; Automatically make shell scripts executable on save
-(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-(add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
-
-;; outlined ELisp
-(defun ::outline-enable-or-toggle-children ()
-  (interactive)
-  (if (not outline-minor-mode) (outline-minor-mode)
-    (ignore-errors
-      (outline-toggle-children))))
-(::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
+;; (defun ::outline-enable-or-toggle-children ()
+;;   (interactive)
+;;   (if (not outline-minor-mode) (outline-minor-mode)
+;;     (ignore-errors
+;;       (outline-toggle-children))))
+;; (::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
 
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
-
-;; (defun cam/cheatsheet ()
-;;   (interactive)
-;;   (let ((buf (get-buffer-create "*cheatsheet*")))
-;;     (switch-to-buffer buf)
-;;     (setq buffer-read-only t)
-;;     ;; (window-configuration-to-register :cheatsheet-window-conf)
-;;     ;; (delete-other-windows)
-;;     ;; (add-hook 'kill-buffer-hook
-;;     ;;   (lambda ()
-;;     ;;     (jump-to-register :cheatsheet-window-conf))
-;;     ;;   t t))
-;;   )
-;; (cam/fullscreen "sandbox" cam/cheatsheet)
-
-;; ---------------- TO INVESTIGATE ----------------
-;;   map-regexp         20130522.... available  melpa      map over matches of a regular expression
-
-;; (sandbox/install-and-require 'dired-rainbow)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

@@ -91,6 +91,11 @@
     (delete-trailing-whitespace)
     (set-buffer-file-coding-system 'utf-8-auto-unix)))
 
+(add-hook 'after-save-hook
+  (lambda ()
+    (executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+    ))
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (kill-buffer "*scratch*")))
