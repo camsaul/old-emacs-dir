@@ -194,11 +194,7 @@
 ;; ---------------- TO INVESTIGATE ----------------
 ;;   map-regexp         20130522.... available  melpa      map over matches of a regular expression
 
-(sandbox/install-and-require 'dired-rainbow)
-
-;; maximize-frame
-(sandbox/install-and-require 'maxframe)
-
+;; (sandbox/install-and-require 'dired-rainbow)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
