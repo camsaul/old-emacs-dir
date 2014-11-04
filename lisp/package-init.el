@@ -26,6 +26,7 @@
     ace-jump-mode
     ace-isearch
     bm
+    browse-kill-ring          ; opens new buffer for browsing kill ring
     clojure-mode
     clojure-mode-extra-font-locking
     clojurescript-mode

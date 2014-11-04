@@ -248,7 +248,7 @@
   "C-H-e" 'mc/edit-lines
   "C-M-:" 'eval-print-last-sexp
   "C-M-S-k" 'backward-kill-sexp                   ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
-  "C-M-y" 'popup-yank-menu
+  "C-M-y" #'browse-kill-ring
   "C-S-k" 'backward-kill-line
   "C-c e" 'eval-and-replace                       ; eval previous elisp expression at point, replace with results
   "C-v" 'yank                                     ;      ; C-v -> yank instead of whatever it usually does

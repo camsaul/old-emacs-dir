@@ -14,11 +14,6 @@
             (set-key-fn (car ka) (cadr ka)))
           keys)))
 
-(defun popup-yank-menu ()
-  "Show list of recent yanks as a popup menu."
-  (interactive)
-  (popup-menu 'yank-menu))
-
 (defun popup-cam-menu ()
   "Show the 'CAM :)' menu as a popup menu."
   (interactive)
