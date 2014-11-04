@@ -53,6 +53,8 @@
     flymake-json
     flx-ido
     fuzzy
+    gitconfig-mode            ; major mode for editing .gitconfig files
+    gitignore-mode            ; major mode for editing .gitignore files
     git-timemachine
     highlight-cl              ; font-lock the cl- functions in  ELisp Mode
     highlight-parentheses

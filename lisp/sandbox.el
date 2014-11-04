@@ -121,17 +121,9 @@
 (::add-keywords-patterns 'font-lock-preprocessor-face
                          "setq \\<\\([a-z-:/]+\\)\\>"
                          "'\\<\\([a-z-:/]+\\)\\>")
-
-;; ido tweaks
-;; (setq ido-enable-flex-matching t)
-;; (sandbox/install-and-require
-;;  ;; 'ido-at-point
-;;  )
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
-;; (ido-at-point-mode)                     ; what does this do ?
-
 ;; projectile ?
 (sandbox/install-and-require 'projectile)
 (projectile-mode 1)
@@ -147,10 +139,6 @@
    (::auto-update-packages))
  (lambda (result)
    (message "::auto-update-packages finished. -- %s" result)))
-
-;; Major modes for editing .gitignore, .git/config files... do I really need these ?
-(sandbox/install-and-require 'gitignore-mode
-                             'gitconfig-mode)
 
 ;; write backup files to own directory(setq backup - directory - alist `(("." . ,(expand-file-name
 ;; (concat user-emacs-directory "backups")))))
@@ -237,9 +225,6 @@
     (ignore-errors
       (outline-toggle-children))))
 (::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
-
-;; (sandbox/install-and-require 'outlined-elisp-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'outlined-elisp-find-file-hook)
 
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
