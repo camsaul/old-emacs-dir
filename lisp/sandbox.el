@@ -13,16 +13,13 @@
                        (-rpartial 'set-process-query-on-exit-flag nil)
                        (process-list)))))
 ;; smooth scrolling
-;; (sandbox/install-and-require 'smooth-scrolling)
+(sandbox/install-and-require 'smooth-scrolling)
 
 ;;; Show AngryPoliceCaptain.com quotes when saving
-(sandbox/install-and-require 'angry-police-captain)
 (add-hook 'after-save-hook
   (lambda ()
     (unless (or (active-minibuffer-window)
-                (minibufferp(current-buffer))
-                ;; (current-message)
-                )
+                (minibufferp(current-buffer))                )
       (angry-police-captain))))
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
@@ -126,8 +123,6 @@
 (diminish 'wiki-nav-mode)
 ;; see [[sandbox/install-and-require]]
 
-(setq pp-escape-newlines t)
-
 (defadvice make-frame-command (after make-frame-set-font activate)
   (interactive)
   (set-background-color "#f4f4f4")
@@ -144,10 +139,6 @@
   (cam-setup-autoloads ("vkill" vkill))
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
-
-;; ;; highlight symbol under point after a short delay
-;; (sandbox/install-and-require 'idle-highlight-mode)
-;; (idle-highlight-mode +1)
 
 ;; save the position of point when killing a buffer
 (sandbox/install-and-require 'saveplace)

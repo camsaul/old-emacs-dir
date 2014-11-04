@@ -25,6 +25,7 @@
     ace-jump-buffer
     ace-jump-mode
     ace-isearch
+    angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
     bm
     browse-kill-ring          ; opens new buffer for browsing kill ring
     clojure-cheatsheet
