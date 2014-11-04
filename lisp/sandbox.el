@@ -208,9 +208,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-;;; Dockerfile Mode !
-(sandbox/install-and-require 'dockerfile-mode)
-
 ;; Maybe we don't want the cursor to blink all the time obnoxiously
 (blink-cursor-mode -1)
 

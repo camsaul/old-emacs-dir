@@ -39,6 +39,7 @@
     dired+
     discover-my-major
     django-mode
+    dockerfile-mode           ; major mode for editing Dockerfiles
     editorconfig
     elisp-slime-nav
     elpy
