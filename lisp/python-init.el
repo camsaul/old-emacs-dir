@@ -92,9 +92,16 @@
 
 (defun cam-django-mode-setup ()
   "Code to execute as part of python/django-mode-hook."
+  (require 'anaconda-mode)
+  (require 'company)
+  (require 'company-anaconda)
+
   (condition-case nil
       (flymake-mode)
     (error (cam/python-install-pip-reqs)))
+
+  (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
+    (elpy-mode))
 
   (cam-enable-minor-modes
     (company-mode . " ¢")
@@ -102,9 +109,6 @@
     electric-pair-mode
     (highlight-parentheses-mode . nil)
     anaconda-mode)
-
-  (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
-    (elpy-mode))
 
   (pretty-lambdas)
   (jedi:setup)

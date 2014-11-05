@@ -136,9 +136,6 @@
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
-(sandbox/install-and-require 'anaconda-mode)
-(sandbox/install-and-require 'company-anaconda)
-
 (set-background-color "#F4F4F4")
 
 ;; clean up obsolete buffers automatically

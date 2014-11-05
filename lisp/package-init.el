@@ -25,6 +25,7 @@
     ace-jump-buffer
     ace-jump-mode
     ace-isearch
+    anaconda-mode             ; python doc or something like that
     angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
     bm
     browse-kill-ring          ; opens new buffer for browsing kill ring
@@ -33,6 +34,7 @@
     clojure-mode-extra-font-locking
     clojurescript-mode
     company
+    company-anaconda
     cperl-mode
     dash
     dash-functional
