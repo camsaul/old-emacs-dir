@@ -106,11 +106,11 @@
   (cam-enable-minor-modes
     (company-mode . " ¢")
     eldoc-mode
+    electric-indent-mode
     electric-pair-mode
     (highlight-parentheses-mode . nil)
-    anaconda-mode)
-
-  (pretty-lambdas)
+    anaconda-mode
+    pretty-symbols-mode)
   (jedi:setup)
 
   ;; don't prompt for confirmation when killing elpy process

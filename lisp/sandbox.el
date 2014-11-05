@@ -59,39 +59,39 @@
                     :foreground "#008FD7"
                     :bold t)
 
-(::add-keywords 'font-lock-builtin-face
-                "add-hook"
-                "defmacro"
-                "defun"
-                "eval-after-load"
-                "message"
-                "nconc"
-                "require"
-                "set-face-attribute"
-                "setq"
-                )
+;; (::add-keywords 'font-lock-builtin-face
+;;                 "add-hook"
+;;                 "defmacro"
+;;                 "defun"
+;;                 "eval-after-load"
+;;                 "message"
+;;                 "nconc"
+;;                 "require"
+;;                 "set-face-attribute"
+;;                 "setq"
+;;                 )
 
 (::add-keywords 'font-lock-warning-face
                 "sandbox/[a-z-:/]+")
-(::add-keywords-patterns 'font-lock-constant-face
-                         "(?\\(::[a-z-/:]+\\)\\>")
+;; (::add-keywords-patterns 'font-lock-constant-face
+;;                          "(?\\(::[a-z-/:]+\\)\\>")
 
-(::add-keywords 'font-lock-constant-face
-                "::[a-z-:/]+"
-                "cam/[a-z-:/]+"
-                "cam-[a-z-:/]+")
+;; (::add-keywords 'font-lock-constant-face
+;;                 "::[a-z-:/]+"
+;;                 "cam/[a-z-:/]+"
+;;                 "cam-[a-z-:/]+")
 
 (set-face-attribute 'font-lock-preprocessor-face nil
                     :bold nil
                     :italic t)
 
-(::add-keywords 'font-lock-doc-face
-                "t"
-                "nil")
+;; (::add-keywords 'font-lock-doc-face
+;;                 "t"
+;;                 "nil")
 
-(::add-keywords-patterns 'font-lock-preprocessor-face
-                         "setq \\<\\([a-z-:/]+\\)\\>"
-                         "'\\<\\([a-z-:/]+\\)\\>")
+;; (::add-keywords-patterns 'font-lock-preprocessor-face
+;;                          "setq \\<\\([a-z-:/]+\\)\\>"
+;;                          "'\\<\\([a-z-:/]+\\)\\>")
 
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
@@ -153,5 +153,41 @@
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
 
+(sandbox/install-and-require 'ace-window)
+(::define-keys nil "C-x o" #'ace-window)
+(sandbox/install-and-require 'pretty-symbols)
+(setq pretty-symbol-categories '(lambda relational logical nil cam))
+(nconc pretty-symbol-patterns
+       '(;; general
+         (?ℛ cam "\\<require\\>" (emacs-lisp-mode))                              ; REQUIRE
+         (?ƒ cam "\\<defun\\>" (emacs-lisp-mode))                              ; DEFUN
+         (?ƒ cam "\\<def\\>" (django-mode python-mode))                    ; DEF
+         (?❤ cam "\\<self\\>" (emacs-lisp-mode django-mode python-mode))     ; SELF
+         ;; python-specific
+         (?∧ logical "\\<and\\>" (python-mode django-mode))                  ; AND
+         (?∨ logical "\\<or\\>" (python-mode django-mode))                  ; OR
+         (?¬ logical "\\<not\\>" (python-mode django-mode))                  ; NOT
+         (?∅ logical "\\<None\\>" (python-mode django-mode))               ; NONE
+         (?✓ logical "\\<True\\>" (python-mode django-mode))               ; TRUE
+         (?𐄂 logical "\\<False\\>" (python-mode django-mode))              ; FALSE
+         (?∀ logical "\\<for\\>" (python-mode django-mode))                ; FOR
+         (?∈ logical "\\<in\\>" (python-mode django-mode))                 ; IN
+         (?∉ logical "\\<not in\\>" (python-mode django-mode))               ; NOT IN
+         (?⊦ logical "\\<assert\\>" (python-mode django-mode))             ; ASSERT
+         (?≡ logical "==" (python-mode django-mode))                       ; ==
+         (?∃ logical "\\<if\\>" (python-mode django-mode))                 ; IF
+         (?∄ logical "\\<if not\\>" (python-mode django-mode))               ; IF NOT
+         (?∋ logical "\\<hasattr\\>" (python-mode django-mode))            ; HASATTR
+         (?∌ logical "\\<not hasattr\\>" (python-mode django-mode))          ; NOT HASATTR
+         ))
+
+;; pretty-symbol-patterns
+(mapc (-rpartial #'add-hook 'pretty-symbols-mode)
+      '(emacs-lisp-mode-hook))
+
+;; more symbols to use (?)
+;; ∘ ∙ ∫ ∮ ⊛
+
 (provide 'sandbox)
+
 ;;; sandbox.el ends here

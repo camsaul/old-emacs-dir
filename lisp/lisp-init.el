@@ -38,10 +38,11 @@
 
 ;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
 (defun pretty-lambdas ()
-  (font-lock-add-keywords
-   nil `(("(?\\(lambda\\>\\)"
-          (0 (progn (compose-region (match-beginning 1) (match-end 1)
-                                    ,(make-char 'greek-iso8859-7 107))
-                    nil))))))
+  ;; (font-lock-add-keywords
+  ;;  nil `(("(?\\(lambda\\>\\)"
+  ;;         (0 (progn (compose-region (match-beginning 1) (match-end 1)
+  ;;                                   ,(make-char 'greek-iso8859-7 107))
+  ;;                   nil)))))
+  )
 
 (provide 'lisp-init)
