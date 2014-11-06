@@ -153,8 +153,6 @@
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
 
-(sandbox/install-and-require 'ace-window)
-(::define-keys nil "C-x o" #'ace-window)
 (sandbox/install-and-require 'pretty-symbols)
 (setq pretty-symbol-categories '(lambda relational logical nil cam))
 (nconc pretty-symbol-patterns

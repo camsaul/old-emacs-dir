@@ -320,6 +320,7 @@
   "C-x C-g" 'keyboard-quit                        ; Quit commands that I started typing with C-x
   "C-x C-r" 'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs
+  "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
   "C-x k" 'kill-this-buffer                       ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
   "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead

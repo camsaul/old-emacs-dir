@@ -25,6 +25,7 @@
     ace-jump-buffer
     ace-jump-mode
     ace-isearch
+    ace-window                ; ace-style jumping between all visible windows
     anaconda-mode             ; python doc or something like that
     angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
     bm
