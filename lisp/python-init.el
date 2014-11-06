@@ -16,20 +16,20 @@
 
 ;;;; AUTOLOADS
 
-(cam-setup-autoloads
-  ("lisp-init" pretty-lambdas))
+;; (cam-setup-autoloads
+;;   ("lisp-init" pretty-lambdas))
 
 ;; KEY BINDINGS
 (defun cam/define-python-keys (mode-map)
   "Add python-related key bindings to MODE-MAP."
-  (define-keys mode-map
-    '(("<f5>" flymake-display-err-menu-for-current-line)
-      ("<f6>" flymake-goto-next-error)
-      ("<f7>" flymake-mode)
-      ("<f8>" info-lookup-symbol)
-      ("<s-mouse-1>" elpy-goto-definition)
-      ("<M-mouse-1>" elpy-doc)
-      ("<S-mouse-1>" info-lookup-symbol))))
+  (::define-keys mode-map
+    "<f5>" #'flymake-display-err-menu-for-current-line
+    "<f6>" #'flymake-goto-next-error
+    "<f7>" #'flymake-mode
+    "<f8>" #'info-lookup-symbol
+    "<s-mouse-1>" #'elpy-goto-definition
+    "<M-mouse-1>" #'elpy-doc
+    "<S-mouse-1>" #'info-lookup-symbol))
 
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
@@ -49,14 +49,14 @@
   (unless cam/has-initialized-python-p
     (cam/python-install-pip-reqs)
     (mapc 'require '(elpy
-                     flymake
-                     info-look
-                     py-autopep8
-                     pydoc-info                                         ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
-                     python-pep8
-                     yasnippet
-                     anaconda-mode
-                     company-anaconda))
+               flymake
+               info-look
+               py-autopep8
+               pydoc-info ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
+               python-pep8
+               yasnippet
+               anaconda-mode
+               company-anaconda))
 
     (setq-default
         cam/has-initialized-python-p t
@@ -67,16 +67,16 @@
         python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s''')))\n"
         python-shell-completion-string-code "';'.join(module_completion('''%s'''))\n"
         python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --pylab=tk"                 ; preload matplotlib and numpy for interactive use
-        python-shell-prompt-regexp "In \\[[0-9]+\\]: "                ; some python modes are looking for keymap under alternate name (?)
+        python-shell-interpreter-args "-i --pylab=tk" ; preload matplotlib and numpy for interactive use
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: " ; some python modes are looking for keymap under alternate name (?)
         )
 
     ;; TODO we're not even using flycheck w/ python, we're using flymake
-    (eval-after-load "flycheck"
-      '(setq-default
-           flycheck-flake8-maximum-line-length 200))
+    ;; (eval-after-load "flycheck"
+    ;;   '(setq-default
+    ;;        flycheck-flake8-maximum-line-length 200))
 
-    (require 'jedi)                                                       ; see http://tkf.github.io/emacs-jedi/latest/#configuration
+    (require 'jedi) ; see http://tkf.github.io/emacs-jedi/latest/#configuration
     (jedi:install-server)))
 
 (cam/eval-after-load "python-mode"
@@ -136,6 +136,9 @@
           python-shell-interpreter
           python-shell-interpreter-args
           python-shell-prompt-regexp))
+
+  (setq-local python-check-command "pyflakes")  ; for some reason kill-local-variable above isn't killing this hard enough
+
 
   ;; HOOKS
   (add-hook 'before-save-hook
