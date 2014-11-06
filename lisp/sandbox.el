@@ -162,7 +162,7 @@
          (?ℛ cam "\\<require\\>" (emacs-lisp-mode))                              ; REQUIRE
          (?ƒ cam "\\<defun\\>" (emacs-lisp-mode))                              ; DEFUN
          (?ƒ cam "\\<def\\>" (django-mode python-mode))                    ; DEF
-         (?❤ cam "\\<self\\>" (emacs-lisp-mode django-mode python-mode))     ; SELF
+         (?∫ cam "\\<self\\>" (emacs-lisp-mode django-mode python-mode))     ; SELF
          ;; python-specific
          (?∧ logical "\\<and\\>" (python-mode django-mode))                  ; AND
          (?∨ logical "\\<or\\>" (python-mode django-mode))                  ; OR
@@ -170,7 +170,7 @@
          (?∅ logical "\\<None\\>" (python-mode django-mode))               ; NONE
          (?✓ logical "\\<True\\>" (python-mode django-mode))               ; TRUE
          (?𐄂 logical "\\<False\\>" (python-mode django-mode))              ; FALSE
-         (?∀ logical "\\<for\\>" (python-mode django-mode))                ; FOR
+         (?∀ logical "\\<for\\>" (python-mode django-mode))              ; FOR
          (?∈ logical "\\<in\\>" (python-mode django-mode))                 ; IN
          (?∉ logical "\\<not in\\>" (python-mode django-mode))               ; NOT IN
          (?⊦ logical "\\<assert\\>" (python-mode django-mode))             ; ASSERT
@@ -178,7 +178,15 @@
          (?∃ logical "\\<if\\>" (python-mode django-mode))                 ; IF
          (?∄ logical "\\<if not\\>" (python-mode django-mode))               ; IF NOT
          (?∋ logical "\\<hasattr\\>" (python-mode django-mode))            ; HASATTR
-         (?∌ logical "\\<not hasattr\\>" (python-mode django-mode))          ; NOT HASATTR
+         ;; (?∌ logical "\\<not hasattr\\>" (python-mode django-mode))          ; NOT HASATTR
+         (?↪ cam "\\<return\\>" (python-mode django-mode))                 ; RETURN
+         (?⚠ cam "\\<raise\\>" (python-mode django-mode))                  ; RAISE
+         (?⎾ cam "\\<try\\>" (python-mode django-mode))                    ; TRY
+         (?⎿ cam "\\<except\\>" (python-mode django-mode))                 ; EXCEPT
+         (?⌥ cam "\\<else\\>" (python-mode django-mode))                   ; ELSE
+         (?Ⓐ cam "\\<args\\>" (python-mode django-mode))                   ; ARGS
+         (?Ⓚ cam "\\<kwargs\\>" (python-mode django-mode))                 ; KWARGS
+         (?℮ cam "\\<Exception\\>" (python-mode django-mode))              ; EXCEPTION
          ))
 
 ;; pretty-symbol-patterns
@@ -189,5 +197,7 @@
 ;; ∘ ∙ ∫ ∮ ⊛
 
 (provide 'sandbox)
+
+(+ 1 2)
 
 ;;; sandbox.el ends here
