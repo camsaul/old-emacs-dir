@@ -196,6 +196,48 @@
 
 (provide 'sandbox)
 
-(+ 1 2)
+;; add all cl-lib font-lock-highlighting to emacs-lisp-mode
+(add-hook 'emacs-lisp-mode-hook
+  (lambda ()
+    (sandbox/install-and-require 'cl-lib-highlight)
+    (cl-lib-highlight-initialize)))
+
+;;; packages to checkout !
+;;; macrostep - interactive macro stepper for Emacs Lisp
+;;; web-mode
+;;;
+
+;;;; PRETTY RAD FUNCTIONS / KEYBINDINGS, INSPIRED BY GRAPHENE
+(defun cam/add-semicolon-to-eol ()
+  "Add a semicolon to the end of current line without affecting point."
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (insert ";")))
+
+(defun cam/insert-newline-below ()
+  "Insert a newline below and move to it." ; OH THIS IS NICE
+  (interactive)
+  (end-of-line)
+  (newline-and-indent))
+
+(defmacro cam/funcall-for-key-binding (keys)
+  "Call the fn bound to KEYS."
+  `(funcall (key-binding ,(kbd keys))))
+
+(defun cam/comment-current-line ()
+  "Comment/uncomment the current line."
+  (interactive)
+  (save-excursion
+    (end-of-line)
+    (set-mark (point))
+    (beginning-of-line)
+    (cam/funcall-for-key-binding "M-;")))
+
+(::define-keys nil
+  "C-;" #'cam/add-semicolon-to-eol
+  "M-RET" #'cam/insert-newline-below
+  "C-M-;" #'cam/comment-current-line)
+(provide 'sandbox)
 
 ;;; sandbox.el ends here

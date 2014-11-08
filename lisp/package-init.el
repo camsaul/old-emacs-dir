@@ -52,6 +52,7 @@
     evil
     evil-matchit
     evil-paredit
+    f                         ; modern API for working with files / dirs
     find-things-fast
     flycheck
     flymake                   ; version on Marmalade is newer than one bundled w/ Emacs
@@ -61,6 +62,7 @@
     gitconfig-mode            ; major mode for editing .gitconfig files
     gitignore-mode            ; major mode for editing .gitignore files
     git-timemachine
+    helm
     highlight-cl              ; font-lock the cl- functions in  ELisp Mode
     highlight-parentheses
     highlight-symbol
@@ -83,6 +85,7 @@
     noflet                    ; locally override function definitions
     outline-magic
     paredit
+    php-mode
     powerline
     powerline-evil
     projectile                ; things like projectile-recentf (recently edited files in current Git project)
@@ -101,6 +104,7 @@
     rspec-mode
     ruby-block
     ruby-electric
+    s                         ; "the long lost Emacs string manipulation library"
     saveplace                 ; save the position of point when killing a buffer
     slime
     smartparens
