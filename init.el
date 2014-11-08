@@ -144,6 +144,7 @@
 (eval-after-load "find-things-fast"
   '(nconc ftf-filetypes '("*.clj"
                           "*.el"
+                          "*.html"
                           "*.js")))
 
 (eval-after-load "company"
