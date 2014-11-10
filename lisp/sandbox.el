@@ -241,4 +241,7 @@
   "C-M-;" #'cam/comment-current-line)
 (provide 'sandbox)
 
+;; THINGS TO CHECK OUT !
+;; clang-format-before-save - run clang format every time you save a C++ file
+
 ;;; sandbox.el ends here

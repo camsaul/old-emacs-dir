@@ -36,6 +36,7 @@
 
 (defun cam/python-install-pip-reqs ()
   "Install pip requirements needed for running elpy, jedi, etc."
+  (interactive)
   (call-process-shell-command
    "pip install -U pep8 autopep8 flake8 pyflakes rope ropemacs jedi epc"
    nil ; input file
@@ -96,9 +97,11 @@
   (require 'company)
   (require 'company-anaconda)
 
-  (condition-case nil
-      (flymake-mode)
-    (error (cam/python-install-pip-reqs)))
+  (cam/python-install-pip-reqs)
+
+  ;; (condition-case nil
+  ;;     (flymake-mode)
+  ;;   (error (cam/python-install-pip-reqs)))
 
   (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
     (elpy-mode))
@@ -110,7 +113,8 @@
     electric-pair-mode
     (highlight-parentheses-mode . nil)
     anaconda-mode
-    pretty-symbols-mode)
+    pretty-symbols-mode
+    flymake-mode)
   (jedi:setup)
 
   ;; don't prompt for confirmation when killing elpy process
