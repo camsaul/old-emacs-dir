@@ -197,10 +197,11 @@
 (provide 'sandbox)
 
 ;; add all cl-lib font-lock-highlighting to emacs-lisp-mode
+(sandbox/install-and-require 'cl-lib-highlight)
 (add-hook 'emacs-lisp-mode-hook
   (lambda ()
-    (sandbox/install-and-require 'cl-lib-highlight)
-    (cl-lib-highlight-initialize)))
+    (ignore-errors
+      (cl-lib-highlight-initialize))))
 
 ;;; packages to checkout !
 ;;; macrostep - interactive macro stepper for Emacs Lisp
