@@ -13,7 +13,7 @@
       '(("\.hpp$" . c++-mode)
         ("\.cpp$" . c++-mode)))
 
-(defun c++-search ()
+(defun cam/c++-search ()
   "Lookup C+++ symbol on cplusplus.com"
   (interactive)
   (browse-url
@@ -21,7 +21,7 @@
     "http://www.cplusplus.com/search.do?q="
     (url-hexify-string (cam/current-token)))))
 
-(defun c++-mode-setup ()
+(defun cam/c++-mode-setup ()
   (require 'find-file)
   (require 'flymake)
   (cam/enable-minor-modes
@@ -33,38 +33,38 @@
         c-basic-indent 4
         c-basic-offset 4))
 
-(add-hook 'c++-mode-hook 'c++-mode-setup)
+(add-hook 'c++-mode-hook 'cam/c++-mode-setup)
 
-(defun find-tag-at-mark ()
+(defun cam/find-tag-at-mark ()
   (interactive)
   (find-tag (cam/current-token)))
 
-(defun find-tag-at-mouse-mark (event)
+(defun cam/find-tag-at-mouse-mark (event)
   (interactive "e")
   (progn (mouse-set-point event)
-         (find-tag-at-mark)))
+         (cam/find-tag-at-mark)))
 
 (eval-after-load "cc-mode"
-  '(define-keys c++-mode-map
+  '(cam/define-keys c++-mode-map
      "M-;" #'comment-region
      "<f5>" #'flymake-display-err-menu-for-current-line
      "<f6>" #'flymake-goto-next-error
      "<f7>" #'flymake-mode
-     "<f8>" #'c++-search
-     "<S-mouse-1>" #'c++-search
+     "<f8>" #'cam/c++-search
+     "<S-mouse-1>" #'cam/c++-search
      "C-c C-k" #'flymake-compile
-     "<C-M-up>" #'c++-jump-to-header
-     "<C-M-down>" #'c++-jump-to-implementation
-     "<s-mouse-1>" #'find-tag-at-mouse-mark
-     "<mouse-2>" #'find-tag-at-mouse-mark ; the mouse wheel
-     "M-." #'find-tag-at-mark))
+     "<C-M-up>" #'cam/c++-jump-to-header
+     "<C-M-down>" #'cam/c++-jump-to-implementation
+     "<s-mouse-1>" #'cam/find-tag-at-mouse-mark
+     "<mouse-2>" #'cam/find-tag-at-mouse-mark ; the mouse wheel
+     "M-." #'cam/find-tag-at-mark))
 
-(defun c++-jump-to-header ()
+(defun cam/c++-jump-to-header ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
                      ".h")))
 
-(defun c++-jump-to-implementation ()
+(defun cam/c++-jump-to-implementation ()
   (interactive)
   (find-file (concat (car (split-string (buffer-file-name) "\\."))
                      ".cpp")))

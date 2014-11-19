@@ -109,11 +109,11 @@
   (interactive)
   (switch-to-buffer-other-window "*nav*"))
 
-(defun menu-edit-file (str f)
+(defun cam/menu-edit-file (str f)
   (vector str (list 'lambda '() '(interactive) (list 'find-file f))))
 
-(defun menu-edit-init-file (f)
-  (menu-edit-file (file-name-base f) f))
+(defun cam/menu-edit-init-file (f)
+  (cam/menu-edit-file (file-name-base f) f))
 
 (defun cam/is-init-file-p (filename)
   "Return t if FILENAME is ~/.emacs.d/init.el or in ~/.emacs.d/ directory; nil in any other case."

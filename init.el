@@ -361,7 +361,7 @@
 
 (easy-menu-define cam-menu global-map "Edit init file.."
   (cons "Edit Init File"
-        (mapcar 'menu-edit-init-file
+        (mapcar #'cam/menu-edit-init-file
                 cam/init-files)))
 
 

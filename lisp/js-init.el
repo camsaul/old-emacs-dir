@@ -16,7 +16,7 @@
     (cam/enable-minor-modes
       (company-mode . " ¢")
       highlight-parentheses-mode)
-    (pretty-function)
+    (cam/pretty-function)
     ;; run js-beautify on buffer when saving, requires npm install -g js-beautify
     ;; TODO: web-beautfiy-js-buffer for json-mode, web-beautify-html-buffer for html-mode; web-beautify-css-buffer for css-mode ?
     (add-hook 'before-save-hook 'web-beautify-js-buffer t t)))
@@ -40,7 +40,7 @@
        "C-j" (cam/interactivify 'js3-insert-and-indent)
        "M-q" 'cam/js-reindent-previous-sexp))
 
-(defun pretty-function ()
+(defun cam/pretty-function ()
   "Turn function into a fancy f symbol."
   (font-lock-add-keywords
    nil `(("\\(\\<function\\>\\)"

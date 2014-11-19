@@ -1,10 +1,10 @@
 (cam/setup-autoloads
   ("nxml-mode" #'nxml-backward-element #'nxml-backward-up-element #'nxml-finish-element #'nxml-forward-element))
 
-(defun html-mode-setup ()
+(defun cam/html-mode-setup ()
   (require 'nxml-mode)
   (nxml-mode)) ; fancy xml editing mode
-(add-hook 'html-mode-hook 'html-mode-setup)
+(add-hook 'html-mode-hook 'cam/html-mode-setup)
 
 (eval-after-load "nxml"
   '(cam/define-keys nxml-mode-map

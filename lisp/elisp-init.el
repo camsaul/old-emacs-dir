@@ -16,7 +16,7 @@
 
 ;;;; GENERAL
 
-(defun byte-recompile-this-file ()
+(defun cam/byte-recompile-this-file ()
   "Recompile the current Emacs Lisp file if it is an init file."
   (interactive)
   (when (and (buffer-file-name)
@@ -48,7 +48,7 @@
   (setq flycheck-emacs-lisp-load-path load-path)
 
   (add-hook 'before-save-hook 'cam/untabify-current-buffer nil t)
-  (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
+  (add-hook 'after-save-hook 'cam/cam/byte-recompile-this-file nil t)
 
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer

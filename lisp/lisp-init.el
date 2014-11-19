@@ -13,7 +13,7 @@
   (set-face-background 'hl-sexp-face "#DDFFDD")
   (add-hook 'before-save-hook 'cam/untabify-current-buffer t t))
 
-(defun backward-paredit-kill ()
+(defun cam/backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."
   (interactive)
   (paredit-kill 0))
@@ -34,7 +34,7 @@
     "C-c C-d" 'elisp-slime-nav-describe-elisp-thing-at-point
     "RET" 'reindent-then-newline-and-indent
     "<f11>" 'paredit-mode
-    "C-S-k" 'backward-paredit-kill))
+    "C-S-k" 'cam/backward-paredit-kill))
 
 ;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
 (defun pretty-lambdas ()
