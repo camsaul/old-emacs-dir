@@ -9,9 +9,9 @@
 ;;; Code:
 
 (cam/setup-autoloads
-  ("flycheck" flycheck-mode)
-  ("lisp-init" cam/define-lisp-keys cam/lisp-mode-setup)
-  ("lisp-mode" emacs-lisp-mode lisp-mode))
+  ("flycheck" #'flycheck-mode)
+  ("lisp-init" #'cam/define-lisp-keys #'cam/lisp-mode-setup)
+  ("lisp-mode" #'emacs-lisp-mode #'lisp-mode))
 
 
 ;;;; GENERAL

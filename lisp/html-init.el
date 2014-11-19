@@ -1,5 +1,5 @@
 (cam/setup-autoloads
-  ("nxml-mode" nxml-backward-element nxml-backward-up-element nxml-finish-element nxml-forward-element))
+  ("nxml-mode" #'nxml-backward-element #'nxml-backward-up-element #'nxml-finish-element #'nxml-forward-element))
 
 (defun html-mode-setup ()
   (require 'nxml-mode)

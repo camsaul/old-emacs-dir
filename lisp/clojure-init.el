@@ -1,7 +1,7 @@
 ;; -*- comment-column: 60; -*-
 
 (cam/setup-autoloads
-  ("lisp-init" cam/define-lisp-keys))
+  ("lisp-init" #'cam/define-lisp-keys))
 
 (defun cam/clojure-mode-setup ()
   (require 'cider)

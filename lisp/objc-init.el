@@ -1,5 +1,5 @@
 (cam/setup-autoloads
-  ("find-lisp" find-lisp-find-files))
+  ("find-lisp" #'find-lisp-find-files))
 
 ;; Automatically open .h files with @interface declarations as obj-c rather than c
 (add-to-list 'magic-mode-alist

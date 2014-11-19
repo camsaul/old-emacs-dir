@@ -17,7 +17,7 @@
 ;;;; AUTOLOADS
 
 ;; (cam/setup-autoloads
-;;   ("lisp-init" pretty-lambdas))
+;;   ("lisp-init" #'pretty-lambdas))
 
 ;; KEY BINDINGS
 (defun cam/define-python-keys (mode-map)

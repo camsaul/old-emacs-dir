@@ -105,7 +105,7 @@
 
   ;; proced doesn't work on OS X, load up vkill instead
   (sandbox/install-and-require 'vkill)
-  (cam/setup-autoloads ("vkill" vkill))
+  (cam/setup-autoloads ("vkill" #'vkill))
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 

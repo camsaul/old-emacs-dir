@@ -49,7 +49,7 @@
                                  (let ((file (car autoload-group))
                                        (symbols (cdr autoload-group)))
                                    (mapcar (lambda (symbol)
-                                             `(autoload ',symbol ,file nil t)) ; create autoload for each symbol
+                                             `(autoload ,symbol ,file nil t)) ; create autoload for each symbol
                                            symbols)))
                                autoloads))))
 (put 'cam/setup-autoloads 'lisp-indent-function 0)
