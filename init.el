@@ -101,7 +101,7 @@
 
     ;; show a AngryPoliceCaptain.com quote
     (unless (or (active-minibuffer-window)
-                (minibufferp(current-buffer)))
+                (minibufferp (current-buffer)))
       (angry-police-captain))
     ))
 
