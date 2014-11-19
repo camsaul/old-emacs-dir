@@ -321,29 +321,29 @@
   "C-M-S-k" #'backward-kill-sexp                  ; Kill sexp before current position
   "C-M-y" #'browse-kill-ring
   "C-S-k" #'cam/backward-kill-line
-  "C-c e" #'eval-and-replace                         ; eval previous elisp expression at point, replace with results
+  "C-c e" #'eval-and-replace                      ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
-  "C-v" #'yank                                     ; C-v -> yank instead of whatever it usually does
-  "C-x C-b" #'buffer-menu                          ;  C-x C-b shows buffer menu
-  "C-x C-d" #'ido-dired                            ; C-x C-d -> dired instead of list directory
-  "C-x C-g" #'keyboard-quit                        ; Quit commands that I started typing with C-x
-  "C-x C-r" #'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
-  "C-x C-z" nil                                     ; disable minimize emacs
-  "C-x k" #'kill-this-buffer                       ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
+  "C-v" #'yank                                    ; yank instead of whatever it usually does
+  "C-x C-b" #'buffer-menu                         ; show buffer menu
+  "C-x C-d" #'ido-dired                           ; dired instead of list directory
+  "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
+  "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
+  "C-x C-z" nil                                   ; disable minimize emacs
+  "C-x k" #'kill-this-buffer                      ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
-  "C-x u" nil                                       ; disable emacs default keybinding for undo, use C-z instead
-  "C-x z" nil                                       ; disable minimize emacs
-  "H-;" #'loccur-current                           ; folder current buffer to lines containing the current word
+  "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
+  "C-x z" nil                                     ; disable minimize emacs
+  "H-;" #'loccur-current                          ; folder current buffer to lines containing the current word
   "H-A" #'mc/mark-previous-like-this
-  "H-E" #'mc/mark-next-like-this                   ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
+  "H-E" #'mc/mark-next-like-this                  ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
   "H-h" #'highlight-symbol-at-point
   "H-k" #'kill-this-buffer
   "M-RET" #'cam/insert-newline-below
   "M-`" #'cam/projectile-recentf
   "M-j" #'cam/join-next-line
-  "M-x" #'smex                                     ; smex is IDO-mode like M-x behavior
-  "S-<f10>" #'nav                                  ; Open nav buffer
+  "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
+  "S-<f10>" #'nav                                 ; Open nav buffer
   "s-Z" #'undo-tree-redo
   "s-[" #'cam/force-unindent-region
   "s-]" #'cam/force-indent-region
