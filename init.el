@@ -288,23 +288,23 @@
   "<H-up>" #'windmove-up
   "<end>" #'ace-jump-buffer
   "<escape>" #'evil-normal-state
-  "<f10>" #'cam/switch-to-nav-buffer-other-window  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
-  "<f11>" #'paredit-mode                           ; F11 is now global key for paredit-mode
+  "<f10>" #'cam/switch-to-nav-buffer-other-window ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
+  "<f11>" #'paredit-mode                          ; F11 is now global key for paredit-mode
   "<f12> b" #'cam/bing-search
   "<f12> s" #'cam/stackoverflow-search
   "<f13>" #'cam/popup-cam-menu
-  "<f2>" #'helm-swoop                             ; (lambda () (interactive) (call-interactively #'helm-swoop))
+  "<f2>" #'helm-swoop                             ; nice Helm search
   "<f9>" #'whitespace-mode
   "<home>" #'ace-jump-mode
-  "<insert>" nil                                    ; disable stupid insert key TODO maybe use as a prefix to insert something useful
+  "<insert>" nil                                  ; disable stupid insert key TODO maybe use as a prefix to insert something useful
   "<next>" #'helm-buffers-list
   "<prior>" #'ace-jump-line-mode
   "<scroll>" #'cam/popup-cam-menu                 ; windows only
-  "A-;" #'loccur                                   ; activate loccur-mode (prompt for word/regex)
+  "A-;" #'loccur                                  ; activate loccur-mode (prompt for word/regex)
   "A-<tab>" #'ace-jump-buffer
-  "A-H-;" #'loccur-previous-match                  ; jump batch to previous loccur search
-  "A-H-b" #'bm-show-all                            ; disable minimize emacs
-  "A-b" #'bm-toggle                                ; Toggle visual bookmark on this line
+  "A-H-;" #'loccur-previous-match                 ; jump batch to previous loccur search
+  "A-H-b" #'bm-show-all                           ; disable minimize emacs
+  "A-b" #'bm-toggle                               ; Toggle visual bookmark on this line
   "A-n" #'bm-next
   "A-p" #'bm-previous
   "A-r h" #'rotate:even-horizontal
