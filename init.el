@@ -149,17 +149,17 @@
      (cam/enable-minor-modes
        ;; (global-magit-wip-save-mode t)          ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
        (magit-auto-revert-mode . nil))              ; auto-revert buffers that change on disk as result of magit command
-     '(defadvice magit-status (after magit-status-show-help activate)
-        (magit-key-mode-popup-dispatch)           ;show help when showing magit-status
-        (call-interactively #'other-window))))    ; switch back to magit status window
+     (defadvice magit-status (after magit-status-show-help activate)
+       (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
+       (call-interactively #'other-window))))     ; switch back to magit status window
 
 (eval-after-load "find-things-fast"
-  '(nconc ftf-filetypes '("*.clj"
+  '(nconc ftf-filetypes '("*.clj"                 ; extra file types to search for/through when using find-things-fast
                           "*.el"
                           "*.html"
                           "*.js")))
 
-(eval-after-load "company"
+(eval-after-load "company"                        ; shorter autocomplete delay w/ company
   '(setq company-idle-delay 0.01                  ; default is 0.5
          company-minimum-prefix-length 1))        ; default is 3
 
