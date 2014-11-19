@@ -15,12 +15,6 @@
 
 ;; (sandbox/install-and-require 'smooth-scrolling)
 
-;;; Show AngryPoliceCaptain.com quotes when saving
-(add-hook 'after-save-hook
-  (lambda ()
-    (unless (or (active-minibuffer-window)
-                (minibufferp(current-buffer))                )
-      (angry-police-captain))))
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
 ;; color tweaks

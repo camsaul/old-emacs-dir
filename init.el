@@ -42,8 +42,10 @@
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
+
 (cam/setup-autoloads
   ("ace-jump-buffer" #'ace-jump-same-mode-buffers)
+  ("bm" #'bm-show-all)
   ("bytecomp" #'byte-recompile-file)
   ("find-things-fast" #'ftf-find-file #'ftf-grepsource)
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
@@ -96,6 +98,11 @@
 (add-hook 'after-save-hook
   (lambda ()
     (executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+
+    ;; show a AngryPoliceCaptain.com quote
+    (unless (or (active-minibuffer-window)
+                (minibufferp(current-buffer)))
+      (angry-police-captain))
     ))
 
 (add-hook 'emacs-startup-hook
@@ -203,13 +210,13 @@
     require-final-newline t                       ; add final newline on save
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
     scroll-margin 1
+    select-enable-clipboard t                     ; Use the clipboard in addition to emacs kill ring
     w32-apps-modifier 'hyper
     w32-lwindow-modifier 'super
     w32-pass-lwindow-to-system nil
     w32-rwindow-modifier 'alt
     whitespace-line-column 200                    ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
     visible-bell t
-    x-select-enable-clipboard t                   ; Use the clipboard in addition to emacs kill ring
  )
 
 (setq-default
