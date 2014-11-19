@@ -50,7 +50,8 @@
   ("find-things-fast" ftf-find-file ftf-grepsource)
   ("loccur" loccur loccur-current loccur-previous-match)
   ("highlight-error-keywords" highlight-error-keywords-mode)
-  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this))
+  ("multiple-cursors" mc/mark-all-like-this mc/edit-lines mc/mark-previous-like-this mc/mark-next-like-this)
+  ("s" s-replace))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
