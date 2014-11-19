@@ -241,8 +241,6 @@
 ;; THINGS TO CHECK OUT !
 ;; clang-format-before-save - run clang format every time you save a C++ file
 
-;;; sandbox.el ends here
-
 (sandbox/install-and-require 'http-post-simple)
 
 (defvar slack-channel
@@ -279,7 +277,7 @@
   (angry-police-captain)
   (sleep-for 1) ; wait for HTTP request to finish
   (->> (current-message)
-    (s-replace "The Angry Police Captain" "David Baden")
+    (s-replace "The Angry Police Captain" "Hobbs") ; actually, let's do angry Hobbs quotes
     post-to-slack
     message))
 
