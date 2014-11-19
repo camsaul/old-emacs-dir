@@ -239,9 +239,57 @@
   "C-;" #'cam/add-semicolon-to-eol
   "M-RET" #'cam/insert-newline-below
   "C-M-;" #'cam/comment-current-line)
-(provide 'sandbox)
 
 ;; THINGS TO CHECK OUT !
 ;; clang-format-before-save - run clang format every time you save a C++ file
 
+;;; sandbox.el ends here
+
+(sandbox/install-and-require 'http-post-simple)
+
+(defvar slack-channel
+  "data"
+  "The channel to post Slack messages to.")
+
+(defun slack-url ()
+  "The URL for posting Slack messages."
+  (concat "https://expa.slack.com/services/hooks/slackbot?token=FQ2iLGcb6m0dcByOTuSfnoZQ&channel=" slack-channel))
+
+(defun set-slack-user (username)
+  "Send future Slack messages to USERNAME."
+  (interactive "sSend Slack messages to user: ")
+  (setq slack-channel (concat "%40" username)))
+
+(defun set-slack-channel (channel)
+  "Send future Slack messages to CHANNEL."
+  (interactive "sSend Slack messages to channel: ")
+  (setq slack-channel (concat "%23" channel)))
+
+(defun post-to-slack (message)
+  "Post MESSAGE to Slack."
+  (interactive "sMessage: ")
+  (http-post-simple-internal
+   (slack-url)
+   message
+   'utf-8
+   nil)
+  message)
+
+(defun angry-police-captain-to-slack ()
+  "Post angry police caption quote to slack."
+  (interactive)
+  (angry-police-captain)
+  (sleep-for 1) ; wait for HTTP request to finish
+  (->> (current-message)
+    (s-replace "The Angry Police Captain" "David Baden")
+    post-to-slack
+    message))
+
+(::define-keys nil
+  "H-M-p" #'post-to-slack
+  "H-M-P" #'angry-police-captain-to-slack
+  "H-M-u" #'set-slack-user
+  "H-M-c" #'set-slack-channel)
+
+(provide 'sandbox)
 ;;; sandbox.el ends here

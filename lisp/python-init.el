@@ -104,7 +104,8 @@
   ;;   (error (cam/python-install-pip-reqs)))
 
   (let ((major-mode 'python-mode)) ; elpy checks major-mode and won't work for django-mode
-    (elpy-mode))
+    (ignore-errors
+      (elpy-mode)))
 
   (cam-enable-minor-modes
     (company-mode . " ¢")
@@ -112,7 +113,7 @@
     electric-indent-mode
     electric-pair-mode
     (highlight-parentheses-mode . nil)
-    anaconda-mode
+    ;; anaconda-mode
     pretty-symbols-mode
     flymake-mode)
   (jedi:setup)
