@@ -1,29 +1,29 @@
 ;; -*- comment-column: 60; -*-
 
-(cam-setup-autoloads
-  ("lisp-init" cam-define-lisp-keys))
+(cam/setup-autoloads
+  ("lisp-init" cam/define-lisp-keys))
 
-(defun cam-clojure-mode-setup ()
+(defun cam/clojure-mode-setup ()
   (require 'cider)
   (require 'company)
   (require 'clojure-mode-extra-font-locking)
   (require 'clojure-cheatsheet)
-  (cam-lisp-mode-setup)
-  (cam-enable-minor-modes
+  (cam/lisp-mode-setup)
+  (cam/enable-minor-modes
     cider-mode
     subword-mode ; enable CamelCase support for editor movement
     company-mode)
   (pretty-fn)
   (cider-turn-on-eldoc-mode))
 
-(add-hook 'nrepl-repl-mode-hook 'cam-clojure-mode-setup)
-(add-hook 'clojure-mode-hook 'cam-clojure-mode-setup)
-(add-hook 'cider-mode-hook 'cam-clojure-mode-setup)
+(add-hook 'nrepl-repl-mode-hook 'cam/clojure-mode-setup)
+(add-hook 'clojure-mode-hook 'cam/clojure-mode-setup)
+(add-hook 'cider-mode-hook 'cam/clojure-mode-setup)
 
 ;; custom keyboard shortcuts
-(defun cam-define-clojure-keys (mode-map)
-  (cam-define-lisp-keys mode-map)
-  (::define-keys mode-map
+(defun cam/define-clojure-keys (mode-map)
+  (cam/define-lisp-keys mode-map)
+  (cam/define-keys mode-map
     "<f12> c" #'clojure-docs-search
       "<f12> i" #'instant-clojure-cheatsheet-search
       "<f12> j" #'javadocs-search
@@ -35,7 +35,7 @@
 
 (eval-after-load "clojure-mode"
   '(progn
-     (cam-define-clojure-keys clojure-mode-map)
+     (cam/define-clojure-keys clojure-mode-map)
      (define-clojure-indent ; better indenting for compojure stuff
        (defroutes 'defun)
        (sqlfn 'defun)
@@ -60,7 +60,7 @@
 (eval-after-load "nrepl"
   '(progn
      (require 'lisp-init)
-     (cam-define-clojure-keys nrepl-interaction-mode-map)
+     (cam/define-clojure-keys nrepl-interaction-mode-map)
      (setq nrepl-hide-special-buffers t                        ; hide the *nrepl-connection* and *nrepl-server* buffers
            nrepl-use-pretty-printing t
            nrepl-error-handler nil)))

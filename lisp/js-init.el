@@ -13,7 +13,7 @@
   (lambda ()
     (require 'web-beautify)
     (cam/declare-vars highlight-parentheses-mode)
-    (cam-enable-minor-modes
+    (cam/enable-minor-modes
       (company-mode . " ¢")
       highlight-parentheses-mode)
     (pretty-function)

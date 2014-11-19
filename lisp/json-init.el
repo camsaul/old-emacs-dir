@@ -8,7 +8,7 @@
 
 (add-hook 'json-mode-hook
   (lambda ()
-    (cam-enable-minor-modes
+    (cam/enable-minor-modes
       (highlight-parentheses-mode . nil)
       hl-sexp-mode
       (paredit-mode . " π"))

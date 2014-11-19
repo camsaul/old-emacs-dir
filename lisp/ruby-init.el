@@ -1,8 +1,8 @@
-(defun cam-ruby-mode-setup ()
+(defun cam/ruby-mode-setup ()
   (require 'rspec-mode)
   (require 'ruby-electric)
   (require 'ruby-block)
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     (paredit-mode . " π")
     ruby-block-mode
     ruby-electric-mode
@@ -10,7 +10,7 @@
   (ruby-electric-mode t)
   (ruby-block-mode t) ; highlight corresponding openings when cursor is on a closing block statement
   (paredit-mode t))
-(add-hook 'ruby-mode-hook 'cam-ruby-mode-setup)
+(add-hook 'ruby-mode-hook 'cam/ruby-mode-setup)
 
 (mapc (lambda (str)
         (add-to-list 'auto-mode-alist (cons str 'ruby-mode)))

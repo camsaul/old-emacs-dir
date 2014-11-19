@@ -38,15 +38,15 @@
 (dont-prompt-about-killing "term" "*ansi-term*")
 
 ;; CAR-AZY SYNTAX HIGHLIGHTING
-(defmacro ::add-keywords-patterns (face &rest patterns)
+(defmacro cam/add-keywords-patterns (face &rest patterns)
   `(progn
      ,@(mapcar (lambda (pattern)
                (list 'font-lock-add-keywords ''emacs-lisp-mode
                      `(quote ((,pattern 1 ,face)))))
                patterns)))
 
-(defmacro ::add-keywords (face &rest kws)
-  `(::add-keywords-patterns
+(defmacro cam/add-keywords (face &rest kws)
+  `(cam/add-keywords-patterns
     ,face ,@(mapcar (lambda (kw)
                       (concat "\\<\\(" kw "\\)\\>"))
                     kws)))
@@ -59,7 +59,7 @@
                     :foreground "#008FD7"
                     :bold t)
 
-;; (::add-keywords 'font-lock-builtin-face
+;; (cam/add-keywords 'font-lock-builtin-face
 ;;                 "add-hook"
 ;;                 "defmacro"
 ;;                 "defun"
@@ -71,25 +71,23 @@
 ;;                 "setq"
 ;;                 )
 
-(::add-keywords 'font-lock-warning-face
+(cam/add-keywords 'font-lock-warning-face
                 "sandbox/[a-z-:/]+")
-;; (::add-keywords-patterns 'font-lock-constant-face
-;;                          "(?\\(::[a-z-/:]+\\)\\>")
+;; (cam/add-keywords-patterns 'font-lock-constant-face
+;;                          "(?\\(cam/[a-z-/:]+\\)\\>")
 
-;; (::add-keywords 'font-lock-constant-face
-;;                 "::[a-z-:/]+"
-;;                 "cam/[a-z-:/]+"
-;;                 "cam-[a-z-:/]+")
+;; (cam/add-keywords 'font-lock-constant-face
+;;                 "cam/[a-z-:/]+")
 
 (set-face-attribute 'font-lock-preprocessor-face nil
                     :bold nil
                     :italic t)
 
-;; (::add-keywords 'font-lock-doc-face
+;; (cam/add-keywords 'font-lock-doc-face
 ;;                 "t"
 ;;                 "nil")
 
-;; (::add-keywords-patterns 'font-lock-preprocessor-face
+;; (cam/add-keywords-patterns 'font-lock-preprocessor-face
 ;;                          "setq \\<\\([a-z-:/]+\\)\\>"
 ;;                          "'\\<\\([a-z-:/]+\\)\\>")
 
@@ -104,9 +102,9 @@
    (message "STARTING PACKAGE AUTO-UPDATE...")
    (nconc load-path '("~/.emacs.d/lisp/"))
    (require 'package-init)
-   (::auto-update-packages))
+   (cam/auto-update-packages))
  (lambda (result)
-   (message "::auto-update-packages finished. -- %s" result)))
+   (message "cam/auto-update-packages finished. -- %s" result)))
 
 ;; write backup files to own directory(setq backup - directory - alist `(("." . ,(expand-file-name
 ;; (concat user-emacs-directory "backups")))))
@@ -132,7 +130,7 @@
 
   ;; proced doesn't work on OS X, load up vkill instead
   (sandbox/install-and-require 'vkill)
-  (cam-setup-autoloads ("vkill" vkill))
+  (cam/setup-autoloads ("vkill" vkill))
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
@@ -143,12 +141,12 @@
 
 ;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-;; (defun ::outline-enable-or-toggle-children ()
+;; (defun cam/outline-enable-or-toggle-children ()
 ;;   (interactive)
 ;;   (if (not outline-minor-mode) (outline-minor-mode)
 ;;     (ignore-errors
 ;;       (outline-toggle-children))))
-;; (::define-keys nil "H-SPC" #'::outline-enable-or-toggle-children)
+;; (cam/define-keys nil "H-SPC" #'cam/outline-enable-or-toggle-children)
 
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
@@ -235,7 +233,7 @@
     (beginning-of-line)
     (cam/funcall-for-key-binding "M-;")))
 
-(::define-keys nil
+(cam/define-keys nil
   "C-;" #'cam/add-semicolon-to-eol
   "M-RET" #'cam/insert-newline-below
   "C-M-;" #'cam/comment-current-line)
@@ -285,7 +283,7 @@
     post-to-slack
     message))
 
-(::define-keys nil
+(cam/define-keys nil
   "H-M-p" #'post-to-slack
   "H-M-P" #'angry-police-captain-to-slack
   "H-M-u" #'set-slack-user

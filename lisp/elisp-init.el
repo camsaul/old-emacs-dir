@@ -8,9 +8,9 @@
 
 ;;; Code:
 
-(cam-setup-autoloads
+(cam/setup-autoloads
   ("flycheck" flycheck-mode)
-  ("lisp-init" cam-define-lisp-keys cam-lisp-mode-setup)
+  ("lisp-init" cam/define-lisp-keys cam/lisp-mode-setup)
   ("lisp-mode" emacs-lisp-mode lisp-mode))
 
 
@@ -26,17 +26,17 @@
                          0)  ; 0 = compile even if .elc does not exist
     (eval-buffer)))
 
-(defun cam-elisp-mode-setup ()
+(defun cam/elisp-mode-setup ()
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
   (require 'lisp-init)
   (require 'morlock)
   (require 'highlight-cl)
 
-  (cam/declare-vars cam-define-elisp-keys
+  (cam/declare-vars cam/define-elisp-keys
                     flycheck-emacs-lisp-load-path)
-  (cam-lisp-mode-setup)
+  (cam/lisp-mode-setup)
 
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     (elisp-slime-nav-mode . " ☸")
     (flycheck-mode . " ✔"))
 
@@ -55,8 +55,8 @@
            (expand-file-name "~/.emacs.d/"))
     (setq-local byte-compile-dynamic t)))
 
-(add-hook 'emacs-lisp-mode-hook 'cam-elisp-mode-setup)
-(add-hook 'ielm-mode-hook 'cam-elisp-mode-setup)
+(add-hook 'emacs-lisp-mode-hook 'cam/elisp-mode-setup)
+(add-hook 'ielm-mode-hook 'cam/elisp-mode-setup)
 
 
 ;;;; SETTINGS
@@ -89,9 +89,9 @@
 
 ;;;; KEY MAPS
 
-(defun cam-define-elisp-keys (mode-map)
+(defun cam/define-elisp-keys (mode-map)
   "Add elisp-related key bindings to MODE-MAP."
-  (cam-define-lisp-keys mode-map)
+  (cam/define-lisp-keys mode-map)
   (cam/define-keys mode-map
     "<f5>" 'flycheck-display-errors
     "<f6>" 'cam/wrapping-flycheck-next-error
@@ -103,7 +103,7 @@
 
 (add-hook 'emacs-lisp-mode-hook
   (lambda ()
-    (cam-define-elisp-keys emacs-lisp-mode-map)))
+    (cam/define-elisp-keys emacs-lisp-mode-map)))
 
 
 ;;;; IELM SPECIFIC
@@ -111,7 +111,7 @@
 (add-hook 'ielm-mode-hook
   (lambda ()
     (cam/declare-vars ielm-map)
-    (cam-define-elisp-keys ielm-map)
+    (cam/define-elisp-keys ielm-map)
     (define-keys ielm-map
       '(("RET" ielm-return)))))
 

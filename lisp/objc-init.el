@@ -1,4 +1,4 @@
-(cam-setup-autoloads
+(cam/setup-autoloads
   ("find-lisp" find-lisp-find-files))
 
 ;; Automatically open .h files with @interface declarations as obj-c rather than c
@@ -15,7 +15,7 @@
         (".mm$" . objc-mode)))
 
 (defun objc-mode-setup ()
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     subword-mode))
 
 (eval-after-load "objc-mode"

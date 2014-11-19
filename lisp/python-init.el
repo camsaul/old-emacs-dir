@@ -16,13 +16,13 @@
 
 ;;;; AUTOLOADS
 
-;; (cam-setup-autoloads
+;; (cam/setup-autoloads
 ;;   ("lisp-init" pretty-lambdas))
 
 ;; KEY BINDINGS
 (defun cam/define-python-keys (mode-map)
   "Add python-related key bindings to MODE-MAP."
-  (::define-keys mode-map
+  (cam/define-keys mode-map
     "<f5>" #'flymake-display-err-menu-for-current-line
     "<f6>" #'flymake-goto-next-error
     "<f7>" #'flymake-mode
@@ -91,7 +91,7 @@
 
 ;;;; MODE SETUP
 
-(defun cam-django-mode-setup ()
+(defun cam/django-mode-setup ()
   "Code to execute as part of python/django-mode-hook."
   (require 'anaconda-mode)
   (require 'company)
@@ -107,7 +107,7 @@
     (ignore-errors
       (elpy-mode)))
 
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     (company-mode . " ¢")
     eldoc-mode
     electric-indent-mode
@@ -153,9 +153,9 @@
     nil t)
   (add-hook 'after-save-hook 'run-isort nil t))
 
-(defalias 'cam-python-mode-setup 'cam-django-mode-setup)
-(add-hook 'inferior-python-mode-hook 'cam-python-mode-setup)
-(add-hook 'django-mode-hook 'cam-django-mode-setup)
+(defalias 'cam/python-mode-setup 'cam/django-mode-setup)
+(add-hook 'inferior-python-mode-hook 'cam/python-mode-setup)
+(add-hook 'django-mode-hook 'cam/django-mode-setup)
 
 
 ;;;; ADVICE

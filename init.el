@@ -39,10 +39,12 @@
                  powerline-evil
                  saveplace))
 
+(require 'cam-macros)
+
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
-(cam-setup-autoloads
+(cam/setup-autoloads
   ("ace-jump-buffer" ace-jump-same-mode-buffers)
   ("bytecomp" byte-recompile-file)
   ("find-things-fast" ftf-find-file ftf-grepsource)
@@ -53,7 +55,7 @@
 
 ;;;; GLOBALLY DISABLED MINOR MODES
 
-(cam-disable-minor-modes
+(cam/disable-minor-modes
   blink-cursor-mode                               ; disable blinking cursor
   indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
@@ -62,8 +64,8 @@
 
 ;;;; GLOBALLY ENABLED MINOR MODES
 
-(::suppress-messages
- (cam-enable-minor-modes
+(cam/suppress-messages
+ (cam/enable-minor-modes
    delete-selection-mode                           ; typing will delete selected text
    electric-pair-mode
    evil-mode
@@ -107,7 +109,7 @@
 
 (add-hook 'after-change-major-mode-hook
           (lambda ()
-            (cam-enable-minor-modes
+            (cam/enable-minor-modes
               highlight-error-keywords-mode
               rainbow-delimiters-mode
               (rainbow-mode . nil)))
@@ -119,7 +121,7 @@
 (cam/eval-after-load "dired"
   (require 'dired+)
   (require 'dired-x)                              ; things like C-x C-j for dired-jump
-  (::suppress-messages
+  (cam/suppress-messages
    (toggle-diredp-find-file-reuse-dir t))         ; reuse dired buffers
   (setq dired-recursive-copies 'always
         dired-recursive-deletes 'always))
@@ -137,7 +139,7 @@
   '(multiple-cursors-mode 1))
 
 (eval-after-load "magit"
-  '(cam-enable-minor-modes
+  '(cam/enable-minor-modes
      ;; (global-magit-wip-save-mode t)            ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
      (magit-auto-revert-mode . nil)))             ; auto-revert buffers that change on disk as result of magit command
 
@@ -264,7 +266,7 @@
 
 ;;;; GLOBAL KEY-BINDINGS
 
-(::define-keys nil
+(cam/define-keys nil
   "<C-s-M-down>" 'windmove-down
   "<C-s-M-left>" 'windmove-left-or-other-frame
   "<C-s-M-return>" 'other-frame

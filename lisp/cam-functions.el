@@ -137,7 +137,7 @@
                  (file-in-directory-p filename "~/.emacs.d/lisp"))))
     (error nil)))
 
-(defun ::noop (&rest args)
+(defun cam/noop (&rest args)
   "A function that ignores ARGS and doesn't do anything."
   nil)
 

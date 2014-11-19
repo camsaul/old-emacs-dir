@@ -1,6 +1,6 @@
-(defun cam-markdown-mode-setup ()
+(defun cam/markdown-mode-setup ()
   (setq imenu-generic-expression markdown-imenu-generic-expression))
-(add-hook 'markdown-mode-hook 'cam-markdown-mode-setup)
+(add-hook 'markdown-mode-hook 'cam/markdown-mode-setup)
 
 ;; add imenu support for markdown mode (credit: emacs prelude)
 (setq markdown-imenu-generic-expression

@@ -1,9 +1,9 @@
 ;; -*- comment-column: 50; -*-
 
-(defun cam-lisp-mode-setup ()
+(defun cam/lisp-mode-setup ()
   (mapc 'require '(highlight-parentheses
                    hl-sexp))
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     (company-mode . " ¢")
     (eldoc-mode . nil)
     (highlight-parentheses-mode . nil)            ; highlight parentheses that surround the current sexpr
@@ -29,7 +29,7 @@
              (paredit-doublequote t)
              (paredit-newline t)))))
 
-(defun cam-define-lisp-keys (mode-map)
+(defun cam/define-lisp-keys (mode-map)
   (cam/define-keys mode-map
     "C-c C-d" 'elisp-slime-nav-describe-elisp-thing-at-point
     "RET" 'reindent-then-newline-and-indent

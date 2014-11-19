@@ -24,7 +24,7 @@
 (defun c++-mode-setup ()
   (require 'find-file)
   (require 'flymake)
-  (cam-enable-minor-modes
+  (cam/enable-minor-modes
     electric-pair-mode
     (highlight-parentheses-mode . nil)
     flymake-mode

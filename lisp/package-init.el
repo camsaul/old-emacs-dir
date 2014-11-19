@@ -117,7 +117,7 @@
   "List of packages to be installed or activated when Emacs is lau")
 ;;;; HELPER FUNCTIONS
 
-(defvar cam-has-refreshed-packages-p nil
+(defvar cam/has-refreshed-packages-p nil
   "Have we called package-refresh-contents yet?")
 
 (defun cam/load-archives-if-needed ()
@@ -130,12 +130,12 @@
 
 (defun cam/refresh-package-contents-once ()
   "Call package-refresh-contents the first time this function is called."
-  (unless cam-has-refreshed-packages-p
-    (setq cam-has-refreshed-packages-p t)
+  (unless cam/has-refreshed-packages-p
+    (setq cam/has-refreshed-packages-p t)
     (setq package--initialized nil)     ; stop trying to fool package.el so it can do its thing
-    (::auto-update-packages)))
+    (cam/auto-update-packages)))
 
-(defun ::auto-update-packages ()
+(defun cam/auto-update-packages ()
   "Fetch packages, and upgrade any packages that can be upgraded."
   (interactive)
   (package-initialize)
