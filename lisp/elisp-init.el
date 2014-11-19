@@ -47,7 +47,7 @@
 
   (setq flycheck-emacs-lisp-load-path load-path)
 
-  (add-hook 'before-save-hook 'untabify-current-buffer nil t)
+  (add-hook 'before-save-hook 'cam/untabify-current-buffer nil t)
   (add-hook 'after-save-hook 'byte-recompile-this-file nil t)
 
   ;; use byte-compile-dynamic when compiling files in .emacs.d
@@ -112,8 +112,8 @@
   (lambda ()
     (cam/declare-vars ielm-map)
     (cam/define-elisp-keys ielm-map)
-    (define-keys ielm-map
-      '(("RET" ielm-return)))))
+    (cam/define-keys ielm-map
+      "RET" #'ielm-return)))
 
 (provide 'elisp-init)
 ;;; elisp-init ends here

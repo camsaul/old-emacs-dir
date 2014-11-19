@@ -22,7 +22,7 @@
 
     (add-hook 'before-save-hook
       (lambda ()
-        (untabify-current-buffer))
+        (cam/untabify-current-buffer))
       nil t)))
 
 (provide 'json-init)

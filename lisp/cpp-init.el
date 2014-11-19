@@ -19,7 +19,7 @@
   (browse-url
    (concat
     "http://www.cplusplus.com/search.do?q="
-    (url-hexify-string (current-token)))))
+    (url-hexify-string (cam/current-token)))))
 
 (defun c++-mode-setup ()
   (require 'find-file)
@@ -37,7 +37,7 @@
 
 (defun find-tag-at-mark ()
   (interactive)
-  (find-tag (current-token)))
+  (find-tag (cam/current-token)))
 
 (defun find-tag-at-mouse-mark (event)
   (interactive "e")
@@ -46,18 +46,18 @@
 
 (eval-after-load "cc-mode"
   '(define-keys c++-mode-map
-     '(("M-;" comment-region)
-       ("<f5>" flymake-display-err-menu-for-current-line)
-       ("<f6>" flymake-goto-next-error)
-       ("<f7>" flymake-mode)
-       ("<f8>" c++-search)
-       ("<S-mouse-1>" c++-search)
-       ("C-c C-k" flymake-compile)
-       ("<C-M-up>" c++-jump-to-header)
-       ("<C-M-down>" c++-jump-to-implementation)
-       ("<s-mouse-1>" find-tag-at-mouse-mark)
-       ("<mouse-2>" find-tag-at-mouse-mark) ; the mouse wheel
-       ("M-." find-tag-at-mark))))
+     "M-;" #'comment-region
+     "<f5>" #'flymake-display-err-menu-for-current-line
+     "<f6>" #'flymake-goto-next-error
+     "<f7>" #'flymake-mode
+     "<f8>" #'c++-search
+     "<S-mouse-1>" #'c++-search
+     "C-c C-k" #'flymake-compile
+     "<C-M-up>" #'c++-jump-to-header
+     "<C-M-down>" #'c++-jump-to-implementation
+     "<s-mouse-1>" #'find-tag-at-mouse-mark
+     "<mouse-2>" #'find-tag-at-mouse-mark ; the mouse wheel
+     "M-." #'find-tag-at-mark))
 
 (defun c++-jump-to-header ()
   (interactive)

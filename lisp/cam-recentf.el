@@ -46,10 +46,10 @@
 (defvar cam/recentf-mode-map (make-keymap)
   "Keymap for cam/recentf-mode")
 
-(define-keys cam/recentf-mode-map
-  '(("<return>" cam/recentf-return)
-    ("<mouse-1>" cam/recentf-return)
-    ("C-g" cam/recentf-kill-buffer)))
+(cam/define-keys cam/recentf-mode-map
+  "<return>" #'cam/recentf-return
+  "<mouse-1>" #'cam/recentf-return
+  "C-g" #'cam/recentf-kill-buffer)
 
 ;;;; Helper functions
 

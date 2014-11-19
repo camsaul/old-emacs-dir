@@ -59,37 +59,12 @@
                     :foreground "#008FD7"
                     :bold t)
 
-;; (cam/add-keywords 'font-lock-builtin-face
-;;                 "add-hook"
-;;                 "defmacro"
-;;                 "defun"
-;;                 "eval-after-load"
-;;                 "message"
-;;                 "nconc"
-;;                 "require"
-;;                 "set-face-attribute"
-;;                 "setq"
-;;                 )
-
 (cam/add-keywords 'font-lock-warning-face
-                "sandbox/[a-z-:/]+")
-;; (cam/add-keywords-patterns 'font-lock-constant-face
-;;                          "(?\\(cam/[a-z-/:]+\\)\\>")
-
-;; (cam/add-keywords 'font-lock-constant-face
-;;                 "cam/[a-z-:/]+")
+                  "sandbox/[a-z-:/]+")
 
 (set-face-attribute 'font-lock-preprocessor-face nil
                     :bold nil
                     :italic t)
-
-;; (cam/add-keywords 'font-lock-doc-face
-;;                 "t"
-;;                 "nil")
-
-;; (cam/add-keywords-patterns 'font-lock-preprocessor-face
-;;                          "setq \\<\\([a-z-:/]+\\)\\>"
-;;                          "'\\<\\([a-z-:/]+\\)\\>")
 
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
@@ -141,13 +116,6 @@
 
 ;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-;; (defun cam/outline-enable-or-toggle-children ()
-;;   (interactive)
-;;   (if (not outline-minor-mode) (outline-minor-mode)
-;;     (ignore-errors
-;;       (outline-toggle-children))))
-;; (cam/define-keys nil "H-SPC" #'cam/outline-enable-or-toggle-children)
-
 ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
 (sandbox/install-and-require 'recentf-ext)
 
@@ -192,8 +160,6 @@
 ;; more symbols to use (?)
 ;; ∘ ∙ ∫ ∮ ⊛
 
-(provide 'sandbox)
-
 ;; add all cl-lib font-lock-highlighting to emacs-lisp-mode
 (sandbox/install-and-require 'cl-lib-highlight)
 (add-hook 'emacs-lisp-mode-hook
@@ -201,45 +167,13 @@
     (ignore-errors
       (cl-lib-highlight-initialize))))
 
-;;; packages to checkout !
+
+;;; THINGS TO CHECK OUT !
+;;; clang-format-before-save - run clang format every time you save a C++ file
 ;;; macrostep - interactive macro stepper for Emacs Lisp
 ;;; web-mode
-;;;
 
-;;;; PRETTY RAD FUNCTIONS / KEYBINDINGS, INSPIRED BY GRAPHENE
-(defun cam/add-semicolon-to-eol ()
-  "Add a semicolon to the end of current line without affecting point."
-  (interactive)
-  (save-excursion
-    (end-of-line)
-    (insert ";")))
-
-(defun cam/insert-newline-below ()
-  "Insert a newline below and move to it." ; OH THIS IS NICE
-  (interactive)
-  (end-of-line)
-  (newline-and-indent))
-
-(defmacro cam/funcall-for-key-binding (keys)
-  "Call the fn bound to KEYS."
-  `(funcall (key-binding ,(kbd keys))))
-
-(defun cam/comment-current-line ()
-  "Comment/uncomment the current line."
-  (interactive)
-  (save-excursion
-    (end-of-line)
-    (set-mark (point))
-    (beginning-of-line)
-    (cam/funcall-for-key-binding "M-;")))
-
-(cam/define-keys nil
-  "C-;" #'cam/add-semicolon-to-eol
-  "M-RET" #'cam/insert-newline-below
-  "C-M-;" #'cam/comment-current-line)
-
-;; THINGS TO CHECK OUT !
-;; clang-format-before-save - run clang format every time you save a C++ file
+;;; HARASS COWORKERS BY AUTO-POSTING TO SLACK
 
 (sandbox/install-and-require 'http-post-simple)
 

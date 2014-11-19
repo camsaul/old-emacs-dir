@@ -23,8 +23,8 @@
 (setq ruby-block-delay 0.01) ; delay before showing matching block; default is 0.5
 
 (eval-after-load "ruby-mode"
-  '(define-keys ruby-mode-map
-     '(("C-c C-f" ruby-insert-end))))
+  '(cam/define-keys ruby-mode-map
+     "C-c C-f" #'ruby-insert-end))
 
 ;; Apparently this function is missing from the version of ruby-electric on MELPA, although it attemps to call it;
 ;; work around http://stackoverflow.com/questions/10326255/emacs-ruby-electric-does-not-insert-end

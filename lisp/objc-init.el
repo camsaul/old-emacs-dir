@@ -36,10 +36,10 @@
 (add-hook 'objc-mode-hook 'objc-mode-setup)
 
 (eval-after-load "cc-mode"
-  '(define-keys objc-mode-map
-     '(("M-;" comment-region)
-       ("<C-M-up>" objc-jump-to-header)
-       ("<C-M-down>" objc-jump-to-implementation))))
+  '(cam/define-keys objc-mode-map
+     "M-;" #'comment-region
+     "<C-M-up>" #'objc-jump-to-header
+     "<C-M-down>" #'objc-jump-to-implementation))
 
 (defun find-h-and-m-files (dir)
   (interactive)

@@ -148,8 +148,8 @@
   ;; HOOKS
   (add-hook 'before-save-hook
     (lambda ()
-      (untabify-current-buffer)
-      (run-autopep8))
+      (cam/untabify-current-buffer)
+      (cam/run-autopep8))
     nil t)
   (add-hook 'after-save-hook 'run-isort nil t))
 
@@ -169,7 +169,7 @@
 
 ;;;; FUNCTIONS
 
-(defun run-autopep8 ()
+(defun cam/run-autopep8 ()
   "Call py-autopep8 when \"major-mode\" is django-mode or python-mode."
   (interactive)
   (when (or (eq major-mode 'django-mode)

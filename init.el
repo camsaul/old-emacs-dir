@@ -28,18 +28,16 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc 'require '(cl                               ; YUP
-                 package-init                     ; needs to be loaded before we can load ELPA packages like dash or powerline
-                 dash                             ; load this next so cam-functions can build on it
-                 dash-functional
-                 noflet
-                 cam-macros
-                 cam-functions
-                 powerline
-                 powerline-evil
-                 saveplace))
-
-(require 'cam-macros)
+(mapc #'require '(cl                              ; YUP
+                  package-init                    ; needs to be loaded before we can load ELPA packages like dash or powerline
+                  dash                            ; load this next so cam-functions can build on it
+                  dash-functional                 ; TODO - should we just load "s" and "f" here too ?
+                  noflet
+                  cam-macros
+                  cam-functions
+                  powerline
+                  powerline-evil
+                  saveplace))
 
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
@@ -268,89 +266,89 @@
 ;;;; GLOBAL KEY-BINDINGS
 
 (cam/define-keys nil
-  "<C-s-M-down>" 'windmove-down
-  "<C-s-M-left>" 'windmove-left-or-other-frame
-  "<C-s-M-return>" 'other-frame
-  "<C-s-M-right>" 'windmove-right-or-other-frame
-  "<C-s-M-up>" 'windmove-up
-  "<C-s-left>" 'next-buffer
-  "<C-s-right>" 'previous-buffer
-  "<H-S-left>" 'previous-buffer
-  "<H-S-right>" 'next-buffer
-  "<H-SPC>" 'other-frame
-  "<H-down>" 'windmove-down
-  "<H-left>" 'windmove-left-or-other-frame
-  "<H-return>" 'mc/mark-next-lines
-  "<H-right>" 'windmove-right-or-other-frame
-  "<H-up>" 'windmove-up
-  "<end>" 'ace-jump-buffer
-  "<escape>" 'evil-normal-state
-  "<f10>" 'switch-to-nav-buffer-other-window      ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
-  "<f11>" 'paredit-mode                           ; F11 is now global key for paredit-mode
-  "<f12> b" 'bing-search
-  "<f12> s" 'stackoverflow-search
-  "<f13>" 'popup-cam-menu
-  "<f2>" (lambda () (interactive) (call-interactively 'helm-swoop))
-  "<f9>" 'whitespace-mode
-  "<home>" 'ace-jump-mode
-  "<insert>" nil                                  ; disable stupid insert key TODO maybe use as a prefix to insert something useful
-  "<next>" 'helm-buffers-list
-  "<prior>" 'ace-jump-line-mode
-  "<scroll>" 'popup-cam-menu                      ; windows only
-  "A-;" 'loccur                                   ; activate loccur-mode (prompt for word/regex)
-  "A-<tab>" 'ace-jump-buffer
-  "A-H-;" 'loccur-previous-match                  ; jump batch to previous loccur search
-  "A-H-b" 'bm-show-all                            ; disable minimize emacs
-  "A-b" 'bm-toggle                                ; Toggle visual bookmark on this line
-  "A-n" 'bm-next
-  "A-p" 'bm-previous
+  "<C-s-M-down>" #'windmove-down
+  "<C-s-M-left>" #'cam/windmove-left-or-other-frame
+  "<C-s-M-return>" #'other-frame
+  "<C-s-M-right>" #'cam/windmove-right-or-other-frame
+  "<C-s-M-up>" #'windmove-up
+  "<C-s-left>" #'next-buffer
+  "<C-s-right>" #'previous-buffer
+  "<H-S-left>" #'previous-buffer
+  "<H-S-right>" #'next-buffer
+  "<H-SPC>" #'other-frame
+  "<H-down>" #'windmove-down
+  "<H-left>" #'cam/windmove-left-or-other-frame
+  "<H-return>" #'mc/mark-next-lines
+  "<H-right>" #'cam/windmove-right-or-other-frame
+  "<H-up>" #'windmove-up
+  "<end>" #'ace-jump-buffer
+  "<escape>" #'evil-normal-state
+  "<f10>" #'cam/switch-to-nav-buffer-other-window  ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
+  "<f11>" #'paredit-mode                           ; F11 is now global key for paredit-mode
+  "<f12> b" #'cam/bing-search
+  "<f12> s" #'cam/stackoverflow-search
+  "<f13>" #'cam/popup-cam-menu
+  "<f2>" #'helm-swoop                             ; (lambda () (interactive) (call-interactively #'helm-swoop))
+  "<f9>" #'whitespace-mode
+  "<home>" #'ace-jump-mode
+  "<insert>" nil                                    ; disable stupid insert key TODO maybe use as a prefix to insert something useful
+  "<next>" #'helm-buffers-list
+  "<prior>" #'ace-jump-line-mode
+  "<scroll>" #'cam/popup-cam-menu                 ; windows only
+  "A-;" #'loccur                                   ; activate loccur-mode (prompt for word/regex)
+  "A-<tab>" #'ace-jump-buffer
+  "A-H-;" #'loccur-previous-match                  ; jump batch to previous loccur search
+  "A-H-b" #'bm-show-all                            ; disable minimize emacs
+  "A-b" #'bm-toggle                                ; Toggle visual bookmark on this line
+  "A-n" #'bm-next
+  "A-p" #'bm-previous
   "A-r h" #'rotate:even-horizontal
   "A-r l" #'rotate-layout
   "A-r t" #'rotate:tiled
   "A-r v" #'rotate:even-vertical
   "A-r w" #'rotate-window
-  "C-=" 'magit-status
-  "C-H-a" 'mc/mark-all-like-this
-  "C-H-e" 'mc/edit-lines
-  "C-M-:" 'eval-print-last-sexp
-  "C-M-S-k" 'backward-kill-sexp                   ; C-M-S-k is backward-kill-sexp (kill-sexp is (C-M-k))
+  "C-;" #'cam/add-semicolon-to-eol
+  "C-=" #'magit-status
+  "C-H-a" #'mc/mark-all-like-this
+  "C-H-e" #'mc/edit-lines
+  "C-M-:" #'eval-print-last-sexp
+  "C-M-;" #'cam/comment-current-line
+  "C-M-S-k" #'backward-kill-sexp                  ; Kill sexp before current position
   "C-M-y" #'browse-kill-ring
-  "C-S-k" 'backward-kill-line
-  "C-c e" 'eval-and-replace                       ; eval previous elisp expression at point, replace with results
+  "C-S-k" #'cam/backward-kill-line
+  "C-c e" #'eval-and-replace                         ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
-  "C-v" 'yank                                     ; C-v -> yank instead of whatever it usually does
-  "C-x C-b" 'buffer-menu                          ;  C-x C-b shows buffer menu
-  "C-x C-d" 'ido-dired                            ; C-x C-d -> dired instead of list directory
-  "C-x C-g" 'keyboard-quit                        ; Quit commands that I started typing with C-x
-  "C-x C-r" 'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
-  "C-x C-z" nil                                   ; disable minimize emacs
+  "C-v" #'yank                                     ; C-v -> yank instead of whatever it usually does
+  "C-x C-b" #'buffer-menu                          ;  C-x C-b shows buffer menu
+  "C-x C-d" #'ido-dired                            ; C-x C-d -> dired instead of list directory
+  "C-x C-g" #'keyboard-quit                        ; Quit commands that I started typing with C-x
+  "C-x C-r" #'recentf-open-files                   ; C-x C-r -> display recent files (overrides open file in read-only mode)
+  "C-x C-z" nil                                     ; disable minimize emacs
+  "C-x k" #'kill-this-buffer                       ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
-  "C-x k" 'kill-this-buffer                       ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
-  "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
-  "C-x z" nil                                     ; disable minimize emacs
-  "H-;" 'loccur-current                           ; folder current buffer to lines containing the current word
-  "H-A" 'mc/mark-previous-like-this
-  "H-E" 'mc/mark-next-like-this                   ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
-  "H-h" 'highlight-symbol-at-point
-  "H-k" 'kill-this-buffer
-  "M-`" (lambda ()
-          (interactive)
-          (projectile-mode 1)
-          (projectile-recentf))
-  "M-j" 'join-next-line
-  "M-x" 'smex                                     ; smex is IDO-mode like M-x behavior
-  "S-<f10>" 'nav                                  ; Open nav buffer
+  "C-x u" nil                                       ; disable emacs default keybinding for undo, use C-z instead
+  "C-x z" nil                                       ; disable minimize emacs
+  "H-;" #'loccur-current                           ; folder current buffer to lines containing the current word
+  "H-A" #'mc/mark-previous-like-this
+  "H-E" #'mc/mark-next-like-this                   ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
+  "H-h" #'highlight-symbol-at-point
+  "H-k" #'kill-this-buffer
+  "M-RET" #'cam/insert-newline-below
+  "M-`" #'cam/projectile-recentf
+  "M-j" #'cam/join-next-line
+  "M-x" #'smex                                     ; smex is IDO-mode like M-x behavior
+  "S-<f10>" #'nav                                  ; Open nav buffer
   "s-Z" #'undo-tree-redo
-  "s-[" 'force-unindent-region
-  "s-]" 'force-indent-region
-  "s-b" 'balance-windows
-  "s-f" 'ftf-grepsource
-  "s-o" 'ftf-find-file
+  "s-[" #'cam/force-unindent-region
+  "s-]" #'cam/force-indent-region
+  "s-b" #'balance-windows
+  "s-f" #'ftf-grepsource
+  "s-o" #'ftf-find-file
   "s-y" #'undo-tree-redo
   )
 
-(defvar init-files
+(defvar cam/init-files
   (-filter 'cam/is-init-file-p
            (cons "~/.emacs.d/init.el"
                  (directory-files "~/.emacs.d/lisp"
@@ -364,7 +362,7 @@
 (easy-menu-define cam-menu global-map "Edit init file.."
   (cons "Edit Init File"
         (mapcar 'menu-edit-init-file
-                init-files)))
+                cam/init-files)))
 
 
 ;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
@@ -374,7 +372,7 @@
           (byte-recompile-file file
                                nil                ; don't force recompile
                                0))                ; recompile even if there's no .elc file
-        init-files))
+        cam/init-files))
 
 
 ;;;; LOAD INIT FILES
