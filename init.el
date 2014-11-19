@@ -145,9 +145,13 @@
   '(multiple-cursors-mode 1))
 
 (eval-after-load "magit"
-  '(cam/enable-minor-modes
-     ;; (global-magit-wip-save-mode t)            ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
-     (magit-auto-revert-mode . nil)))             ; auto-revert buffers that change on disk as result of magit command
+  '(progn
+     (cam/enable-minor-modes
+       ;; (global-magit-wip-save-mode t)          ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
+       (magit-auto-revert-mode . nil))              ; auto-revert buffers that change on disk as result of magit command
+     '(defadvice magit-status (after magit-status-show-help activate)
+        (magit-key-mode-popup-dispatch)           ;show help when showing magit-status
+        (call-interactively #'other-window))))    ; switch back to magit status window
 
 (eval-after-load "find-things-fast"
   '(nconc ftf-filetypes '("*.clj"
@@ -158,12 +162,6 @@
 (eval-after-load "company"
   '(setq company-idle-delay 0.01                  ; default is 0.5
          company-minimum-prefix-length 1))        ; default is 3
-
-;; show help when showing magit-status
-(eval-after-load "magit"
-  '(defadvice magit-status (after magit-status-show-help activate)
-     (magit-key-mode-popup-dispatch)              ; show help
-     (call-interactively #'other-window)))        ; switch back to magit status window
 
 (eval-after-load "git-timemachine"
   '(defadvice git-timemachine (around git-timemachine-split-fullscreen activate)
