@@ -28,21 +28,22 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc #'require '(cl                              ; YUP
+(mapc #'require '(cl                              ; Common Lisp functions like cl-flet and stuffffff
                   package-init                    ; needs to be loaded before we can load ELPA packages like dash or powerline
                   dash                            ; load this next so cam-functions can build on it
                   dash-functional                 ; TODO - should we just load "s" and "f" here too ?
-                  noflet
-                  cam-macros
-                  cam-functions
-                  powerline
+                  noflet                          ; noflet lets you temporarily override function definitions
+                  cam-macros                      ; my own helper macros
+                  cam-functions                   ; my own helper functions
+                  powerline                       ; powerline is the port of VIM powerline (pretty Emacs modeline)
                   powerline-evil
-                  saveplace))
+                  saveplace))                     ; open files in the same location as you last closed them
 
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
 
-
+;;; autoloads tell Emacs what files to lazily load when you run certain functions
+;;; this makes Emacs load faster than calling require for dozens of files that we may not use right away
 (cam/setup-autoloads
   ("ace-jump-buffer" #'ace-jump-same-mode-buffers)
   ("bm" #'bm-show-all)
@@ -67,25 +68,24 @@
 
 (cam/suppress-messages
  (cam/enable-minor-modes
-   delete-selection-mode                           ; typing will delete selected text
-   electric-pair-mode
-   evil-mode
-   global-ace-isearch-mode
-   global-auto-revert-mode
+   delete-selection-mode                          ; typing will delete selected text
+   electric-pair-mode                             ; automatic parens pairing
+   evil-mode                                      ; use VIM keybindings
+   global-ace-isearch-mode                        ; C-s switches to ace-jump or helm-swoop after a delay depending on length of search str
+   global-auto-revert-mode                        ; automatically reload files when they change on disk
    global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
-   global-hl-line-mode
-   global-undo-tree-mode
+   global-hl-line-mode                            ; highlight the current line
+   (global-undo-tree-mode . nil)                  ; make undo work in a tree instead of linearly
    ido-mode
    ido-ubiquitous-mode
    ido-everywhere
    ido-vertical-mode
-   flx-ido-mode                                    ; fuzzy matching for ido
-   (rainbow-mode . nil)                            ; colorize strings that represent colors e.g. #00FFFF
-   recentf-mode
-   savehist-mode                                   ; save minibuffer history periodically
-   show-paren-mode                                 ; highlight matching parens
-   (undo-tree-mode . nil)
-   winner-mode))
+   flx-ido-mode                                   ; fuzzy matching for ido
+   (rainbow-mode . nil)                             ; colorize strings that represent colors e.g. #00FFFF
+   recentf-mode                                   ; enable the recent files menu
+   savehist-mode                                  ; save minibuffer history periodically
+   show-paren-mode                                ; highlight matching parens
+   winner-mode))                                  ; C-c <left> / C-c <right> to restore window configurations
 
 
 ;;;; GLOBAL HOOKS
@@ -299,7 +299,7 @@
   "<insert>" nil                                  ; disable stupid insert key TODO maybe use as a prefix to insert something useful
   "<next>" #'helm-buffers-list
   "<prior>" #'ace-jump-line-mode
-  "<scroll>" #'cam/popup-cam-menu                 ; windows only
+  "<scroll>" #'cam/popup-cam-menu                 ; Windows only
   "A-;" #'loccur                                  ; activate loccur-mode (prompt for word/regex)
   "A-<tab>" #'ace-jump-buffer
   "A-H-;" #'loccur-previous-match                 ; jump batch to previous loccur search
