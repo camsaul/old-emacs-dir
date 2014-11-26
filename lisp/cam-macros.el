@@ -4,7 +4,7 @@
 ;;; Code:
 
 (defmacro cam/define-keys (keymap &rest pairs)
-  "If KEYMAP is non-nil, map pairs of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
+  "If KEYMAP is non-nil, map PAIRS of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
   (let ((def-key (if keymap `(define-key ,keymap)
                    '(global-set-key))))
     `(progn
@@ -14,7 +14,7 @@
 (put 'cam/define-keys 'lisp-indent-function 1)
 
 (defmacro cam/enable-minor-modes (&rest modes)
-  "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
+  "Enable specifed minor MODES with symbol or (mode . dimished-string) pair."
   `(progn
      ,@(mapcar (lambda (arg)
                  (let ((mode (if (consp arg) (car arg)
@@ -30,7 +30,7 @@
 (put 'cam/enable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/disable-minor-modes (&rest modes)
-  "Disable specified minor modes (if they are bound)"
+  "Disable specified minor MODES (if they are bound)."
   `(mapc (lambda (mode)
            (when (fboundp mode)
              (funcall mode nil)))
@@ -38,7 +38,7 @@
 (put 'cam/disable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/diminish-modes (&rest modes)
-  "Diminish a list of modes. Specify individual symbols to completely diminish, or (symbol . diminshed-text) pairs"
+  "Diminish a list of MODES.  Specify individual symbols to completely diminish, or (symbol . diminshed-text) pairs."
   `(mapc (lambda (mode)
            (if (consp mode) (diminish (car mode) (cdr mode))
              (diminish mode nil)))
@@ -46,8 +46,7 @@
 (put 'cam/disable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/setup-autoloads (&rest autoloads)
-  "Setup autoloads with the format (package-name-string symbol1 symbol2 ...)
-   e.g. (cam/setup-autoloads (\"bytecomp\" byte-recompile-file))"
+  "Setup AUTOLOADS with the format (package-name-string symbol1 symbol2 ...) e.g. (cam/setup-autoloads (\"bytecomp\" byte-recompile-file))."
   `(progn ,@(cl-reduce 'append
                        (mapcar (lambda (autoload-group)
                                  (let ((file (car autoload-group))
@@ -59,7 +58,7 @@
 (put 'cam/setup-autoloads 'lisp-indent-function 0)
 
 (defmacro cam/declare-vars (&rest vars)
-  "Declare a series of vairables so flycheck stops complaining about them being unbound."
+  "Declare a series of VARS so flycheck stops complaining about them being unbound."
   `(progn
      ,@(mapcar (lambda (var)
                  `(defvar ,var))
@@ -88,7 +87,7 @@
                         fns)))))
 
 (defmacro cam/suppress-messages (&rest body)
-  "Suppress messages inside BODY"
+  "Suppress messages inside BODY."
   `(noflet ((message (&rest args) nil))
      ,@body))
 
