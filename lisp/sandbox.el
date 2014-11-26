@@ -8,8 +8,8 @@
   "Don't prompt before killing PROCESS with matching string name from PACKAGE with string name."
   `(eval-after-load ,package
      (quote (-map-when (-lambda (p) (->> p
-                                      process-name
-                                      (string-match-p ,process)))
+                                 process-name
+                                 (string-match-p ,process)))
                        (-rpartial 'set-process-query-on-exit-flag nil)
                        (process-list)))))
 
@@ -35,8 +35,8 @@
 (defmacro cam/add-keywords-patterns (face &rest patterns)
   `(progn
      ,@(mapcar (lambda (pattern)
-               (list 'font-lock-add-keywords ''emacs-lisp-mode
-                     `(quote ((,pattern 1 ,face)))))
+                 (list 'font-lock-add-keywords ''emacs-lisp-mode
+                       `(quote ((,pattern 1 ,face)))))
                patterns)))
 
 (defmacro cam/add-keywords (face &rest kws)
@@ -75,9 +75,11 @@
  (lambda (result)
    (message "cam/auto-update-packages finished. -- %s" result)))
 
-;; write backup files to own directory(setq backup - directory - alist `(("." . ,(expand-file-name
-;; (concat user-emacs-directory "backups")))))
-;; (setq vc-make-backup-files t) ;; make backups even if files are under VC
+;; write backup files to own directory
+(setq backup-directory-alist
+  `(("." . ,(expand-file-name
+             (concat user-emacs-directory "backups")))))
+(setq vc-make-backup-files t) ;; make backups even if files are under VC
 
 ;; WIKI NAV
 (sandbox/install-and-require 'wiki-nav)
@@ -107,6 +109,12 @@
 
 ;; clean up obsolete buffers automatically
 (require 'midnight)
+;; (midnight-delay-set)
+
+(setq apropos-do-all t
+      mouse-yank-at-point t
+      select-enable-primary t           ; cutting and pasting uses the primary selection ?
+      )
 
 ;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
@@ -117,34 +125,17 @@
 (setq pretty-symbol-categories '(lambda relational logical nil cam))
 (nconc pretty-symbol-patterns
        '(;; general
-         (?ℛ cam "\\<require\\>" (emacs-lisp-mode))                              ; REQUIRE
          (?ƒ cam "\\<defun\\>" (emacs-lisp-mode))                              ; DEFUN
          (?ƒ cam "\\<def\\>" (django-mode python-mode))                    ; DEF
          (?∫ cam "\\<self\\>" (emacs-lisp-mode django-mode python-mode))     ; SELF
          ;; python-specific
          (?∧ logical "\\<and\\>" (python-mode django-mode))                  ; AND
          (?∨ logical "\\<or\\>" (python-mode django-mode))                  ; OR
-         (?¬ logical "\\<not\\>" (python-mode django-mode))                  ; NOT
          (?∅ logical "\\<None\\>" (python-mode django-mode))               ; NONE
          (?✓ logical "\\<True\\>" (python-mode django-mode))               ; TRUE
          (?𐄂 logical "\\<False\\>" (python-mode django-mode))              ; FALSE
-         (?∀ logical "\\<for\\>" (python-mode django-mode))              ; FOR
-         (?∈ logical "\\<in\\>" (python-mode django-mode))                 ; IN
-         (?∉ logical "\\<not in\\>" (python-mode django-mode))               ; NOT IN
-         (?⊦ logical "\\<assert\\>" (python-mode django-mode))             ; ASSERT
          (?≡ logical "==" (python-mode django-mode))                       ; ==
-         (?∃ logical "\\<if\\>" (python-mode django-mode))                 ; IF
-         (?∄ logical "\\<if not\\>" (python-mode django-mode))               ; IF NOT
-         (?∋ logical "\\<hasattr\\>" (python-mode django-mode))            ; HASATTR
-         ;; (?∌ logical "\\<not hasattr\\>" (python-mode django-mode))          ; NOT HASATTR
          (?↪ cam "\\<return\\>" (python-mode django-mode))                 ; RETURN
-         (?⚠ cam "\\<raise\\>" (python-mode django-mode))                  ; RAISE
-         (?⎾ cam "\\<try\\>" (python-mode django-mode))                    ; TRY
-         (?⎿ cam "\\<except\\>" (python-mode django-mode))                 ; EXCEPT
-         (?⌥ cam "\\<else\\>" (python-mode django-mode))                   ; ELSE
-         (?Ⓐ cam "\\<args\\>" (python-mode django-mode))                   ; ARGS
-         (?Ⓚ cam "\\<kwargs\\>" (python-mode django-mode))                 ; KWARGS
-         (?℮ cam "\\<Exception\\>" (python-mode django-mode))              ; EXCEPTION
          ))
 
 ;; pretty-symbol-patterns
@@ -214,6 +205,60 @@
   "H-M-P" #'angry-police-captain-to-slack
   "H-M-u" #'set-slack-user
   "H-M-c" #'set-slack-channel)
+
+;;; OH THIS IS PRETTY NICE <3 <3 <3
+(add-hook 'emacs-lisp-mode-hook
+  (lambda ()
+    (sandbox/install-and-require 'aggressive-indent)
+    (aggressive-indent-mode 1)))
+
+(sandbox/install-and-require 'backup-each-save)
+(add-hook 'after-save-hook
+  #'backup-each-save)
+
+(sandbox/install-and-require 'clippy)
+
+(cam/define-keys nil
+  "C-h x f" #'clippy-describe-function
+  "C-h x v" #'clippy-describe-variable)
+
+(require 'json)
+;; (-let (((response-json . response-info)
+;;         (http-post-simple-internal
+;;          "https://slack.com/api/auth.test" ; chat.postMessage
+;;          (json-encode '(:token "xoxp-2170866713-2715807697-3066816744-33b4bb"
+;;                                :username "hobbs"
+;;                                :channel "data"
+;;                                :text "HELLO"
+;;                                :icon_url "https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2014-11-14/3015677761_9539e16a0d353e4f17c4_48.jpg"))
+;;          'utf-8
+;;          `(("Content-Type"
+;;             .
+;;             ,(http-post-content-type
+;;               "application/json"
+;;               'utf-8))))))
+;;   (->> response-json
+;;     json-read-from-string)
+;;   ;; response-info
+;;   )
+
+(defun json-encode-dict (&rest kwargs)
+  "Encode KWARGS :key value into a JSON dict."
+  (->> kwargs
+    (-partition 2)
+    (mapcar (-lambda ((kar kdr)) ; convert '(k v) -> '(k . v)
+              (cons kar kdr)))
+    json-encode))
+
+(json-encode-dict
+ :a "COOL"
+ :b "VERY COOL"
+ :c "SICK")
+
+;; SOMEHOW, SOMEWAY I BROKE THE ESHELL. THIS IS A HACKY FIX AROUND IT
+(add-hook 'eshell-mode-hook
+  (lambda ()
+    (setq-local inhibit-read-only t)))
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
