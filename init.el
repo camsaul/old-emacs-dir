@@ -64,6 +64,7 @@
   set-fringe-mode                                 ; disable fringes
   )
 
+
 ;;;; GLOBALLY ENABLED MINOR MODES
 
 (cam/suppress-messages
@@ -75,7 +76,7 @@
    global-auto-revert-mode                        ; automatically reload files when they change on disk
    global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
    global-hl-line-mode                            ; highlight the current line
-   (global-undo-tree-mode . nil)                  ; make undo work in a tree instead of linearly
+   global-undo-tree-mode                          ; make undo work in a tree instead of linearly
    ido-mode
    ido-ubiquitous-mode
    ido-everywhere
@@ -85,6 +86,7 @@
    recentf-mode                                   ; enable the recent files menu
    savehist-mode                                  ; save minibuffer history periodically
    show-paren-mode                                ; highlight matching parens
+   (undo-tree-mode . nil)                           ; already on because of global-undo-tree-mode but we can't diminish that so diminish this one instead
    winner-mode))                                  ; C-c <left> / C-c <right> to restore window configurations
 
 
@@ -114,13 +116,12 @@
     (dired-hide-details-mode 1)))
 
 (add-hook 'after-change-major-mode-hook
-          (lambda ()
-            (cam/enable-minor-modes
-              highlight-error-keywords-mode
-              rainbow-delimiters-mode
-              (rainbow-mode . nil)))
-          t)
-
+  (lambda ()
+    (cam/enable-minor-modes
+      highlight-error-keywords-mode
+      rainbow-delimiters-mode
+      (rainbow-mode . nil)))
+  t)
 
 ;;;; GLOBAL EVAL-AFTER-LOADS
 

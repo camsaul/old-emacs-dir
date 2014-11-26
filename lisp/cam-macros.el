@@ -15,16 +15,18 @@
 
 (defmacro cam/enable-minor-modes (&rest modes)
   "Enable specifed minor modes with symbol or (mode . dimished-string) pair."
-  `(mapc (lambda (arg)
-	   (condition-case err
-	       (let ((mode (if (consp arg) (car arg)
-			     arg)))
-		 (unless nil
-		   (funcall mode 1)                   ; enable mode if needed
-		   (when (consp arg)                  ; diminish the mode if we were passed a cons cell
-		     (diminish mode (cdr arg)))))
-	     (error (warn (error-message-string err)))))
-         ',modes))
+  `(progn
+     ,@(mapcar (lambda (arg)
+                 (let ((mode (if (consp arg) (car arg)
+                               arg)))
+                   `(condition-case err
+                        ,(if (consp arg)
+                             `(progn
+                                (,mode 1)
+                                (diminish ',mode ,(cdr arg)))
+                           `(,mode 1))
+                      (error (warn (error-message-string err))))))
+               modes)))
 (put 'cam/enable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/disable-minor-modes (&rest modes)
