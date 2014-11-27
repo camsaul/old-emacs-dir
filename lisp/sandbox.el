@@ -61,15 +61,12 @@
              (concat user-emacs-directory "backups")))))
 (setq vc-make-backup-files t) ;; make backups even if files are under VC
 
-;; WIKI NAV
-(sandbox/install-and-require 'wiki-nav)
-(global-wiki-nav-mode 1)
-(diminish 'button-lock-mode)
-(diminish 'wiki-nav-mode)
-;; see [[sandbox/install-and-require]]
-
-
-
+;; ;; WIKI NAV
+;; (sandbox/install-and-require 'wiki-nav)
+;; (global-wiki-nav-mode 1)
+;; (diminish 'button-lock-mode)
+;; (diminish 'wiki-nav-mode)
+;; ;; see [[sandbox/install-and-require]]
 
 
 (when (string= system-type "darwin")
@@ -116,17 +113,6 @@
 ;; pretty-symbol-patterns
 (mapc (-rpartial #'add-hook 'pretty-symbols-mode)
       '(emacs-lisp-mode-hook))
-
-;; more symbols to use (?)
-;; ∘ ∙ ∫ ∮ ⊛
-
-;; add all cl-lib font-lock-highlighting to emacs-lisp-mode
-(sandbox/install-and-require 'cl-lib-highlight)
-(add-hook 'emacs-lisp-mode-hook
-  (lambda ()
-    (ignore-errors
-      (cl-lib-highlight-initialize))))
-
 
 ;;; THINGS TO CHECK OUT !
 ;;; clang-format-before-save - run clang format every time you save a C++ file
@@ -180,17 +166,11 @@
   "H-M-u" #'set-slack-user
   "H-M-c" #'set-slack-channel)
 
-;;; OH THIS IS PRETTY NICE <3 <3 <3
-(add-hook 'emacs-lisp-mode-hook
-  (lambda ()
-    (sandbox/install-and-require 'aggressive-indent)
-    (aggressive-indent-mode 1)))
-
 (sandbox/install-and-require 'backup-each-save)
 (add-hook 'after-save-hook
   #'backup-each-save)
 
-(require 'json)
+;; (require 'json)
 ;; (-let (((response-json . response-info)
 ;;         (http-post-simple-internal
 ;;          "https://slack.com/api/auth.test" ; chat.postMessage
@@ -210,18 +190,18 @@
 ;;   ;; response-info
 ;;   )
 
-(defun json-encode-dict (&rest kwargs)
-  "Encode KWARGS :key value into a JSON dict."
-  (->> kwargs
-    (-partition 2)
-    (mapcar (-lambda ((kar kdr)) ; convert '(k v) -> '(k . v)
-              (cons kar kdr)))
-    json-encode))
+;; (defun json-encode-dict (&rest kwargs)
+;;   "Encode KWARGS :key value into a JSON dict."
+;;   (->> kwargs
+;;     (-partition 2)
+;;     (mapcar (-lambda ((kar kdr)) ; convert '(k v) -> '(k . v)
+;;               (cons kar kdr)))
+;;     json-encode))
 
-(json-encode-dict
- :a "COOL"
- :b "VERY COOL"
- :c "SICK")
+;; (json-encode-dict
+;;  :a "COOL"
+;;  :b "VERY COOL"
+;;  :c "SICK")
 
 ;; SOMEHOW, SOMEWAY I BROKE THE ESHELL. THIS IS A HACKY FIX AROUND IT
 (add-hook 'eshell-mode-hook

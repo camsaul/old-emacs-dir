@@ -26,10 +26,12 @@
     ace-jump-mode             ; quickly jump anywhere on screen
     ace-isearch               ; C-s switches between ace-jump/isearch/helm-swoop based on length of search term
     ace-window                ; ace-style jumping between all visible windows
+    aggressive-indent         ; Minor mode to aggressively keep your code always indented
     anaconda-mode             ; python doc or something like that
     angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
     bm                        ; bookmarks
     browse-kill-ring          ; opens new buffer for browsing kill ring
+    cl-lib-highlight          ; full cl-lib font-lock highlighting
     clojure-cheatsheet        ; The Clojure Cheatsheet for Emacs
     clojure-mode              ; Major mode for Clojure code
     clojure-mode-extra-font-locking ; Extra font-locking for Clojure mode

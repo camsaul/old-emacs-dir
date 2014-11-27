@@ -31,18 +31,21 @@
   (require 'lisp-init)
   (require 'morlock)
   (require 'highlight-cl)
+  (require 'cl-lib-highlight)
 
   (cam/declare-vars cam/define-elisp-keys
                     flycheck-emacs-lisp-load-path)
   (cam/lisp-mode-setup)
 
   (cam/enable-minor-modes
-    (elisp-slime-nav-mode . " ☸")
-    (flycheck-mode . " ✔"))
+    (elisp-slime-nav-mode . nil)
+    (flycheck-mode . " ✔")
+    (aggressive-indent-mode . nil))
 
   ;; additional font-locking
   (turn-on-morlock-mode-if-desired)
-  (highlight-cl-add-font-lock-keywords)
+  (highlight-cl-add-font-lock-keywords) ; <- WTF do these two do the same thing ???
+  (cl-lib-highlight-initialize)
   (dash-enable-font-lock)
 
   (setq flycheck-emacs-lisp-load-path load-path)
@@ -52,7 +55,7 @@
 
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
-           (expand-file-name "~/.emacs.d/"))
+                 (expand-file-name "~/.emacs.d/"))
     (setq-local byte-compile-dynamic t)))
 
 (add-hook 'emacs-lisp-mode-hook 'cam/elisp-mode-setup)
