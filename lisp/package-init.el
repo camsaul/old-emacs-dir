@@ -77,6 +77,7 @@
     json-mode                 ; Major mode for editing JSON files
     less-css-mode             ; Major mode for editing LESS CSS files (lesscss.org)
     loccur                    ; Performs an occur-like folding in current buffer.
+    macrostep                 ; interactive macro stepper for Emacs Lisp
     magit                     ; control Git from Emacs
     markdown-mode             ; Emacs Major mode for Markdown-formatted text files
     maxframe                  ; functions like maximize-frame

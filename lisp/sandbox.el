@@ -208,10 +208,5 @@
   (lambda ()
     (setq-local inhibit-read-only t)))
 
-;; MACROSTEP - This is clutch
-(sandbox/install-and-require 'macrostep)
-(cam/define-keys nil
-  "C-c <C-return>" #'macrostep-expand)
-
 (provide 'sandbox)
 ;;; sandbox.el ends here

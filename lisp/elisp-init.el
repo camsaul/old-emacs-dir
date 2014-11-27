@@ -96,13 +96,14 @@
   "Add elisp-related key bindings to MODE-MAP."
   (cam/define-lisp-keys mode-map)
   (cam/define-keys mode-map
-    "<f5>" 'flycheck-display-errors
-    "<f6>" 'cam/wrapping-flycheck-next-error
-    "<f7>" 'flycheck-mode
-    "C-c RET" 'pp-macroexpand-last-sexp
-    "C-x C-e" 'pp-eval-last-sexp
-    "<s-mouse-1>" 'elisp-slime-nav-find-elisp-thing-at-point
-    "<tab>" 'cam/elisp-overkill-tab-command))
+    "<f5>" #'flycheck-display-errors
+    "<f6>" #'cam/wrapping-flycheck-next-error
+    "<f7>" #'flycheck-mode
+    "<s-mouse-1>" #'elisp-slime-nav-find-elisp-thing-at-point
+    "<tab>" #'cam/elisp-overkill-tab-command
+    "C-c <C-return>" #'macrostep-expand
+    "C-c RET" #'pp-macroexpand-last-sexp
+    "C-x C-e" #'pp-eval-last-sexp))
 
 (add-hook 'emacs-lisp-mode-hook
   (lambda ()
