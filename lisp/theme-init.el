@@ -8,15 +8,21 @@
 (when (string= system-type "darwin")               ; enable sRGB on OS X (why ?)
   (setq ns-use-srgb-colorspace t))
 
-(set-frame-font
- (cdr (assoc system-type
-             '((windows-nt . "Consolas-10") ; what about "gnu/linux" ?
-               (darwin . "Menlo-11")))))
+(defvar cam/frame-font
+  "Source Code Pro-11"
+  "Font to use for Emacs.")
+
+(defvar cam/background-color
+  "#f4f4f4"
+  "Background color for Emacs.")
 
 (require 'moe-theme)
 (setq moe-light-pure-white-background-in-terminal t
       moe-theme-highlight-buffer-id nil)
 (moe-light)
+
+(set-frame-font cam/frame-font)
+(set-background-color cam/background-color)
 
 
 ;;;; COMPANY TOOLTIP TWEAKS
@@ -74,15 +80,10 @@
   "Association list of colors to use for cursor + modeline for each evil state.")
 
 ;; set variables like evil-emacs-state-cursor to ("#dd0000" box)
-(defmacro evil-set-cursor-colors ()
-  `(progn  ,@(mapcar (lambda (pair)
-                       (let* ((name (car pair))
-                              (color (cdr pair))
-                              (cursor-var (intern (format "evil-%s-state-cursor" name)))
-                              (cursor-val (list color 'box)))
-                         `(setq ,cursor-var ',cursor-val)))
-                     `,evil-state-colors)))
-(evil-set-cursor-colors)
+(mapc (-lambda ((name . color))
+        (eval`(setq ,(intern (format "evil-%s-state-cursor" name))
+                '(,color . 'box))))
+      evil-state-colors)
 
 (defun mode-line-face-background ()
   "Color we should apply to the background of the mode-line (determined by evil state)"
@@ -93,7 +94,6 @@
 (add-hook 'post-command-hook
   (lambda ()
     (set-face-background 'mode-line (mode-line-face-background))))
-
 
 (set-default 'linum-format "%3d")
 (set-default 'relative-line-numbers-format
@@ -135,8 +135,8 @@
 (set-face-bold 'mode-line t)
 (set-face-bold 'mode-line-inactive nil)
 ;; #5fafd7
-(pl/hex-color
- (face-background 'region))
+;; (pl/hex-color
+;;  (face-background 'region))
 
 (set-face-foreground 'mode-line-buffer-id "white")
 (set-face-background 'mode-line-buffer-id nil)
@@ -169,7 +169,7 @@
             (rhs (list
                   (powerline-raw "%n " face3)               ; 'Narrow' when narrowing is in effect
                   (powerline-slant-left face3 face1)
-                  (powerline-raw (concat " ♠ %3l ♣  ♥ %3c ♦") face1 'r)
+                  (powerline-raw (concat "   %3l      %3c  ") face1 'r)
                   (powerline-slant-left face1 color-face)
 
 
@@ -186,6 +186,35 @@
             (when (local-variable-p 'mode-line-format)
               (kill-local-variable 'mode-line-format)))
           (buffer-list))))
+
+
+;;; COLOR TWEAKS
+
+(set-face-attribute 'font-lock-doc-face nil
+                    :foreground "black"
+                    :bold t)
+
+(set-face-attribute 'font-lock-comment-face nil
+                    :foreground "#5fafd7"
+                    :bold t
+                    :italic t)
+
+(set-face-attribute 'font-lock-builtin-face nil
+                    :foreground "cc6633"
+                    :bold nil)
+
+(set-face-attribute 'font-lock-function-name-face nil
+                    :foreground "#008FD7"
+                    :bold t)
+
+(set-face-attribute 'font-lock-preprocessor-face nil
+                    :bold nil
+                    :italic t)
+
+(defadvice make-frame-command (after make-frame-set-font activate)
+  (interactive)
+  (set-background-color cam/background-color)
+  (set-frame-font cam/frame-font))
 
 (provide 'theme-init)
 ;;; theme-init.el ends here

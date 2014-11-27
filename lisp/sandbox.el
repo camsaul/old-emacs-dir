@@ -4,6 +4,7 @@
 
 ;; [[<sandbox/install-and-require]]
 
+;; DOES THIS EVEN WORK ??
 (defmacro dont-prompt-about-killing (package process)
   "Don't prompt before killing PROCESS with matching string name from PACKAGE with string name."
   `(eval-after-load ,package
@@ -17,16 +18,6 @@
 
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
 
-;; color tweaks
-;; #ef2929 - TODO use this for something cool
-
-(set-face-attribute 'font-lock-doc-face nil
-                    :foreground "black"
-                    :bold t)
-(set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#5fafd7"
-                    :bold t
-                    :italic t)
 
 ;; term tweaks
 (dont-prompt-about-killing "term" "*ansi-term*")
@@ -45,20 +36,9 @@
                       (concat "\\<\\(" kw "\\)\\>"))
                     kws)))
 
-(set-face-attribute 'font-lock-builtin-face nil
-                    :foreground "cc6633"
-                    :bold nil)
-
-(set-face-attribute 'font-lock-function-name-face nil
-                    :foreground "#008FD7"
-                    :bold t)
 
 (cam/add-keywords 'font-lock-warning-face
                   "sandbox/[a-z-:/]+")
-
-(set-face-attribute 'font-lock-preprocessor-face nil
-                    :bold nil
-                    :italic t)
 
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
@@ -88,12 +68,8 @@
 (diminish 'wiki-nav-mode)
 ;; see [[sandbox/install-and-require]]
 
-(defadvice make-frame-command (after make-frame-set-font activate)
-  (interactive)
-  (set-background-color "#f4f4f4")
-  (set-frame-font "Source Code Pro-11"))
 
-(set-frame-font "Source Code Pro-11")
+
 
 
 (when (string= system-type "darwin")
@@ -105,7 +81,6 @@
   (fset #'proced #'vkill)               ; swoop proced -> vkill
   (cam/run-fullscreen "vkill" vkill))
 
-(set-background-color "#F4F4F4")
 
 ;; clean up obsolete buffers automatically
 (require 'midnight)
@@ -118,8 +93,8 @@
 
 ;; (add-to-list 'auto-mode-alist '("\\.zsh\\'" . shell-script-mode))  ; ZShell scripts should be opened by shell-script-mode
 
-;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
-(sandbox/install-and-require 'recentf-ext)
+;; ;; recentf can handle dired buffers, and switching to buffer bumps it to top of recentf list
+;; (sandbox/install-and-require 'recentf-ext)
 
 (sandbox/install-and-require 'pretty-symbols)
 (setq pretty-symbol-categories '(lambda relational logical nil cam))
@@ -155,7 +130,6 @@
 
 ;;; THINGS TO CHECK OUT !
 ;;; clang-format-before-save - run clang format every time you save a C++ file
-;;; macrostep - interactive macro stepper for Emacs Lisp
 ;;; web-mode
 
 ;;; HARASS COWORKERS BY AUTO-POSTING TO SLACK
@@ -216,12 +190,6 @@
 (add-hook 'after-save-hook
   #'backup-each-save)
 
-(sandbox/install-and-require 'clippy)
-
-(cam/define-keys nil
-  "C-h x f" #'clippy-describe-function
-  "C-h x v" #'clippy-describe-variable)
-
 (require 'json)
 ;; (-let (((response-json . response-info)
 ;;         (http-post-simple-internal
@@ -259,6 +227,11 @@
 (add-hook 'eshell-mode-hook
   (lambda ()
     (setq-local inhibit-read-only t)))
+
+;; MACROSTEP - This is clutch
+(sandbox/install-and-require 'macrostep)
+(cam/define-keys nil
+  "C-c <C-return>" #'macrostep-expand)
 
 (provide 'sandbox)
 ;;; sandbox.el ends here
