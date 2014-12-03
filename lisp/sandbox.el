@@ -23,29 +23,32 @@
 (dont-prompt-about-killing "term" "*ansi-term*")
 
 ;; CAR-AZY SYNTAX HIGHLIGHTING
-(defmacro cam/add-keywords-patterns (face &rest patterns)
-  `(progn
-     ,@(mapcar (lambda (pattern)
-                 (list 'font-lock-add-keywords ''emacs-lisp-mode
-                       `(quote ((,pattern 1 ,face)))))
-               patterns)))
+;; (defmacro cam/add-keywords-patterns (face &rest patterns)
+;;   `(progn
+;;      ,@(mapcar (lambda (pattern)
+;;                  (list 'font-lock-add-keywords ''emacs-lisp-mode
+;;                        `(quote ((,pattern 1 ,face)))))
+;;                patterns)))
 
-(defmacro cam/add-keywords (face &rest kws)
-  `(cam/add-keywords-patterns
-    ,face ,@(mapcar (lambda (kw)
-                      (concat "\\<\\(" kw "\\)\\>"))
-                    kws)))
+;; (defmacro cam/add-keywords (face &rest kws)
+;;   `(cam/add-keywords-patterns
+;;     ,face ,@(mapcar (lambda (kw)
+;;                       (concat "\\<\\(" kw "\\)\\>"))
+;;                     kws)))
+
+;; (cam/add-keywords 'font-lock-warning-face
+;;                   "sandbox/[a-z-:/]+")
 
 
-(cam/add-keywords 'font-lock-warning-face
-                  "sandbox/[a-z-:/]+")
+(font-lock-add-keywords 'emacs-lisp-mode
+                        '(("\\<\\(sandbox/install-and-require\\)\\>" 1 'font-lock-warning-face)))
 
 (nconc ido-ignore-directories '("node_modules"
                                 "bower_components"
                                 ".git"))
 
 ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
-(sandbox/install-and-require 'async)
+(require 'async)
 (async-start
  (lambda ()
    (message "STARTING PACKAGE AUTO-UPDATE...")
@@ -207,6 +210,35 @@
 (add-hook 'eshell-mode-hook
   (lambda ()
     (setq-local inhibit-read-only t)))
+
+;; WOAH
+(sandbox/install-and-require 'guide-key)
+(require 'guide-key)
+(guide-key-mode 1)
+(setq guide-key/idle-delay 0.1                    ; delay before showing the guide-key popup
+      guide-key/recursive-key-sequence-flag t     ; e.g. specifying C-x below means to also show guides for things like C-x r
+      guide-key/guide-key-sequence '(             ; prefixes to should guides for
+                                     "<f12>"
+                                     "<f1>"
+                                     "<help>"
+                                     "A-'"
+                                     "A-*"
+                                     "A-,"
+                                     "A-/"
+                                     "A-1"
+                                     "A-3"
+                                     "A-\""
+                                     "A-^"
+                                     "A-_"
+                                     "A-`"
+                                     "A-r"
+                                     "A-~"
+                                     "C-c"
+                                     "C-h"
+                                     "C-x"
+                                     "M-g"
+                                     "M-o"
+                                     ))
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

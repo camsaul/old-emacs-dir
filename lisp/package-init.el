@@ -29,6 +29,7 @@
     aggressive-indent         ; Minor mode to aggressively keep your code always indented
     anaconda-mode             ; python doc or something like that
     angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
+    async                     ; Asynchronous processing in Emacs
     bm                        ; bookmarks
     browse-kill-ring          ; opens new buffer for browsing kill ring
     cl-lib-highlight          ; full cl-lib font-lock highlighting

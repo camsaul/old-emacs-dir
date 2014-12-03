@@ -29,7 +29,9 @@
     "<f8>" #'info-lookup-symbol
     "<s-mouse-1>" #'elpy-goto-definition
     "<M-mouse-1>" #'elpy-doc
-    "<S-mouse-1>" #'info-lookup-symbol))
+    "<S-mouse-1>" #'info-lookup-symbol
+    "C-j" #'newline-and-indent ; instead of electric-newline-and-maybe-indent, which doesn't indent
+    "RET" #'newline-and-indent))
 
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
