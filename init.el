@@ -366,8 +366,7 @@
   "s-b" #'balance-windows
   "s-f" #'ftf-grepsource
   "s-o" #'ftf-find-file
-  "s-y" #'undo-tree-redo
-  )
+  "s-y" #'undo-tree-redo)
 
 (defvar cam/init-files
   (-filter 'cam/is-init-file-p

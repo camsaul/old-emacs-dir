@@ -4,12 +4,24 @@
 ;;; Code:
 
 (defmacro cam/define-keys (keymap &rest pairs)
-  "If KEYMAP is non-nil, map PAIRS of KEY -> FN for mode map via 'define-key'; otherwise map via 'global-set-key'."
+  "Map pairs of KEY -> FN.
+   If KEYMAP is non-nil,  map keys for the mode map via 'define-key'; otherwise map globally via 'global-set-key'.
+
+   KEY may be a string such as 's-b' or another function, in which case the binding(s) for that function will be remapped
+   with the ['remap #'other-fn] form
+
+   ex.
+   (cam/define-keys nil
+      \"s-b\" #'balance-windows     ; bind s-b to balance-windows
+      #'discover-my-major #'my-func ; replace keybindings to discover-my-major with ones to my-func
+  "
   (let ((def-key (if keymap `(define-key ,keymap)
                    '(global-set-key))))
     `(progn
        ,@(mapcar (-lambda ((key fn))
-                   `(,@def-key ,(list 'kbd key) ,fn))
+                   `(,@def-key ,(if (stringp key) (list 'kbd key)
+                                  (list 'vector ''remap key))
+                      ,fn))
                  (-partition 2 pairs)))))
 (put 'cam/define-keys 'lisp-indent-function 1)
 
