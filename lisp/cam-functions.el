@@ -144,6 +144,8 @@
       (error (warn "--SANDBOX-- Failed to install %s: %s" package-name (error-message-string err)))))
   (when more-packages
     (apply 'sandbox/install-and-require more-packages)))
+(font-lock-add-keywords 'emacs-lisp-mode
+                        '(("\\<\\(sandbox/install-and-require\\)\\>" 1 'font-lock-warning-face)))
 
 (defun cam/add-semicolon-to-eol ()
   "Add a semicolon to the end of current line without affecting point."

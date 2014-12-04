@@ -65,6 +65,7 @@
     gitconfig-mode            ; major mode for editing .gitconfig files
     gitignore-mode            ; major mode for editing .gitignore files
     git-timemachine           ; Walk through git revisions of a file
+    guide-key                 ; Show completions for prefix keybindings
     helm                      ; Helm is an Emacs incremental and narrowing framework
     highlight-cl              ; font-lock the cl- functions in  ELisp Mode
     highlight-parentheses     ; highlight surrounding parentheses

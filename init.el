@@ -9,9 +9,10 @@
 (mapc (lambda (mode)
         (when (boundp mode)
           (funcall mode -1)))
-      '(menu-bar-mode
-        scroll-bar-mode
+      '(scroll-bar-mode
         tool-bar-mode))
+(unless (string= system-type "darwin")
+  (menu-bar-mode -1))
 (toggle-frame-maximized)
 
 (setq-default default-frame-alist nil)
@@ -77,6 +78,7 @@
    global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
    global-hl-line-mode                            ; highlight the current line
    global-undo-tree-mode                          ; make undo work in a tree instead of linearly
+   guide-key-mode                                 ; show completions for prefix keybindings
    ido-mode
    ido-ubiquitous-mode
    ido-everywhere
@@ -103,13 +105,13 @@
 
     ;; show a AngryPoliceCaptain.com quote
     (unless (or (active-minibuffer-window)
-                (minibufferp (current-buffer)))
+               (minibufferp (current-buffer)))
       (angry-police-captain))
     ))
 
 (add-hook 'emacs-startup-hook
-          (lambda ()
-            (kill-buffer "*scratch*")))
+  (lambda ()
+    (kill-buffer "*scratch*")))
 
 (add-hook 'dired-mode-hook
   (lambda ()
@@ -138,9 +140,9 @@
   (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
     (warn "EditorConfig is not installed. This is needed by editorconfig package.")
     (when (= system-type
-           "darwin")
-        (warn "Attempting to install via 'brew install editorconfig'...")
-        (call-process-shell-command "brew install editorconfig" nil nil))))
+             "darwin")
+      (warn "Attempting to install via 'brew install editorconfig'...")
+      (call-process-shell-command "brew install editorconfig" nil nil))))
 
 (eval-after-load "multiple-cursors"
   '(multiple-cursors-mode 1))
@@ -199,6 +201,18 @@
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
     gc-cons-threshold (* 1024 1024 1024 4)        ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
+    guide-key/idle-delay 1.0                      ; delay before showing the guide-key popup
+    guide-key/recursive-key-sequence-flag t       ; e.g. specifying C-x below means to also show guides for things like C-x r
+    guide-key/guide-key-sequence '("<f12>" "<f1>" ; prefixes to show guides for
+                                   "<help>" "A-'"
+                                   "A-*" "A-,"
+                                   "A-/" "A-1"
+                                   "A-3" "A-\""
+                                   "A-^" "A-_"
+                                   "A-`" "A-r"
+                                   "A-~" "C-c"
+                                   "C-h" "C-x"
+                                   "M-g" "M-o")
     mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
     nav-width 30                                  ; nav should be 30 chars wide (default is 18)
     ns-right-command-modifier 'hyper
@@ -210,13 +224,14 @@
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
     scroll-margin 1
     select-enable-clipboard t                     ; Use the clipboard in addition to emacs kill ring
+    select-enable-primary t                       ; cutting and pasting uses the primary selection (?)
     w32-apps-modifier 'hyper
     w32-lwindow-modifier 'super
     w32-pass-lwindow-to-system nil
     w32-rwindow-modifier 'alt
     whitespace-line-column 200                    ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
     visible-bell t
- )
+    )
 
 (setq-default
     save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
