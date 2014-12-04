@@ -133,7 +133,10 @@
   (cam/suppress-messages
    (toggle-diredp-find-file-reuse-dir t))         ; reuse dired buffers
   (setq dired-recursive-copies 'always
-        dired-recursive-deletes 'always))
+        dired-recursive-deletes 'always)
+  (defadvice dired-smart-shell-command (after refresh-dired-after-shell-command activate)
+    "Revert dired buffer after executing a shell command in one."
+    (revert-buffer)))
 
 ;; Install editorconfig via homebrew if possible
 (cam/eval-after-load "editorconfig"
