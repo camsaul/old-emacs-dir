@@ -86,7 +86,7 @@
    flx-ido-mode                                   ; fuzzy matching for ido
    (rainbow-mode . nil)                             ; colorize strings that represent colors e.g. #00FFFF
    recentf-mode                                   ; enable the recent files menu
-   savehist-mode                                  ; save minibuffer history periodically
+   ;; savehist-mode                                  ; save minibuffer history periodically !!! DEPRECATED this seems to make things really SLOWWWWWW
    show-paren-mode                                ; highlight matching parens
    (undo-tree-mode . nil)                           ; already on because of global-undo-tree-mode but we can't diminish that so diminish this one instead
    winner-mode))                                  ; C-c <left> / C-c <right> to restore window configurations
@@ -285,6 +285,7 @@
 
 
 ;;;; GLOBAL KEY-BINDINGS
+
 
 (cam/define-keys nil
   "<C-s-M-down>" #'windmove-down
