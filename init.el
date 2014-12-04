@@ -78,7 +78,7 @@
    global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
    global-hl-line-mode                            ; highlight the current line
    global-undo-tree-mode                          ; make undo work in a tree instead of linearly
-   guide-key-mode                                 ; show completions for prefix keybindings
+   (guide-key-mode . nil)                         ; show completions for prefix keybindings
    ido-mode
    ido-ubiquitous-mode
    ido-everywhere
