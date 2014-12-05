@@ -236,9 +236,9 @@
     visible-bell t
     )
 
-(setq-default
-    save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
-    )
+;; (setq-default
+;;     save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
+;;     )
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
@@ -341,10 +341,10 @@
   "C-M-S-k" #'backward-kill-sexp                  ; Kill sexp before current position
   "C-M-y" #'browse-kill-ring
   "C-S-k" #'cam/backward-kill-line
-  "C-c e" #'eval-and-replace                      ; eval previous elisp expression at point, replace with results
+  "C-c e" #'eval-and-replace                        ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
   "C-v" #'yank                                    ; yank instead of whatever it usually does
-  "C-x C-b" #'buffer-menu                         ; show buffer menu
+  "C-x C-b" #'helm-buffers-list
   "C-x C-d" #'ido-dired                           ; dired instead of list directory
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
   "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
@@ -370,7 +370,12 @@
   "s-b" #'balance-windows
   "s-f" #'ftf-grepsource
   "s-o" #'ftf-find-file
-  "s-y" #'undo-tree-redo)
+  "s-y" #'undo-tree-redo
+  #'dabbrev-expand #'hippie-expand                ; remap dabbrev-expand bindings (M-/) to hippie-expand
+  "s-g" #'ace-jump-mode
+  "s-l" #'ace-jump-line-mode
+  )
+
 
 (defvar cam/init-files
   (-filter 'cam/is-init-file-p
