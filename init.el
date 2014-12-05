@@ -16,8 +16,6 @@
 (toggle-frame-maximized)
 
 (setq-default default-frame-alist nil)
-;; (setq-default default-frame-alist
-;;   '((fullscreen . maximized)))                    ; no fringes, no scroll bar
 
 
 ;;;; LOAD PACKAGES
@@ -59,7 +57,7 @@
 ;;;; GLOBALLY DISABLED MINOR MODES
 
 (cam/disable-minor-modes
-  blink-cursor-mode                               ; disable blinking cursor
+  blink-cursor-mode                               ; disable blinking cursor - TODO this seem to work unless done after theme loads (?)
   indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
   set-fringe-mode                                 ; disable fringes
@@ -240,6 +238,9 @@
 ;;     save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
 ;;     )
 
+
+
+
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
 
@@ -409,11 +410,11 @@
 (mapc (lambda (init-file)
         (condition-case err
             (require init-file)
-            (error (warn "%s" (error-message-string err))
-                   (switch-to-buffer "*Warnings*")
-                   (delete-other-windows)
-                   (split-window-below)
-                   (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file))))))
+          (error (warn "%s" (error-message-string err))
+                 (switch-to-buffer "*Warnings*")
+                 (delete-other-windows)
+                 (split-window-below)
+                 (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file))))))
       '(;; load elisp stuff first so we can at least fix errors in other files more easily
         lisp-init
         elisp-init
@@ -432,6 +433,11 @@
         ruby-init
         theme-init
         sandbox))
+
+
+;;; HACKs
+
+(blink-cursor-mode -1) ; doesn't seem to work if we try to do it before loading theme-init (?)
 
 (provide 'init)
 ;;; init.el ends here
