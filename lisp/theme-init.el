@@ -5,6 +5,9 @@
 
 ;;; Code:
 
+
+;;;; BASIC THEME CONFIG + TWEAKS
+
 (when (string= system-type "darwin")               ; enable sRGB on OS X (why ?)
   (setq ns-use-srgb-colorspace t))
 
@@ -24,8 +27,39 @@
 (set-frame-font cam/frame-font)
 (set-background-color cam/background-color)
 
+;; when opening a new FRAME set the font and bg color
+(defadvice make-frame-command (after make-frame-set-font activate)
+  (interactive)
+  (set-background-color cam/background-color)
+  (set-frame-font cam/frame-font))
+
+;; color tweaks
+(set-face-attribute 'font-lock-doc-face nil
+                    :foreground "black"
+                    :bold t)
+
+(set-face-attribute 'font-lock-comment-face nil
+                    :foreground "#5fafd7"
+                    :bold t
+                    :italic t)
+
+(set-face-attribute 'font-lock-builtin-face nil
+                    :foreground "cc6633"
+                    :bold nil)
+
+(set-face-attribute 'font-lock-function-name-face nil
+                    :foreground "#008FD7"
+                    :bold t)
+
+(set-face-attribute 'font-lock-preprocessor-face nil
+                    :bold nil
+                    :italic t)
+
+
 
 ;;;; COMPANY TOOLTIP TWEAKS
+
+;; The company autocomplete popup box doesn't fit in well with moe-light; fix that
 
 (eval-after-load "company"
   '(let ((h-1 (face-background 'hl-line))                   ; #d7ff87
@@ -67,7 +101,7 @@
                          :background c-2)))
 
 
-;;;; EVIL MODE CONFIGURATION
+;;;; EVIL STATE CURSOR COLOR CONFIG
 
 (defvar evil-state-colors
   '(("emacs" . "#dd0000")
@@ -79,28 +113,35 @@
     ("motion" . "#ff0099"))
   "Association list of colors to use for cursor + modeline for each evil state.")
 
-;; set variables like evil-emacs-state-cursor to ("#dd0000" box)
+;; Now set the cursor colors for each state.
+;; Rhis just loops over evil-state-colors and sets the corresponding variable for that state
+;; e.g. it sets evil-emacs-state-cursor to ("#dd0000" . 'box) - a red box
 (mapc (-lambda ((name . color))
         (eval`(setq ,(intern (format "evil-%s-state-cursor" name))
                 '(,color . 'box))))
       evil-state-colors)
 
-(defun mode-line-face-background ()
-  "Color we should apply to the background of the mode-line (determined by evil state)"
-  (cdr (assoc (symbol-name evil-state) evil-state-colors)))
 
-(setq powerline-evil-tag-style 'verbose)
+;;;; POWERLINE CONFIG
 
-(add-hook 'post-command-hook
-  (lambda ()
-    (set-face-background 'mode-line (mode-line-face-background))))
+(setq powerline-evil-tag-style 'verbose) ; display evil states with verbose names like 'EMACS' / 'NORMAL'
 
+;; make line numbers / relative line numbers use similar padding so switching between the two doesn't resize the fringe/frame
 (set-default 'linum-format "%3d")
 (set-default 'relative-line-numbers-format
              (lambda (offset)
                (format "%3d" (abs offset))))
 
+(defun mode-line-face-background ()
+  "Color we should apply to the background of the mode-line (determined by evil state)"
+  (cdr (assoc (symbol-name evil-state) evil-state-colors)))
 
+;; update the mode line background color to corresponding state color whenever a command is executed
+(add-hook 'post-command-hook
+  (lambda ()
+    (set-face-background 'mode-line (mode-line-face-background))))
+
+;; Define the colors we'll use in our powerline
 (defmacro def-pl-faces (name bg-color fg-color &rest rest)
   "Helper to create new face(s) via defface for powerline. Calls set-face-background/foreground as well."
   (let* ((bg-color (eval bg-color))
@@ -134,10 +175,6 @@
 
 (set-face-bold 'mode-line t)
 (set-face-bold 'mode-line-inactive nil)
-;; #5fafd7
-;; (pl/hex-color
-;;  (face-background 'region))
-
 (set-face-foreground 'mode-line-buffer-id "white")
 (set-face-background 'mode-line-buffer-id nil)
 
@@ -179,42 +216,15 @@
                (powerline-fill face3 (powerline-width rhs))
                (powerline-render rhs))))))
 
-;; remove buffer-local mode-line-formats if they pop up
+;; mode-line-format has a tendency to get set as a buffer-local variable, which overrides our default value for it defined above.
+;; whenever the window config changes loop through all buffers and remove any buffer-local values of mode-line-format if found
+;; so they don't mask our default val
 (add-hook 'window-configuration-change-hook
   (lambda ()
     (mapc (lambda (buffer)
             (when (local-variable-p 'mode-line-format)
               (kill-local-variable 'mode-line-format)))
           (buffer-list))))
-
-
-;;; COLOR TWEAKS
-
-(set-face-attribute 'font-lock-doc-face nil
-                    :foreground "black"
-                    :bold t)
-
-(set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#5fafd7"
-                    :bold t
-                    :italic t)
-
-(set-face-attribute 'font-lock-builtin-face nil
-                    :foreground "cc6633"
-                    :bold nil)
-
-(set-face-attribute 'font-lock-function-name-face nil
-                    :foreground "#008FD7"
-                    :bold t)
-
-(set-face-attribute 'font-lock-preprocessor-face nil
-                    :bold nil
-                    :italic t)
-
-(defadvice make-frame-command (after make-frame-set-font activate)
-  (interactive)
-  (set-background-color cam/background-color)
-  (set-frame-font cam/frame-font))
 
 (provide 'theme-init)
 ;;; theme-init.el ends here
