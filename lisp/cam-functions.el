@@ -2,10 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(defun cam/popup-cam-menu ()
-  "Show the 'CAM :)' menu as a popup menu."
+(defun cam/popup-init-file-menu ()
+  "Show a popup menu of Emacs init files."
   (interactive)
-  (popup-menu cam-menu))
+  (popup-menu cam/init-file-menu))
 
 (defun cam/join-next-line ()
   "Basically like C-e C-k then deleting leftover space."

@@ -313,14 +313,14 @@
   "<f11>" #'paredit-mode                          ; F11 is now global key for paredit-mode
   "<f12> b" #'cam/bing-search
   "<f12> s" #'cam/stackoverflow-search
-  "<f13>" #'cam/popup-cam-menu
+  "<f13>" #'cam/popup-init-file-menu
   "<f2>" #'helm-swoop                             ; nice Helm search
   "<f9>" #'whitespace-mode
   "<home>" #'ace-jump-mode
   "<insert>" nil                                  ; disable stupid insert key TODO maybe use as a prefix to insert something useful
   "<next>" #'helm-buffers-list
   "<prior>" #'ace-jump-line-mode
-  "<scroll>" #'cam/popup-cam-menu                 ; Windows only
+  "<scroll>" #'cam/popup-init-file-menu           ; Windows only
   "A-;" #'loccur                                  ; activate loccur-mode (prompt for word/regex)
   "A-<tab>" #'ace-jump-buffer
   "A-H-;" #'loccur-previous-match                 ; jump batch to previous loccur search
@@ -374,8 +374,7 @@
   "s-y" #'undo-tree-redo
   #'dabbrev-expand #'hippie-expand                ; remap dabbrev-expand bindings (M-/) to hippie-expand
   "s-g" #'ace-jump-mode
-  "s-l" #'ace-jump-line-mode
-  )
+  "s-l" #'ace-jump-line-mode)
 
 
 (defvar cam/init-files
@@ -387,9 +386,9 @@
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
 
 
-;;;; CAM MENU
+;;;; CREATE A MENU TO EASILY JUMP TO AN INIT FILE FOR EDITING
 
-(easy-menu-define cam-menu global-map "Edit init file.."
+(easy-menu-define cam/init-file-menu global-map "Edit init file.."
   (cons "Edit Init File"
         (mapcar #'cam/menu-edit-init-file
                 cam/init-files)))
@@ -438,6 +437,7 @@
 ;;; HACKs
 
 (blink-cursor-mode -1) ; doesn't seem to work if we try to do it before loading theme-init (?)
+
 
 (provide 'init)
 ;;; init.el ends here
