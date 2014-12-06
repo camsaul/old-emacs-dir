@@ -206,9 +206,9 @@
             (rhs (list
                   (powerline-raw "%n " face3)               ; 'Narrow' when narrowing is in effect
                   (powerline-slant-left face3 face1)
+
                   (powerline-raw (concat " ♠ %3l ♣  ♥ %3c ♦") face1 'r)
                   (powerline-slant-left face1 color-face)
-
 
                   (powerline-raw " %M" color-face)          ; %M -> global-mode-string
                   (powerline-vc color-face 'r))))
