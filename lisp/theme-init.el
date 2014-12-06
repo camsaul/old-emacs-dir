@@ -117,8 +117,8 @@
 ;; Rhis just loops over evil-state-colors and sets the corresponding variable for that state
 ;; e.g. it sets evil-emacs-state-cursor to ("#dd0000" . 'box) - a red box
 (mapc (-lambda ((name . color))
-        (eval`(setq ,(intern (format "evil-%s-state-cursor" name))
-                '(,color . 'box))))
+        (eval `(setq ,(intern (format "evil-%s-state-cursor" name))
+                 '(,color . 'box))))
       evil-state-colors)
 
 
