@@ -3,7 +3,9 @@
 
 (defun cam/html-mode-setup ()
   (require 'nxml-mode)
-  (nxml-mode)) ; fancy xml editing mode
+  (nxml-mode) ; fancy xml editing mode
+  (cam/enable-minor-modes
+    aggressive-indent-mode))
 (add-hook 'html-mode-hook 'cam/html-mode-setup)
 
 (eval-after-load "nxml"

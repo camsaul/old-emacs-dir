@@ -25,16 +25,16 @@
                                 "bower_components"
                                 ".git"))
 
-;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
-(require 'async)
-(async-start
- (lambda ()
-   (message "STARTING PACKAGE AUTO-UPDATE...")
-   (nconc load-path '("~/.emacs.d/lisp/"))
-   (require 'package-init)
-   (cam/auto-update-packages))
- (lambda (result)
-   (message "cam/auto-update-packages finished. -- %s" result)))
+;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
+;; (require 'async)
+;; (async-start
+;;  (lambda ()
+;;    (message "STARTING PACKAGE AUTO-UPDATE...")
+;;    (nconc load-path '("~/.emacs.d/lisp/"))
+;;    (require 'package-init)
+;;    (cam/auto-update-packages))
+;;  (lambda (result)
+;;    (message "cam/auto-update-packages finished. -- %s" result)))
 
 ;; write backup files to own directory
 (setq backup-directory-alist
@@ -80,7 +80,7 @@
 ;;; clang-format-before-save - run clang format every time you save a C++ file
 ;;; web-mode
 
-                                                  ;
+                                        ;
 (sandbox/install-and-require 'backup-each-save)
 (add-hook 'after-save-hook
   #'backup-each-save)
@@ -103,6 +103,18 @@
       apropos-do-all t
       mouse-yank-at-point t                       ; mouse yank commands yank at point instead of at click.
       )
+
+;; IDO HACKS
+(sandbox/install-and-require 'ido-hacks)
+(ido-hacks-mode 1)
+
+(cam/define-keys nil
+  "<A-down>" (lambda ()
+               (interactive)
+               (next-line 10))
+  "<A-up>" (lambda ()
+             (interactive)
+             (previous-line 10)))
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

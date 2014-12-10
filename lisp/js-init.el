@@ -15,7 +15,8 @@
     (cam/declare-vars highlight-parentheses-mode)
     (cam/enable-minor-modes
       (company-mode . " ¢")
-      highlight-parentheses-mode)
+      highlight-parentheses-mode
+      aggressive-indent-mode)
     (cam/pretty-function)
     ;; run js-beautify on buffer when saving, requires npm install -g js-beautify
     ;; TODO: web-beautfiy-js-buffer for json-mode, web-beautify-html-buffer for html-mode; web-beautify-css-buffer for css-mode ?
