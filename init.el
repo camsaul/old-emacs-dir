@@ -249,7 +249,8 @@
 (mapc (lambda (fn)
         (put fn 'disabled nil))
       '(downcase-region
-        upcase-region))
+        upcase-region
+        narrow-to-region))
 
 
 ;;;; COMMANDS TO ALWAYS RUN FULLSCREEN
