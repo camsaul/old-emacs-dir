@@ -14,6 +14,12 @@
 
 (setq package--initialized t)            ; fake that we've called package-initialize
 
+;; If Emacs 25.1+ was compiled without TLS for some reason this function is expected
+;; by package.el but doesn't exist. Work around this
+(unless (fboundp #'gnutls-available-p)
+  (defun gnutls-available-p ()
+    nil))
+
 ;;;; SETTINGS
 (unless (assoc "melpa" package-archives) ; make sure we don't add repos more than once
   (nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")

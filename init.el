@@ -140,8 +140,8 @@
 (cam/eval-after-load "editorconfig"
   (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
     (warn "EditorConfig is not installed. This is needed by editorconfig package.")
-    (when (= system-type
-             "darwin")
+    (when (string= system-type
+                   "darwin")
       (warn "Attempting to install via 'brew install editorconfig'...")
       (call-process-shell-command "brew install editorconfig" nil nil))))
 
