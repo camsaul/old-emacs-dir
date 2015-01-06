@@ -5,19 +5,17 @@
   (require 'nxml-mode)
   (nxml-mode) ; fancy xml editing mode
   (cam/enable-minor-modes
-    aggressive-indent-mode))
+    aggressive-indent-mode)
+  (cam/define-keys nxml-mode-map
+    "C-M-b" #'cam/nxml-backward-element-or-sexp
+    "C-M-f" #'cam/nxml-forward-element-or-sexp
+    "C-M-k" #'cam/nxml-kill-sexp
+    "C-c C-f" #'cam/nxml-finish-element
+    "C-j" #'cam/nxml-newline-and-indent
+    "RET" #'cam/nxml-newline-and-indent
+    "M-b" #'backward-sexp
+    "M-f" #'forward-sexp))
 (add-hook 'html-mode-hook 'cam/html-mode-setup)
-
-(eval-after-load "nxml"
-  '(cam/define-keys nxml-mode-map
-     "C-M-b" #'cam/nxml-backward-element-or-sexp
-     "C-M-f" #'cam/nxml-forward-element-or-sexp
-     "C-M-k" #'cam/nxml-kill-sexp
-     "C-c C-f" #'cam/nxml-finish-element
-     "C-j" #'cam/nxml-newline-and-indent
-     "RET" #'cam/nxml-newline-and-indent
-     "M-b" #'backward-sexp
-     "M-f" #'forward-sexp))
 
 (defun cam/nxml-newline-and-indent ()
   "Actaully indent when I type RET / C-j"

@@ -51,7 +51,7 @@
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
   ("highlight-error-keywords" #'highlight-error-keywords-mode)
   ("multiple-cursors" #'mc/mark-all-like-this #'mc/edit-lines #'mc/mark-previous-like-this #'mc/mark-next-like-this)
-  ("s" #'s-replace))
+  ("s" #'s-replace #'s-split))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -155,10 +155,13 @@
        (magit-auto-revert-mode . nil))              ; auto-revert buffers that change on disk as result of magit command
      (defadvice magit-status (after magit-status-show-help activate)
        (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
-       (call-interactively #'other-window))))     ; switch back to magit status window
+       (call-interactively #'other-window))       ; switch back to magit status window
+     (cam/define-keys magit-status-mode-map
+       "s-u" #'magit-refresh)))
 
 (eval-after-load "find-things-fast"
   '(nconc ftf-filetypes '("*.clj"                 ; extra file types to search for/through when using find-things-fast
+                          "*.css"
                           "*.el"
                           "*.html"
                           "*.js")))
@@ -438,7 +441,6 @@
 ;;; HACKs
 
 (blink-cursor-mode -1) ; doesn't seem to work if we try to do it before loading theme-init (?)
-
 
 (provide 'init)
 ;;; init.el ends here

@@ -19,6 +19,23 @@
 ;; (cam/setup-autoloads
 ;;   ("lisp-init" #'pretty-lambdas))
 
+(defun cam/insert(&rest lines)
+  (mapc (lambda (line)
+          (insert line)
+          (newline-and-indent))
+        lines))
+
+(defun cam/python-log-var (var-names)
+  (interactive "sVariable Name(s) (you may special several using a space to separate them): ")
+  (cam/insert "#################### DEBUG CODE - NOCOMMIT ####################"
+              "from colorama import Fore, Style"
+              "print Fore.MAGENTA")
+  (mapc (lambda (var-name)
+          (cam/insert (format "print '%s --------------------> %%s' %% %s" (upcase var-name) var-name)))
+        (s-split " " var-names))
+  (cam/insert "print Style.RESET_ALL"
+              "#################### END DEBUG CODE - NOCOMMIT ####################"))
+
 ;; KEY BINDINGS
 (defun cam/define-python-keys (mode-map)
   "Add python-related key bindings to MODE-MAP."
@@ -30,9 +47,9 @@
     "<s-mouse-1>" #'elpy-goto-definition
     "<M-mouse-1>" #'elpy-doc
     "<S-mouse-1>" #'info-lookup-symbol
+    "A-l" #'cam/python-log-var
     "C-j" #'newline-and-indent ; instead of electric-newline-and-maybe-indent, which doesn't indent
     "RET" #'newline-and-indent))
-
 
 ;;;; EVAL-AFTER-LOAD SETTINGS
 
@@ -52,14 +69,14 @@
   (unless cam/has-initialized-python-p
     (cam/python-install-pip-reqs)
     (mapc 'require '(elpy
-               flymake
-               info-look
-               py-autopep8
-               pydoc-info ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
-               python-pep8
-               yasnippet
-               anaconda-mode
-               company-anaconda))
+                     flymake
+                     info-look
+                     py-autopep8
+                     pydoc-info ; install python info to /usr/share/info https://bitbucket.org/jonwaltman/pydoc-info/
+                     python-pep8
+                     yasnippet
+                     anaconda-mode
+                     company-anaconda))
 
     (setq-default
         cam/has-initialized-python-p t
