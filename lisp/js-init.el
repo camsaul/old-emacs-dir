@@ -29,26 +29,35 @@
 
 (cam/eval-after-load "js3-mode"
   (require 'editorconfig)
-     (cam/declare-vars js3-auto-indent-p
-                       js3-enter-indents-newline
-                       js3-consistent-level-indent-inner-bracket)
-     (setq-default
-         js3-auto-indent-p t                           ; commas "right themselves" (?)
-         js3-enter-indents-newline t
-         js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
+  (cam/declare-vars js3-auto-indent-p
+                    js3-enter-indents-newline
+                    js3-consistent-level-indent-inner-bracket)
+  (setq-default
+      js3-auto-indent-p t                           ; commas "right themselves" (?)
+      js3-enter-indents-newline t
+      js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
 
-     (cam/define-keys js3-mode-map
-       "C-j" (cam/interactivify 'js3-insert-and-indent)
-       "M-q" 'cam/js-reindent-previous-sexp))
+  (cam/define-keys js3-mode-map
+    "C-j" (cam/interactivify 'js3-insert-and-indent)
+    "M-q" #'cam/js-reindent-previous-sexp
+    "A-l" #'cam/js-log-var))
 
 (defun cam/pretty-function ()
   "Turn function into a fancy f symbol."
   (font-lock-add-keywords
    nil `(("\\(\\<function\\>\\)"
-          (0 (progn (compose-region (match-beginning 1)
-                                    (match-end 1)
-                                    "\u0192"
-                                    'decompose-region)))))))
+        (0 (progn (compose-region (match-beginning 1)
+                                  (match-end 1)
+                                  "\u0192"
+                                  'decompose-region)))))))
+
+(defun cam/js-log-var (varnames)
+  "Insert a console.log statement for given variable(s)."
+  (interactive "sVariable Name(s) (separate by spaces): ")
+  (mapc (lambda (varname)
+          (insert (format "console.log('%s -------------------->', %s);" varname varname))
+          (newline-and-indent))
+        (s-split " " varnames)))
 
 (defun cam/js-reindent-previous-sexp ()
   "Reindent sexp before point."
