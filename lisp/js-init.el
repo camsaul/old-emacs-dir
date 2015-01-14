@@ -38,6 +38,10 @@
       js3-consistent-level-indent-inner-bracket t)  ; make indentation level inner bracket consitent rather than aligning to beginning bracket position)
 
   (cam/define-keys js3-mode-map
+    "C-M-b" (lambda ()
+              (interactive)
+              (js3-mode-forward-sexp -1))
+    "C-M-f" #'js3-mode-forward-sexp
     "C-j" (cam/interactivify 'js3-insert-and-indent)
     "M-q" #'cam/js-reindent-previous-sexp
     "A-l" #'cam/js-log-var))
