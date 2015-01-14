@@ -100,46 +100,11 @@
      (set-face-attribute 'company-scrollbar-fg nil
                          :background c-2)))
 
-
-;;;; EVIL STATE CURSOR COLOR CONFIG
-
-(defvar evil-state-colors
-  '(("emacs" . "#dd0000")
-    ("normal" . "#0000dd")
-    ("visual" . "#cc6633")
-    ("insert" . "#336600")
-    ("replace" . "#663399")
-    ("operator" . "#000000")
-    ("motion" . "#ff0099"))
-  "Association list of colors to use for cursor + modeline for each evil state.")
-
-;; Now set the cursor colors for each state.
-;; Rhis just loops over evil-state-colors and sets the corresponding variable for that state
-;; e.g. it sets evil-emacs-state-cursor to ("#dd0000" . 'box) - a red box
-(mapc (-lambda ((name . color))
-        (eval `(setq ,(intern (format "evil-%s-state-cursor" name))
-                 '(,color . 'box))))
-      evil-state-colors)
-
-
-;;;; POWERLINE CONFIG
-
-(setq powerline-evil-tag-style 'verbose) ; display evil states with verbose names like 'EMACS' / 'NORMAL'
-
 ;; make line numbers / relative line numbers use similar padding so switching between the two doesn't resize the fringe/frame
 (set-default 'linum-format "%3d")
 (set-default 'relative-line-numbers-format
              (lambda (offset)
                (format "%3d" (abs offset))))
-
-(defun mode-line-face-background ()
-  "Color we should apply to the background of the mode-line (determined by evil state)"
-  (cdr (assoc (symbol-name evil-state) evil-state-colors)))
-
-;; update the mode line background color to corresponding state color whenever a command is executed
-(add-hook 'post-command-hook
-  (lambda ()
-    (set-face-background 'mode-line (mode-line-face-background))))
 
 ;; Define the colors we'll use in our powerline
 (defmacro def-pl-faces (name bg-color fg-color &rest rest)
@@ -174,6 +139,7 @@
   mode-line-inactive "gray90" "gray50")
 
 (set-face-bold 'mode-line t)
+(set-face-background 'mode-line "#dd0000")
 (set-face-bold 'mode-line-inactive nil)
 (set-face-foreground 'mode-line-buffer-id "white")
 (set-face-background 'mode-line-buffer-id nil)
@@ -187,7 +153,7 @@
             (face2 (if active 'pl-active-2 'pl-inactive-2))
             (face3 (if active 'pl-active-3 'pl-inactive-3))
             (lhs (list
-                  (powerline-raw (concat (powerline-evil-tag) " ") color-face 'l)
+                  (powerline-raw "EMACS " color-face 'l)
                   (powerline-slant-left color-face face1)
                   (powerline-buffer-id face1 'l)
                   (powerline-raw (concat (if buffer-read-only " (readonly)"
@@ -224,7 +190,9 @@
     (mapc (lambda (buffer)
             (when (local-variable-p 'mode-line-format)
               (kill-local-variable 'mode-line-format)))
-          (buffer-list))))
+          (buffer-list))
+    ;; For some reason mode line bg gets stomped on too so fix that while we're at it
+    (set-face-background 'mode-line "#dd0000")))
 
 (provide 'theme-init)
 ;;; theme-init.el ends here

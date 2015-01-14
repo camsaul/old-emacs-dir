@@ -58,9 +58,6 @@
     elisp-slime-nav           ; M-. jumps to definition of symbol at point, M-, to jump back
     elpy                      ; Emacs Python Development Environment
     erlang                    ; Erlang major mode
-    evil                      ; Extensible Vi layer for Emacs.
-    evil-matchit              ; Vim matchit ported into Emacs (requires EVIL)
-    evil-paredit              ; Paredit support for evil keybindings
     f                         ; modern API for working with files / dirs
     find-things-fast          ; Find things fast, leveraging the power of git
     flycheck                  ; Modern on-the-fly syntax checking for GNU Emacs
@@ -98,7 +95,6 @@
     paredit                   ; minor mode for editing parentheses
     php-mode                  ; Major mode for editing PHP code
     powerline                 ; Rewrite of Powerline
-    powerline-evil            ; Utilities for better Evil support for Powerline
     projectile                ; things like projectile-recentf (recently edited files in current Git project)
     py-autopep8               ; Use autopep8 to beautify a Python buffer
     pydoc-info                ; Better Python support for info-lookup-symbol.

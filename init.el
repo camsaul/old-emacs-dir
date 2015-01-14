@@ -35,7 +35,6 @@
                   cam-macros                      ; my own helper macros
                   cam-functions                   ; my own helper functions
                   powerline                       ; powerline is the port of VIM powerline (pretty Emacs modeline)
-                  powerline-evil
                   saveplace))                     ; open files in the same location as you last closed them
 
 
@@ -70,11 +69,11 @@
  (cam/enable-minor-modes
    delete-selection-mode                          ; typing will delete selected text
    electric-pair-mode                             ; automatic parens pairing
-   evil-mode                                      ; use VIM keybindings
    global-ace-isearch-mode                        ; C-s switches to ace-jump or helm-swoop after a delay depending on length of search str
    global-auto-revert-mode                        ; automatically reload files when they change on disk
    global-diff-hl-mode                            ; Shows lines that have changed since last VC commit in the fringe
    global-hl-line-mode                            ; highlight the current line
+   global-linum-mode                              ; show line numbers on the left margin
    global-undo-tree-mode                          ; make undo work in a tree instead of linearly
    (guide-key-mode . nil)                         ; show completions for prefix keybindings
    ido-mode
@@ -242,8 +241,6 @@
 ;;     )
 
 
-
-
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
 
 
@@ -261,36 +258,6 @@
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
       '(("magit" magit-status)
         ("package" list-packages package-list-packages package-list-packages-no-fetch)))
-
-
-;;;; EVIL CONFIG (CURSOR COLORS IN THEME-INIT.EL)
-
-(cam/define-keys evil-normal-state-map
-  "<escape>" 'evil-emacs-state
-  "C-z" 'evil-emacs-state)                        ; instead of minimizing Emacs
-
-(setq evil-default-state 'emacs)
-(global-evil-matchit-mode 1) ; WTF does this do? https://github.com/redguardtoo/evil-matchit
-
-;; Swoop on calls to any Evil states besides normal and emacs and redirect them to emacs
-(mapc (-rpartial 'fset 'evil-emacs-state)
-      '(evil-insert-state
-        evil-motion-state
-        ;; evil-operator-state
-        evil-replace-state
-        evil-visual-state))
-
-(defadvice evil-normal-state (after cam/enable-rel-line-nums-for-normal-mode activate)
-  "Switch to relative-line-numbers mode after entering evil normal mode."
-  (interactive)
-  (relative-line-numbers-mode 1))
-
-(defadvice evil-emacs-state (after cam/disable-rel-line-nums-for-emacs-mode activate)
-  "Switch relative-line-numbers-mode off when entering Emacs mode."
-  (interactive)
-  (relative-line-numbers-mode -1)
-  (linum-mode 1))
-
 
 ;;;; GLOBAL KEY-BINDINGS
 
@@ -312,7 +279,7 @@
   "<H-right>" #'cam/windmove-right-or-other-frame
   "<H-up>" #'windmove-up
   "<end>" #'ace-jump-buffer
-  "<escape>" #'evil-normal-state
+  "<escape>" #'ace-jump-mode
   "<f10>" #'cam/switch-to-nav-buffer-other-window ; Jump to a nav buffer. F10 replaces menu-bar-open, which lets you browse menu from a buffer
   "<f11>" #'paredit-mode                          ; F11 is now global key for paredit-mode
   "<f12> b" #'cam/bing-search
