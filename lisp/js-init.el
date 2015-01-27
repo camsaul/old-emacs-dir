@@ -28,7 +28,6 @@
   (defadvice web-beautify-js-buffer (around web-beautify-js-buffer-save-window-config activate)
     "Save the current window configuration when running web-beautify-js-buffer"
     (make-local-variable '-original-window-point) ; we'll track the point each JS3-mode buffer was at so we can jump back to it after running web-beautify-js-buffer
-    (message "--------------------------------------------------")
     (let* ((current-buffer-windows (-filter (lambda (window)
                                               (eq (window-buffer window) (current-buffer)))
                                             (window-list)))
