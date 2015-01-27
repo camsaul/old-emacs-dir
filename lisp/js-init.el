@@ -16,11 +16,32 @@
     (cam/enable-minor-modes
       (company-mode . " ¢")
       highlight-parentheses-mode
-      aggressive-indent-mode)
+      ;; aggressive-indent-mode
+      )
+    (setq company-dabbrev-downcase nil)             ; company mode by default downcases completion suggestions, obviously we don't want that
     (cam/pretty-function)
     ;; run js-beautify on buffer when saving, requires npm install -g js-beautify
     ;; TODO: web-beautfiy-js-buffer for json-mode, web-beautify-html-buffer for html-mode; web-beautify-css-buffer for css-mode ?
     (add-hook 'before-save-hook 'web-beautify-js-buffer t t)))
+
+(cam/eval-after-load "web-beautify"
+  (defadvice web-beautify-js-buffer (around web-beautify-js-buffer-save-window-config activate)
+    "Save the current window configuration when running web-beautify-js-buffer"
+    (make-local-variable '-original-window-point) ; we'll track the point each JS3-mode buffer was at so we can jump back to it after running web-beautify-js-buffer
+    (message "--------------------------------------------------")
+    (let* ((current-buffer-windows (-filter (lambda (window)
+                                              (eq (window-buffer window) (current-buffer)))
+                                            (window-list)))
+           (window-points (mapcar #'window-point
+                                  current-buffer-windows))
+           (window-starts (mapcar #'window-start
+                                  current-buffer-windows)))
+      ad-do-it
+      (mapc (-lambda ((window wpoint wstart))
+              (set-window-start window wstart nil) ; noforce=nil -> move even if it would move point offscreen
+              (set-window-point window wpoint))
+            (->> (-interleave current-buffer-windows window-points window-starts)
+                 (-partition 3))))))
 
 (defmacro cam/interactivify (func)
   `(lambda ()

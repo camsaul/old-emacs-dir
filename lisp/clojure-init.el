@@ -10,7 +10,7 @@
   (require 'clojure-cheatsheet)
   (cam/lisp-mode-setup)
   (cam/enable-minor-modes
-    cider-mode
+    ;; cider-mode
     subword-mode ; enable CamelCase support for editor movement
     company-mode)
   (cam/pretty-fn)
