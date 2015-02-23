@@ -23,15 +23,28 @@
   (cam/define-lisp-keys mode-map)
   (cam/define-keys mode-map
     "<f12> c" #'cam/clojure-docs-search
-    "<f12> i" #'cam/instant-clojure-cheatsheet-search
     "<f12> j" #'cam/javadocs-search
     "<f12> s" #'cam/stackoverflow-search
     "<f12> <f12> p" #'cam/paredit-cheatsheet
-    "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl))
+    "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl
+    "<f10>" #'cam/instant-clojure-cheatsheet-search))
 
 (eval-after-load "clojure"
   '(progn
-     (cam/define-clojure-keys clojure-mode-map)))
+     (cam/define-clojure-keys clojure-mode-map)
+     (define-clojure-indent
+       (GET 2)
+       (api-let 2)
+       (auto-parse 1)
+       (catch-api-exceptions 0)
+       (expect 1)
+       (ins 1)
+       (ins-sel 1)
+       (let-400 1)
+       (let-404 1)
+       (match 1)
+       (macrolet 1)
+       (org-perms-case 1))))
 
 (eval-after-load "cider"
   '(progn
@@ -73,7 +86,7 @@
   (browse-url
    (concat
     "http://clojuredocs.org/search?x=0&y=0&q="
-    (active-region-or-prompt "Search clojuredocs.org for: "))))
+    (cam/active-region-or-prompt "Search clojuredocs.org for: "))))
 
 (defun cam/javadocs-search ()
   "Searches javadocs.org for a query or selected region if any."
@@ -81,14 +94,13 @@
   (browse-url
    (concat
     "http://javadocs.org/"
-    (active-region-or-prompt "Search javadocs.org for: "))))
+    (cam/active-region-or-prompt "Search javadocs.org for: "))))
 
-(defun cam/instant-clojure-cheatsheet-search ()
-  "Searches Instant Clojure Cheatsheet query or selected region if any."
-  (interactive)
+(defun cam/instant-clojure-cheatsheet-search (search-term)
+  "Opens Instant Clojure Cheatsheet in a new browser tab and searches for SEARCH-TERM."
+  (interactive "sSearch Instant Clojure Cheatsheet for: ")
   (browse-url
-   (concat
-    "http://cammsaul.github.io/instant-clojure-cheatsheet/?"
-    (active-region-or-prompt "Search Instant Clojure Cheatsheet for: "))))
+   (concat "http://localhost:1337/#?q="
+           (url-hexify-string search-term))))
 
 (provide 'clojure-init)

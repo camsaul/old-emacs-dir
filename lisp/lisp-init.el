@@ -10,7 +10,7 @@
     hl-sexp-mode                                  ; hl-sexp-mode highlights the current sexp
     (paredit-mode . " π"))
   (pretty-lambdas)
-  (set-face-background 'hl-sexp-face "#DDFFDD")
+  (set-face-background 'hl-sexp-face "#332222")
   (add-hook 'before-save-hook 'cam/untabify-current-buffer t t))
 
 (defun cam/backward-paredit-kill ()

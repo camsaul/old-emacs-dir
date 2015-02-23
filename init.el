@@ -163,7 +163,8 @@
                           "*.css"
                           "*.el"
                           "*.html"
-                          "*.js")))
+                          "*.js"
+                          "*.java")))
 
 (eval-after-load "company"                        ; shorter autocomplete delay w/ company
   '(setq company-idle-delay 0.01                  ; default is 0.5
@@ -203,7 +204,8 @@
     inhibit-splash-screen t
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
-    gc-cons-threshold (* 1024 1024 1024 4)        ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
+    ;; gc-cons-threshold (* 1024 1024 1024 4)        ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
+    gc-cons-threshold (* 1024 1024 32)            ; number of bytes of consing before garbage collection. Default is ~800k, use 32MB instead
     guide-key/idle-delay 1.0                      ; delay before showing the guide-key popup
     guide-key/recursive-key-sequence-flag t       ; e.g. specifying C-x below means to also show guides for things like C-x r
     guide-key/guide-key-sequence '("<f12>" "<f1>" ; prefixes to show guides for

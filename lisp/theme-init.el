@@ -12,93 +12,29 @@
   (setq ns-use-srgb-colorspace t))
 
 (defvar cam/frame-font
-  "Source Code Pro-11"
+  "Source Code Pro-12"
   "Font to use for Emacs.")
 
-(defvar cam/background-color
-  "#f4f4f4"
-  "Background color for Emacs.")
-
 (require 'moe-theme)
-(setq moe-light-pure-white-background-in-terminal t
-      moe-theme-highlight-buffer-id nil)
-(moe-light)
+(setq moe-theme-highlight-buffer-id nil)
+(moe-dark)
 
 (set-frame-font cam/frame-font)
-(set-background-color cam/background-color)
 
 ;; when opening a new FRAME set the font and bg color
 (defadvice make-frame-command (after make-frame-set-font activate)
   (interactive)
-  (set-background-color cam/background-color)
   (set-frame-font cam/frame-font))
 
 ;; color tweaks
 (set-face-attribute 'font-lock-doc-face nil
-                    :foreground "black"
                     :bold t)
 
 (set-face-attribute 'font-lock-comment-face nil
-                    :foreground "#5fafd7"
-                    :bold t
-                    :italic t)
-
-(set-face-attribute 'font-lock-builtin-face nil
-                    :foreground "cc6633"
-                    :bold nil)
-
-(set-face-attribute 'font-lock-function-name-face nil
-                    :foreground "#008FD7"
-                    :bold t)
-
-(set-face-attribute 'font-lock-preprocessor-face nil
+                    :foreground "#FFFFFF"
                     :bold nil
                     :italic t)
 
-
-
-;;;; COMPANY TOOLTIP TWEAKS
-
-;; The company autocomplete popup box doesn't fit in well with moe-light; fix that
-
-(eval-after-load "company"
-  '(let ((h-1 (face-background 'hl-line))                   ; #d7ff87
-         (h-2 (face-background 'lazy-highlight))            ; #ff1f8b
-         (c-1 (face-background 'secondary-selection))       ; #005f87
-         (c-2 (face-background 'isearch))                   ; #ff5d17
-         (c-3 (face-background 'region))                    ; #5fafd7
-         )
-
-     (set-face-attribute 'mode-line nil
-                         :foreground "white"
-                         :background h-1)
-     (set-face-attribute 'minibuffer-prompt nil
-                         :background nil
-                         :foreground c-1
-                         :bold t)
-     (set-face-attribute 'company-tooltip nil
-                         :background "white")
-     (set-face-attribute 'company-tooltip-common nil
-                         :background "white"
-                         :foreground c-1
-                         :bold t)
-     (set-face-attribute 'company-tooltip-annotation nil
-                         :background "white"
-                         :foreground c-2)
-     (set-face-attribute 'company-preview-common nil
-                         :background "white")
-     (set-face-attribute 'company-tooltip-common-selection nil
-                         :background h-1
-                         :foreground h-2
-                         :bold t
-                         :italic t)
-     (set-face-attribute 'company-tooltip-selection nil
-                         :background h-1
-                         :foreground c-2)
-     (set-face-attribute 'company-scrollbar-bg nil
-                         :background h-1)
-     (set-face-attribute 'company-scrollbar-fg nil
-                         :background c-2)))
 
 ;; make line numbers / relative line numbers use similar padding so switching between the two doesn't resize the fringe/frame
 (set-default 'linum-format "%3d")
@@ -130,7 +66,7 @@
 (def-pl-faces
   pl-active-1 'region 'region
   pl-active-2 'secondary-selection 'secondary-selection
-  pl-active-3 'hl-line "black"
+  pl-active-3 'hl-line "#DDDDDD"
   pl-inactive-color-face "gray30" "grey90"
   pl-inactive-1 "gray45" "gray80"
   pl-inactive-2 "gray60" "gray20"
@@ -139,9 +75,9 @@
   mode-line-inactive "gray90" "gray50")
 
 (set-face-bold 'mode-line t)
-(set-face-background 'mode-line "#dd0000")
+(set-face-background 'mode-line "#e52d2d")
 (set-face-bold 'mode-line-inactive nil)
-(set-face-foreground 'mode-line-buffer-id "white")
+(set-face-foreground 'mode-line-buffer-id "#000000")
 (set-face-background 'mode-line-buffer-id nil)
 
 (setq-default mode-line-format
