@@ -1,4 +1,7 @@
 ;; -*- comment-column: 60; -*-
+;;; clojure-init - Fns + settings for editing Clojure
+;;; Commentary:
+;;; Code:
 
 (defun cam/clojure-mode-setup ()
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
@@ -29,7 +32,7 @@
     "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl
     "<f10>" #'cam/instant-clojure-cheatsheet-search))
 
-(eval-after-load "clojure"
+(eval-after-load "clojure-mode"
   '(progn
      (cam/define-clojure-keys clojure-mode-map)
      (define-clojure-indent
@@ -37,6 +40,7 @@
        (api-let 2)
        (auto-parse 1)
        (catch-api-exceptions 0)
+       (context 2)
        (expect 1)
        (ins 1)
        (ins-sel 1)
@@ -44,7 +48,8 @@
        (let-404 1)
        (match 1)
        (macrolet 1)
-       (org-perms-case 1))))
+       (org-perms-case 1)
+       (with-credentials 1))))
 
 (eval-after-load "cider"
   '(progn
@@ -104,3 +109,4 @@
            (url-hexify-string search-term))))
 
 (provide 'clojure-init)
+;;; clojure-init.el ends here
