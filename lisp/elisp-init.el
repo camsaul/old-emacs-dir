@@ -32,6 +32,7 @@
   (require 'cl-lib-highlight)
   (require 'highlight-cl)
   (require 'morlock)
+  (require 'auto-complete)
 
   (cam/declare-vars cam/define-elisp-keys
                     flycheck-emacs-lisp-load-path)
@@ -76,7 +77,8 @@
 (eval-after-load "auto-complete"
   '(progn
      (add-to-list 'ac-modes 'emacs-list-mode)
-     (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)))
+     ;; (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)
+     ))
 
 ;;;; FUNCTIONS
 
@@ -91,8 +93,7 @@
   "Indent, autocomplete, show dox, etc when hitting tab."
   (interactive)
   (indent-for-tab-command)
-  ;; (company-complete)
-  )
+  (ac-complete))
 
 
 ;;;; KEY MAPS
@@ -119,6 +120,8 @@
 
 (add-hook 'ielm-mode-hook
   (lambda ()
+    (require 'company)                  ; Use company for IELM since auto-complete doesn't seen to work :/
+    (company-mode 1)
     (cam/declare-vars ielm-map)
     (cam/define-elisp-keys ielm-map)
     (cam/define-keys ielm-map

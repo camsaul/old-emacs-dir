@@ -185,9 +185,9 @@
 
 (eval-after-load "auto-complete"
   '(progn
-     (setq ac-delay 0.0                            ; delay before trying to auto-complete
+     (setq ac-delay 0.01                           ; delay before trying to auto-complete
            ac-auto-show-menu 0.01                  ; delay before showing completions list
-           ac-quick-help-delay 0.05)               ; delay before poping up docstr
+           ac-quick-help-delay 0.2)                ; delay before poping up docstr
      (ac-config-default)))
 
 (eval-after-load "git-timemachine"
