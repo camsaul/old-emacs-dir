@@ -27,7 +27,8 @@
 
 
 (defvar cam/packages
-  '(ac-etags                  ; etags/ctags completion source for autocomplete (DEPRECATED?)
+  '(ac-cider                  ; auto-complete <-> cider
+    ac-etags                  ; etags/ctags completion source for autocomplete (DEPRECATED?)
     ace-jump-buffer           ; quickly jump between buffers
     ace-jump-mode             ; quickly jump anywhere on screen
     ace-isearch               ; C-s switches between ace-jump/isearch/helm-swoop based on length of search term
@@ -36,6 +37,7 @@
     anaconda-mode             ; python doc or something like that
     angry-police-captain      ; show quotes from [[http://theangrypolicecaptain.com]]
     async                     ; Asynchronous processing in Emacs
+    auto-complete             ; autocompletion. We do want this for Clojure since it pops up docstrs (unlike company-mode)
     bm                        ; bookmarks
     browse-kill-ring          ; opens new buffer for browsing kill ring
     cl-lib-highlight          ; full cl-lib font-lock highlighting
@@ -43,7 +45,7 @@
     clojure-mode              ; Major mode for Clojure code
     clojure-mode-extra-font-locking ; Extra font-locking for Clojure mode
     clojurescript-mode        ; Major mode for ClojureScript code
-    company                   ; autocompletion, I prefer this to autocomplete
+    company                   ; autocompletion. (usually) preferable to auto-complete-mode
     company-anaconda          ; Python anaconda source for company (DEPRECATED?)
     cperl-mode                ; perl editing commands for emacs
     dash                      ; Clojure-like functions and macros for Emacs Lisp <3

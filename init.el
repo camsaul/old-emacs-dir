@@ -50,7 +50,7 @@
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
   ("highlight-error-keywords" #'highlight-error-keywords-mode)
   ("multiple-cursors" #'mc/mark-all-like-this #'mc/edit-lines #'mc/mark-previous-like-this #'mc/mark-next-like-this)
-  ("s" #'s-replace #'s-split))
+  ("s" #'s-replace #'s-split #'s-starts-with-p))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -84,7 +84,7 @@
    (rainbow-mode . nil)                             ; colorize strings that represent colors e.g. #00FFFF
    projectile-global-mode
    recentf-mode                                   ; enable the recent files menu
-   ;; savehist-mode                                  ; save minibuffer history periodically !!! DEPRECATED this seems to make things really SLOWWWWWW
+   savehist-mode                                  ; save minibuffer history periodically !!! DEPRECATED this seems to make things really SLOWWWWWW
    show-paren-mode                                ; highlight matching parens
    (undo-tree-mode . nil)                           ; already on because of global-undo-tree-mode but we can't diminish that so diminish this one instead
    winner-mode))                                  ; C-c <left> / C-c <right> to restore window configurations
@@ -107,6 +107,10 @@
                (eq major-mode 'package-menu-mode))
       (with-timeout (0.25 nil)
         (angry-police-captain)))))
+
+;; Enable paredit when evaluation elisp expressions in minibuffer
+(add-hook 'eval-expression-minibuffer-setup-hook
+  'paredit-mode)
 
 (add-hook 'emacs-startup-hook
   (lambda ()
@@ -156,7 +160,14 @@
        (magit-auto-revert-mode . nil))              ; auto-revert buffers that change on disk as result of magit command
      (defadvice magit-status (after magit-status-show-help activate)
        (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
-       (call-interactively #'other-window))       ; switch back to magit status window
+       (call-interactively #'other-window)        ; switch back to magit status window
+       (add-hook 'kill-buffer-hook                ; Kill all of the other magit buffers like help + *magit-process*
+         (lambda ()
+           (->> (buffer-list)
+                (mapcar #'buffer-name)
+                (-filter (-partial #'s-starts-with-p "*magit"))
+                (mapcar #'kill-buffer)))
+         t t))
      (cam/define-keys magit-status-mode-map
        "s-u" #'magit-refresh)))
 
@@ -171,6 +182,13 @@
 (eval-after-load "company"                        ; shorter autocomplete delay w/ company
   '(setq company-idle-delay 0.01                  ; default is 0.5
          company-minimum-prefix-length 1))        ; default is 3
+
+(eval-after-load "auto-complete"
+  '(progn
+     (setq ac-delay 0.0                            ; delay before trying to auto-complete
+           ac-auto-show-menu 0.01                  ; delay before showing completions list
+           ac-quick-help-delay 0.05)               ; delay before poping up docstr
+     (ac-config-default)))
 
 (eval-after-load "git-timemachine"
   '(defadvice git-timemachine (around git-timemachine-split-fullscreen activate)

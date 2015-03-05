@@ -29,17 +29,18 @@
           "culpa qui officia deserunt mollit anim id est laborum."))
 
 (defun cam/mark-whole-sexp ()
-  (progn
-    (backward-sexp)
-    (mark-sexp)))
+  "Mark the entire sexp under point."
+  (backward-sexp)
+  (mark-sexp))
 
 (defun cam/current-token ()
-  "Returns the entire current sexp"
+  "Return the entire current sexp."
   (save-excursion
     (cam/mark-whole-sexp)
     (buffer-substring (region-beginning) (region-end))))
 
 (defun cam/active-region-or-prompt (prompt)
+  "Return URL-hexified active region or PROMPT user for input."
   (url-hexify-string (if mark-active
                          (buffer-substring (region-beginning) (region-end))
                        (read-string prompt))))

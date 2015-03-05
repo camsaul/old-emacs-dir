@@ -20,7 +20,7 @@
   "Recompile the current Emacs Lisp file if it is an init file."
   (interactive)
   (when (and (buffer-file-name)
-             (cam/is-init-file-p (buffer-file-name)))
+           (cam/is-init-file-p (buffer-file-name)))
     (byte-recompile-file (buffer-file-name)
                          t   ; force recompile
                          0)  ; 0 = compile even if .elc does not exist
@@ -29,9 +29,9 @@
 (defun cam/elisp-mode-setup ()
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
   (require 'lisp-init)
-  (require 'morlock)
-  (require 'highlight-cl)
   (require 'cl-lib-highlight)
+  (require 'highlight-cl)
+  (require 'morlock)
 
   (cam/declare-vars cam/define-elisp-keys
                     flycheck-emacs-lisp-load-path)
@@ -68,11 +68,15 @@
 (mapc (lambda (symb)
         (put symb 'lisp-indent-function 1))
       '(-lambda
-        add-hook
-        cl-lambda
-        setq
-        setq-default))
+           add-hook
+         cl-lambda
+         setq
+         setq-default))
 
+(eval-after-load "auto-complete"
+  '(progn
+     (add-to-list 'ac-modes 'emacs-list-mode)
+     (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)))
 
 ;;;; FUNCTIONS
 
@@ -84,10 +88,11 @@
     (error (goto-char (point-min)))))
 
 (defun cam/elisp-overkill-tab-command ()
-  "Indent, autocomplete, show dox, etc. when hitting tab."
+  "Indent, autocomplete, show dox, etc when hitting tab."
   (interactive)
   (indent-for-tab-command)
-  (company-complete))
+  ;; (company-complete)
+  )
 
 
 ;;;; KEY MAPS

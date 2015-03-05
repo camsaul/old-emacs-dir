@@ -1,10 +1,11 @@
 ;; -*- comment-column: 50; -*-
 
+;;; Code:
+
 (defun cam/lisp-mode-setup ()
   (mapc 'require '(highlight-parentheses
                    hl-sexp))
   (cam/enable-minor-modes
-    (company-mode . " ¢")
     (eldoc-mode . nil)
     (highlight-parentheses-mode . nil)            ; highlight parentheses that surround the current sexpr
     hl-sexp-mode                                  ; hl-sexp-mode highlights the current sexp

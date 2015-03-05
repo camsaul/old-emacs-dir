@@ -6,33 +6,42 @@
 (defun cam/clojure-mode-setup ()
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
   (require 'cider)
-  (require 'company)
   (require 'clojure-mode-extra-font-locking)
   (require 'clojure-cheatsheet)
   (cam/lisp-mode-setup)
   (cam/enable-minor-modes
-    subword-mode ; enable CamelCase support for editor movement
-    company-mode
-    eldoc-mode)
+    subword-mode) ; enable CamelCase support for editor movement
   (cam/pretty-fn))
 
 (add-hook 'clojure-mode-hook #'cam/clojure-mode-setup)
 (add-hook 'cider-mode-hook #'cam/clojure-mode-setup)        ; do we need all three of these ??
 (add-hook 'cider-repl-mode-hook #'cam/clojure-mode-setup)
 
+(defun cam/cider-mode-setup ()
+  "Setup for cider-mode and cider-repl-mode."
+  (require 'auto-complete)
+  (require 'ac-cider)
+  (ac-cider-setup)
+  (cam/enable-minor-modes
+    eldoc-mode))
+
+(add-hook 'cider-mode-hook #'cam/cider-mode-setup)
+(add-hook 'cider-repl-mode-hook #'cam/cider-mode-setup)
+
 ;; custom keyboard shortcuts
 (defun cam/define-clojure-keys (mode-map)
   (require 'lisp-init)
   (cam/define-lisp-keys mode-map)
   (cam/define-keys mode-map
+    "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl
+    "<f10>" #'cam/instant-clojure-cheatsheet-search
+    "<f12> <f12> c" #'cam/compojure-docs
+    "<f12> <f12> k" #'cam/korma-docs
+    "<f12> <f12> p" #'cam/paredit-cheatsheet
     "<f12> c" #'cam/clojure-docs-search
     "<f12> j" #'cam/javadocs-search
     "<f12> s" #'cam/stackoverflow-search
-    "<f12> <f12> c" #'cam/compojure-docs
-    "<f12> <f12> p" #'cam/paredit-cheatsheet
-    "<f12> <f12> k" #'cam/korma-docs
-    "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl
-    "<f10>" #'cam/instant-clojure-cheatsheet-search))
+    "C-c C-d" #'cider-doc))
 
 (eval-after-load "clojure-mode"
   '(progn
@@ -52,13 +61,20 @@
        (org-perms-case 1)
        (with-credentials 1))))
 
+(eval-after-load "auto-complete"
+  '(progn
+     (add-to-list 'ac-modes 'cider-mode)
+     (add-to-list 'ac-modes 'cider-repl-mode)))
+
 (eval-after-load "cider"
   '(progn
      (cam/define-clojure-keys cider-mode-map)
      (cam/define-clojure-keys cider-repl-mode-map)
      (cam/define-keys cider-repl-mode-map
+       "<C-M-s-return>" #'cider-switch-to-last-clojure-buffer
        "RET" #'cider-repl-return)
-     (setq cider-auto-select-error-buffer nil               ; PLEASE STOP AUTO-JUMPING TO THE ERROR BUFFER !
+     (setq cider-auto-select-error-buffer nil                 ; PLEASE STOP AUTO-JUMPING TO THE ERROR BUFFER !
+           cider-repl-use-clojure-font-lock t               ; REPL uses same (nicer) font locking as Clojure Mode buffers (supposedly!)
            cider-repl-use-pretty-printing t                 ; PRETTY PRINTING <3
            )))
 
