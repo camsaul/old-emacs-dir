@@ -82,6 +82,7 @@
    ido-vertical-mode
    flx-ido-mode                                   ; fuzzy matching for ido
    (rainbow-mode . nil)                             ; colorize strings that represent colors e.g. #00FFFF
+   projectile-global-mode
    recentf-mode                                   ; enable the recent files menu
    ;; savehist-mode                                  ; save minibuffer history periodically !!! DEPRECATED this seems to make things really SLOWWWWWW
    show-paren-mode                                ; highlight matching parens
@@ -102,9 +103,10 @@
 
     ;; show a AngryPoliceCaptain.com quote
     (unless (or (active-minibuffer-window)
-               (minibufferp (current-buffer)))
-      (angry-police-captain))
-    ))
+               (minibufferp (current-buffer))
+               (eq major-mode 'package-menu-mode))
+      (with-timeout (0.25 nil)
+        (angry-police-captain)))))
 
 (add-hook 'emacs-startup-hook
   (lambda ()
@@ -204,7 +206,6 @@
     inhibit-splash-screen t
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
-    ;; gc-cons-threshold (* 1024 1024 1024 4)        ; number of bytes of consing before garbage collection, default is ~800k, use 4GB instead
     gc-cons-threshold (* 1024 1024 32)            ; number of bytes of consing before garbage collection. Default is ~800k, use 32MB instead
     guide-key/idle-delay 1.0                      ; delay before showing the guide-key popup
     guide-key/recursive-key-sequence-flag t       ; e.g. specifying C-x below means to also show guides for things like C-x r
@@ -238,9 +239,10 @@
     visible-bell t
     )
 
-;; (setq-default
-;;     save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
-;;     )
+(setq-default
+    truncate-lines t                              ; don't word-wrap long lines
+    save-place t                                  ; save current position of point when killing a buffer; restore when file is opened
+    )
 
 
 (fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
@@ -413,3 +415,78 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (upd 2)
+             (with-credentials 1)))
+     (eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (with-credentials 1)))
+     (eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (with-credentials 1)))
+     (eval progn
+           (message "HERE <3")
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (with-credentials 1)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

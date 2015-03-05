@@ -17,3 +17,4 @@ emacs-clang-complete-async
 history
 *places
 async-*.log
+projectile-bookmarks.eld

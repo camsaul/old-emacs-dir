@@ -28,7 +28,9 @@
     "<f12> c" #'cam/clojure-docs-search
     "<f12> j" #'cam/javadocs-search
     "<f12> s" #'cam/stackoverflow-search
+    "<f12> <f12> c" #'cam/compojure-docs
     "<f12> <f12> p" #'cam/paredit-cheatsheet
+    "<f12> <f12> k" #'cam/korma-docs
     "<C-M-s-return>" #'cam/save-compile-switch-to-nrepl
     "<f10>" #'cam/instant-clojure-cheatsheet-search))
 
@@ -42,8 +44,7 @@
        (catch-api-exceptions 0)
        (context 2)
        (expect 1)
-       (ins 1)
-       (ins-sel 1)
+       ;; (ins 1)
        (let-400 1)
        (let-404 1)
        (match 1)
@@ -82,8 +83,19 @@
                                   'decompose-region)))))))
 
 (defun cam/paredit-cheatsheet ()
+  "Open the Paredit Cheatsheet."
   (interactive)
   (browse-url "http://www.emacswiki.org/emacs/PareditCheatsheet"))
+
+(defun cam/korma-docs ()
+  "Open the Korma documentation."
+  (interactive)
+  (browse-url "http://www.sqlkorma.com/docs"))
+
+(defun cam/compojure-docs ()
+  "Open the Compojure documentation."
+  (interactive)
+  (browse-url "https://github.com/weavejester/compojure/"))
 
 (defun cam/clojure-docs-search ()
   "Searches clojuredocs.org for a query or selected region if any."
