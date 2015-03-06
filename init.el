@@ -153,6 +153,15 @@
 (eval-after-load "multiple-cursors"
   '(multiple-cursors-mode 1))
 
+(defun cam/kill-magit-buffers ()
+  (->> (buffer-list)
+       (mapcar #'buffer-name)
+       (-filter (-partial #'s-starts-with-p "*magit"))
+       (-filter (lambda (b)
+                  (not (string= b
+                                (buffer-name (current-buffer))))))
+       (mapcar #'kill-buffer)))
+
 (eval-after-load "magit"
   '(progn
      (cam/enable-minor-modes
@@ -162,12 +171,8 @@
        (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
        (call-interactively #'other-window)        ; switch back to magit status window
        (add-hook 'kill-buffer-hook                ; Kill all of the other magit buffers like help + *magit-process*
-         (lambda ()
-           (->> (buffer-list)
-                (mapcar #'buffer-name)
-                (-filter (-partial #'s-starts-with-p "*magit"))
-                (mapcar #'kill-buffer)))
-         t t))
+         #'cam/kill-magit-buffers
+         nil t))
      (cam/define-keys magit-status-mode-map
        "s-u" #'magit-refresh)))
 
@@ -199,7 +204,6 @@
      (call-interactively #'other-window)
      ad-do-it
      (defadvice git-timemachine-quit (after git-timemachine-fullscreen-quit activate)
-       (message "DONE <3")
        (jump-to-register :git-timemachine-fullscreen-window-config)
        (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit))))
 
