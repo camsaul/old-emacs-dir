@@ -153,15 +153,6 @@
 (eval-after-load "multiple-cursors"
   '(multiple-cursors-mode 1))
 
-(defun cam/kill-magit-buffers ()
-  (->> (buffer-list)
-       (mapcar #'buffer-name)
-       (-filter (-partial #'s-starts-with-p "*magit"))
-       (-filter (lambda (b)
-                  (not (string= b
-                                (buffer-name (current-buffer))))))
-       (mapcar #'kill-buffer)))
-
 (eval-after-load "magit"
   '(progn
      (cam/enable-minor-modes
@@ -171,7 +162,14 @@
        (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
        (call-interactively #'other-window)        ; switch back to magit status window
        (add-hook 'kill-buffer-hook                ; Kill all of the other magit buffers like help + *magit-process*
-         #'cam/kill-magit-buffers
+         (lambda ()
+           (->> (buffer-list)
+                (mapcar #'buffer-name)
+                (-filter (-partial #'s-starts-with-p "*magit"))
+                (-filter (lambda (b)
+                           (not (string= b
+                                         (buffer-name (current-buffer))))))
+                (mapcar #'kill-buffer)))
          nil t))
      (cam/define-keys magit-status-mode-map
        "s-u" #'magit-refresh)))
