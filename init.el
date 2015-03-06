@@ -108,9 +108,13 @@
       (with-timeout (0.25 nil)
         (angry-police-captain)))))
 
-;; Enable paredit when evaluation elisp expressions in minibuffer
+;; Enable paredit + company when evaluating elisp expressions in minibuffer
 (add-hook 'eval-expression-minibuffer-setup-hook
-  'paredit-mode)
+  (lambda ()
+    (cam/enable-minor-modes
+      company-mode
+      paredit-mode)
+    (setq-local company-echo-delay 10)))
 
 (add-hook 'emacs-startup-hook
   (lambda ()
