@@ -103,8 +103,8 @@
 
     ;; show a AngryPoliceCaptain.com quote
     (unless (or (active-minibuffer-window)
-               (minibufferp (current-buffer))
-               (eq major-mode 'package-menu-mode))
+                (minibufferp (current-buffer))
+                (eq major-mode 'package-menu-mode))
       (with-timeout (0.25 nil)
         (angry-police-captain)))))
 
@@ -346,7 +346,7 @@
   "C-c e" #'eval-and-replace                        ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
   "C-v" #'yank                                    ; yank instead of whatever it usually does
-  "C-x C-b" #'helm-buffers-list
+  "C-x C-b" #'helm-buffers-list                   ; this is (seemingly) better than buffer-menu or ibuffer
   "C-x C-d" #'ido-dired                           ; dired instead of list directory
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
   "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
@@ -364,7 +364,8 @@
   "M-RET" #'cam/insert-newline-below
   "M-`" #'cam/projectile-recentf
   "M-j" #'cam/join-next-line
-  "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
+  "M-x" #'helm-M-x
+  ;; "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
   "S-<f10>" #'nav                                 ; Open nav buffer
   "s-Z" #'undo-tree-redo
   "s-[" #'cam/force-unindent-region

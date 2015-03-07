@@ -95,7 +95,6 @@
 
 ;;; MORE NONSENSE
 (cam/define-keys nil
-  "C-x C-b" #'helm-buffers-list         ; this is (seemingly) better than buffer-menu or ibuffer
   ;; "M-z" #'zap-up-to-char             ; instead of zap-to-char
   )
 
@@ -103,10 +102,6 @@
       apropos-do-all t
       mouse-yank-at-point t                       ; mouse yank commands yank at point instead of at click.
       )
-
-;; IDO HACKS
-(sandbox/install-and-require 'ido-hacks)
-(ido-hacks-mode 1)
 
 (cam/define-keys nil
   "<A-down>" (lambda ()
