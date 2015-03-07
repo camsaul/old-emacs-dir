@@ -184,7 +184,9 @@
                           "*.el"
                           "*.html"
                           "*.js"
-                          "*.java")))
+                          "*.java"
+                          "*.md"
+                          "*.yml")))
 
 (eval-after-load "company"                        ; shorter autocomplete delay w/ company
   '(setq company-idle-delay 0.01                  ; default is 0.5
