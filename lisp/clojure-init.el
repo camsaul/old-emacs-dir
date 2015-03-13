@@ -6,11 +6,13 @@
 (defun cam/clojure-mode-setup ()
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
   (require 'cider)
+  (require 'clj-refactor)
   (require 'clojure-mode-extra-font-locking)
   (require 'clojure-cheatsheet)
   (cam/lisp-mode-setup)
   (cam/enable-minor-modes
-    subword-mode) ; enable CamelCase support for editor movement
+    clj-refactor-mode
+    (subword-mode . nil))       ; enable CamelCase support for editor movement
   (cam/pretty-fn))
 
 (add-hook 'clojure-mode-hook #'cam/clojure-mode-setup)
@@ -41,7 +43,8 @@
     "<f12> c" #'cam/clojure-docs-search
     "<f12> j" #'cam/javadocs-search
     "<f12> s" #'cam/stackoverflow-search
-    "C-c C-d" #'cider-doc))
+    "C-c C-d" #'cider-doc)
+  (cljr-add-keybindings-with-prefix "C-c r"))
 
 (eval-after-load "clojure-mode"
   '(progn
@@ -130,10 +133,10 @@
     (cam/active-region-or-prompt "Search javadocs.org for: "))))
 
 (defun cam/instant-clojure-cheatsheet-search (search-term)
-  "Opens Instant Clojure Cheatsheet in a new browser tab and searches for SEARCH-TERM."
-  (interactive "sSearch Instant Clojure Cheatsheet for: ")
+  "Opens Instant Cheatsheet in a new browser tab and searches for SEARCH-TERM."
+  (interactive "sSearch Instant Cheatsheet for: ")
   (browse-url
-   (concat "http://localhost:1337/#?q="
+   (concat "http://localhost:13370/#?q="
            (url-hexify-string search-term))))
 
 (provide 'clojure-init)

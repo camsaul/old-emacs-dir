@@ -293,6 +293,7 @@
 
 
 (cam/define-keys nil
+  "<A-return>" #'repeat
   "<C-s-M-down>" #'windmove-down
   "<C-s-M-left>" #'cam/windmove-left-or-other-frame
   "<C-s-M-return>" #'other-frame
@@ -442,78 +443,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   (quote
-    ((eval progn
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (context 2)
-             (expect 1)
-             (expect-eval-actual-first 1)
-             (expect-let 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (match 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (upd 2)
-             (with-credentials 1)))
-     (eval progn
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (context 2)
-             (expect 1)
-             (expect-eval-actual-first 1)
-             (expect-let 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (match 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (with-credentials 1)))
-     (eval progn
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (context 2)
-             (expect 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (match 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (with-credentials 1)))
-     (eval progn
-           (message "HERE <3")
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (context 2)
-             (expect 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (match 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (with-credentials 1)))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

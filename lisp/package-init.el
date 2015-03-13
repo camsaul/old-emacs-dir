@@ -25,7 +25,6 @@
   (nconc package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
                             ("marmalade" . "http://marmalade-repo.org/packages/"))))
 
-
 (defvar cam/packages
   '(ac-cider                  ; auto-complete <-> cider
     ac-etags                  ; etags/ctags completion source for autocomplete (DEPRECATED?)
@@ -41,6 +40,7 @@
     bm                        ; bookmarks
     browse-kill-ring          ; opens new buffer for browsing kill ring
     cl-lib-highlight          ; full cl-lib font-lock highlighting
+    clj-refactor              ; Clojure refactoring minor mode
     clojure-cheatsheet        ; The Clojure Cheatsheet for Emacs
     clojure-mode              ; Major mode for Clojure code
     clojure-mode-extra-font-locking ; Extra font-locking for Clojure mode
