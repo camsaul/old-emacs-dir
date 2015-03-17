@@ -7,19 +7,15 @@
 (defvar cam/dont-prompt-about-killing-processes
   '("*ansi-term*"
     "nrepl"
+    "nrepl-server"
     "theangrypolicecaptain.com")
   "List of buffer names to *not* prompt about killing when quitting Emacs.")
 
-(defun cam/dont-prompt-about-killing (process-name)
-  "Don't prompt about killing any processes whose name match PROCESS-NAME."
-  (let ((process (get-process process-name)))
-    (when process
-      (set-process-query-on-exit-flag process nil))))
-
-(defadvice save-buffers-kill-emacs (before dont-prompt-about-killing activate)
-  "When killing Emacs, don't ask whether to kill processes in cam/dont-prompt-about-killing-processes."
-  (mapcar #'cam/dont-prompt-about-killing
-          cam/dont-prompt-about-killing-processes))
+(defadvice process-query-on-exit-flag (around dont-prompt-about-killing (process) activate)
+  "Tell Emacs *not* to prompt about killing PROCESS if its name is in cam/dont-prompt-about-killing-processes."
+  (if (member (process-name process) cam/dont-prompt-about-killing-processes)
+      nil
+    ad-do-it))
 
 
 ;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
