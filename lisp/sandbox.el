@@ -3,18 +3,23 @@
 ;;; Code:
 
 
-;; ## DONT-PROMPT-ABOUT-KILLING - DOES THIS EVEN WORK ??
-(defmacro dont-prompt-about-killing (package process)
-  "Don't prompt before killing PROCESS with matching string name from PACKAGE with string name."
-  `(eval-after-load ,package
-     (quote (-map-when (-lambda (p) (->> p
-                                    process-name
-                                    (string-match-p ,process)))
-                       (-rpartial 'set-process-query-on-exit-flag nil)
-                       (process-list)))))
+;; ## DONT-PROMPT-ABOUT-KILLING
+(defvar cam/dont-prompt-about-killing-processes
+  '("*ansi-term*"
+    "nrepl"
+    "theangrypolicecaptain.com")
+  "List of buffer names to *not* prompt about killing when quitting Emacs.")
 
-(dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
-(dont-prompt-about-killing "term" "*ansi-term*")
+(defun cam/dont-prompt-about-killing (process-name)
+  "Don't prompt about killing any processes whose name match PROCESS-NAME."
+  (let ((process (get-process process-name)))
+    (when process
+      (set-process-query-on-exit-flag process nil))))
+
+(defadvice save-buffers-kill-emacs (before dont-prompt-about-killing activate)
+  "When killing Emacs, don't ask whether to kill processes in cam/dont-prompt-about-killing-processes."
+  (mapcar #'cam/dont-prompt-about-killing
+          cam/dont-prompt-about-killing-processes))
 
 
 ;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
