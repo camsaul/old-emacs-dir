@@ -382,8 +382,7 @@
   "M-`" #'cam/projectile-recentf
   "M-j" #'cam/join-next-line
   "M-x" #'helm-M-x
-  ;; "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
-  "S-<f10>" #'nav                                 ; Open nav buffer
+  "S-<f10>" #'nav                                 ; Open nav buffer  ;; "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
   "s-Z" #'undo-tree-redo
   "s-[" #'cam/force-unindent-region
   "s-]" #'cam/force-indent-region
@@ -415,7 +414,7 @@
 
 ;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
 
-(let ((byte-compile-dynamic t))
+(let ((byte-compile-dynamic t))                   ; compile function bodies so they load lazily
   (mapc (lambda (file)
           (byte-recompile-file file
                                nil                ; don't force recompile

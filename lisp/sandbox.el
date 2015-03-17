@@ -66,5 +66,11 @@
   '(cam/define-keys magit-mode-map
      "V" #'cam/visit-pull-request-url))
 
+
+;; ## BALANCE WINDOWS AFTER DELETING THEM
+(defadvice delete-window (after balance-windows-after-delete activate)
+  "Re-balance windows after deleting one."
+  (balance-windows))
+
 (provide 'sandbox)
 ;;; sandbox.el ends here
