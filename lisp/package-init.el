@@ -119,6 +119,7 @@
     smartparens               ; Automatic insertion, wrapping and paredit-like navigation with user defined pairs.
     smex                      ; M-x interface with Ido-style fuzzy matching.
     undo-tree                 ; Treat undo history as a tree
+    vkill                     ; view and kill Unix processes from within Emacs
     web-beautify              ; run js-beautify when saving JS files
     xmlgen                    ; A DSL for generating XML.
     yaml-mode                 ; Major mode for editing YAML files

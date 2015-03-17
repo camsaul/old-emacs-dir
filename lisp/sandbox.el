@@ -3,116 +3,67 @@
 ;;; Code:
 
 
-;; DOES THIS EVEN WORK ??
+;; ## DONT-PROMPT-ABOUT-KILLING - DOES THIS EVEN WORK ??
 (defmacro dont-prompt-about-killing (package process)
   "Don't prompt before killing PROCESS with matching string name from PACKAGE with string name."
   `(eval-after-load ,package
      (quote (-map-when (-lambda (p) (->> p
-                                 process-name
-                                 (string-match-p ,process)))
+                                    process-name
+                                    (string-match-p ,process)))
                        (-rpartial 'set-process-query-on-exit-flag nil)
                        (process-list)))))
 
-;; (sandbox/install-and-require 'smooth-scrolling)
-
 (dont-prompt-about-killing "angry-police-captain" "angry-police-captain")
-
-
-;; term tweaks
 (dont-prompt-about-killing "term" "*ansi-term*")
 
-(nconc ido-ignore-directories '("node_modules"
-                                "bower_components"
-                                ".git"))
 
 ;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
-;; (require 'async)
-;; (async-start
-;;  (lambda ()
-;;    (message "STARTING PACKAGE AUTO-UPDATE...")
-;;    (nconc load-path '("~/.emacs.d/lisp/"))
-;;    (require 'package-init)
-;;    (cam/auto-update-packages))
-;;  (lambda (result)
-;;    (message "cam/auto-update-packages finished. -- %s" result)))
-
-;; write backup files to own directory
-(setq backup-directory-alist
-  `(("." . ,(expand-file-name
-             (concat user-emacs-directory "backups")))))
-(setq vc-make-backup-files t) ;; make backups even if files are under VC
-
-(when (string= system-type "darwin")
-  ;; proced doesn't work on OS X, load up vkill instead
-  (sandbox/install-and-require 'vkill)
-  (cam/setup-autoloads ("vkill" #'vkill))
-  (fset #'proced #'vkill)               ; swoop proced -> vkill
-  (cam/run-fullscreen "vkill" vkill))
+(require 'async)
+(async-start
+ (lambda ()
+   (message "STARTING PACKAGE AUTO-UPDATE...")
+   (nconc load-path '("~/.emacs.d/lisp/"))
+   (require 'package-init)
+   (cam/auto-update-packages))
+ (lambda (result)
+   (message "cam/auto-update-packages finished. -- %s" result)))
 
 
-;; clean up obsolete buffers automatically
-(require 'midnight)
-;; (midnight-delay-set)
-
-
-(sandbox/install-and-require 'pretty-symbols)
-(setq pretty-symbol-categories '(lambda relational logical nil cam))
-(nconc pretty-symbol-patterns
-       '(;; general
-         (?ƒ cam "\\<defun\\>" (emacs-lisp-mode))                              ; DEFUN
-         (?ƒ cam "\\<def\\>" (django-mode python-mode))                    ; DEF
-         (?∫ cam "\\<self\\>" (emacs-lisp-mode django-mode python-mode))     ; SELF
-         ;; python-specific
-         (?∧ logical "\\<and\\>" (python-mode django-mode))                  ; AND
-         (?∨ logical "\\<or\\>" (python-mode django-mode))                  ; OR
-         (?∅ logical "\\<None\\>" (python-mode django-mode))               ; NONE
-         (?✓ logical "\\<True\\>" (python-mode django-mode))               ; TRUE
-         (?𐄂 logical "\\<False\\>" (python-mode django-mode))              ; FALSE
-         (?≡ logical "==" (python-mode django-mode))                       ; ==
-         (?↪ cam "\\<return\\>" (python-mode django-mode))                 ; RETURN
-         ))
-
-;; pretty-symbol-patterns
-(mapc (-rpartial #'add-hook 'pretty-symbols-mode)
-      '(emacs-lisp-mode-hook))
-
-;;; THINGS TO CHECK OUT !
-;;; clang-format-before-save - run clang format every time you save a C++ file
-;;; web-mode
-
-                                        ;
-(sandbox/install-and-require 'backup-each-save)
-(add-hook 'after-save-hook
-  #'backup-each-save)
-
-;; SOMEHOW, SOMEWAY I BROKE THE ESHELL. THIS IS A HACKY FIX AROUND IT
+;; ## SOMEHOW, SOMEWAY I BROKE THE ESHELL. THIS IS A HACKY FIX AROUND IT
 (add-hook 'eshell-mode-hook
   (lambda ()
     (setq-local inhibit-read-only t)))
 
-(cam/setup-autoloads
-  ("misc" #'zap-up-to-char))
 
-;;; MORE NONSENSE
+;;; ## ACE-ZAP-UP-TO-CHAR
+(sandbox/install-and-require 'ace-jump-zap)
 (cam/define-keys nil
-  ;; "M-z" #'zap-up-to-char             ; instead of zap-to-char
-  )
+  "M-z" #'ace-jump-zap-up-to-char)
 
-(setq save-interprogram-paste-before-kill t       ; save clipboard strings (from other programs besides Emacs) into kill ring before replacing them in Emacs
-      apropos-do-all t
-      mouse-yank-at-point t                       ; mouse yank commands yank at point instead of at click.
-      )
 
+;;; ## 10X FOWARD-LINE / BACKWARD-LINE
 (cam/define-keys nil
   "<A-down>" (lambda ()
                (interactive)
-               (next-line 10))
+               (forward-line 10))
   "<A-up>" (lambda ()
              (interactive)
-             (previous-line 10)))
+             (forward-line -10)))
 
 
+;;; ## `V` when using magit will open corresponding PR on GitHub <3
+;;; Inspired by http://endlessparentheses.com/easily-create-github-prs-from-magit.html
+(defun cam/visit-pull-request-url ()
+  "Visit the current git branch's PR on GitHub."
+  (interactive)
+  (let ((current-branch (magit-get-current-branch))
+        (repo-url (->> (magit-get "remote" (magit-get-current-remote) "url")
+                       (string-remove-suffix ".git" ))))
+    (browse-url (concat repo-url "/pull/" current-branch))))
 
+(eval-after-load "magit"
+  '(cam/define-keys magit-mode-map
+     "V" #'cam/visit-pull-request-url))
 
 (provide 'sandbox)
 ;;; sandbox.el ends here

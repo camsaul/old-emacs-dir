@@ -50,7 +50,8 @@
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
   ("highlight-error-keywords" #'highlight-error-keywords-mode)
   ("multiple-cursors" #'mc/mark-all-like-this #'mc/edit-lines #'mc/mark-previous-like-this #'mc/mark-next-like-this)
-  ("s" #'s-replace #'s-split #'s-starts-with-p))
+  ("s" #'s-replace #'s-split #'s-starts-with-p)
+  ("vkill" #'vkill))
 
 
 ;;;; GLOBALLY DISABLED MINOR MODES
@@ -188,6 +189,11 @@
                           "*.md"
                           "*.yml")))
 
+(eval-after-load "ido"
+  '(nconc ido-ignore-directories '("node_modules"
+                                   "bower_components"
+                                   ".git")))
+
 (eval-after-load "company"                        ; shorter autocomplete delay w/ company
   '(setq company-idle-delay 0.01                  ; default is 0.5
          company-minimum-prefix-length 1))        ; default is 3
@@ -220,11 +226,15 @@
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
-(midnight-delay-set 'midnight-delay 10)           ; Have to use this function to set midnight-delay
 
 (setq
+    apropos-do-all t                              ; apropos commands will search more extensively
     auto-revert-verbose nil
     auto-window-vscroll nil                       ; don't 'automatically adjust window to view tall lines'
+    backup-directory-alist                        ; Write backups to  ~/.emacs.d/backups
+    `(("." . ,(expand-file-name
+               (concat user-emacs-directory
+                       "backups"))))
     bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
     clean-buffer-list-delay-special 30
     echo-keystrokes 0.1                           ; shorter delay before showing keystrokes in progress
@@ -246,6 +256,7 @@
                                    "C-h" "C-x"
                                    "M-g" "M-o")
     mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
+    mouse-yank-at-point t                         ; mouse yank commands yank at point instead of at click.
     nav-width 30                                  ; nav should be 30 chars wide (default is 18)
     ns-right-command-modifier 'hyper
     ns-right-control-modifier 'hyper
@@ -254,6 +265,7 @@
     redisplay-dont-pause t                        ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
     require-final-newline t                       ; add final newline on save
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
+    save-interprogram-paste-before-kill t         ; save clipboard strings (from other programs besides Emacs) into kill ring before replacing them in Emacs
     scroll-margin 1
     select-enable-clipboard t                     ; Use the clipboard in addition to emacs kill ring
     select-enable-primary t                       ; cutting and pasting uses the primary selection (?)
@@ -262,8 +274,8 @@
     w32-pass-lwindow-to-system nil
     w32-rwindow-modifier 'alt
     whitespace-line-column 200                    ; don't highlight lines in whitespace mode unless they're REALLY giant. (default is 80)
-    visible-bell t
-    )
+    vc-make-backup-files t                        ; make backups even if files are under VC
+    visible-bell t)
 
 (setq-default
     truncate-lines t                              ; don't word-wrap long lines
@@ -271,7 +283,10 @@
     )
 
 
-(fset 'yes-or-no-p 'y-or-n-p)                     ; prompt for y/n instead of yes/no
+;;;; FUNCTION OVERRIDES W/ FSET
+
+(fset #'yes-or-no-p #'y-or-n-p)                   ; prompt for y/n instead of yes/no
+(fset #'proced #'vkill)                           ; use vkill instead of proced since it doesn't work on OS X
 
 
 ;;;; COMMANDS TO ENABLE
@@ -287,10 +302,11 @@
 
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
       '(("magit" magit-status)
-        ("package" list-packages package-list-packages package-list-packages-no-fetch)))
+        ("package" list-packages package-list-packages package-list-packages-no-fetch)
+        ("vkill" vkill)))
+
 
 ;;;; GLOBAL KEY-BINDINGS
-
 
 (cam/define-keys nil
   "<A-return>" #'repeat
@@ -443,3 +459,34 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (match-$ 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (upd 2)
+             (with-credentials 1)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
