@@ -23,6 +23,7 @@
 (cam/run-fullscreen "magit" magit-status)
 
 (cam/define-keys magit-status-mode-map
+  "V" #'cam/visit-pull-request-url
   "s-u" #'magit-refresh)
 
 (defun cam/kill-magit-buffers ()
@@ -34,6 +35,16 @@
                   (not (string= b
                                 (buffer-name (current-buffer))))))
        (mapcar #'kill-buffer)))
+
+;;; ## `V` when using magit will open corresponding PR on GitHub <3
+;;; Inspired by http://endlessparentheses.com/easily-create-github-prs-from-magit.html
+(defun cam/visit-pull-request-url ()
+  "Visit the current git branch's PR on GitHub."
+  (interactive)
+  (let ((current-branch (magit-get-current-branch))
+        (repo-url (->> (magit-get "remote" (magit-get-current-remote) "url")
+                       (string-remove-suffix ".git" ))))
+    (browse-url (concat repo-url "/pull/" current-branch))))
 
 
 (provide 'magit-init)

@@ -268,7 +268,7 @@
   "C-M-S-k" #'backward-kill-sexp                  ; Kill sexp before current position
   "C-M-y" #'browse-kill-ring
   "C-S-k" #'cam/backward-kill-line
-  "C-c e" #'eval-and-replace                        ; eval previous elisp expression at point, replace with results
+  "C-c e" #'eval-and-replace                      ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
   "C-v" #'yank                                    ; yank instead of whatever it usually does
   "C-x C-b" #'helm-buffers-list                   ; this is (seemingly) better than buffer-menu or ibuffer
@@ -276,11 +276,13 @@
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
   "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs
+  "C-x b" #'helm-buffers-list
   "C-x k" #'kill-this-buffer                      ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
   "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
   "C-x z" nil                                     ; disable minimize emacs
+  "C-z" nil                                       ; disable minimize emacs
   "H-;" #'loccur-current                          ; folder current buffer to lines containing the current word
   "H-A" #'mc/mark-previous-like-this
   "H-E" #'mc/mark-next-like-this                  ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
@@ -393,3 +395,34 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (match-$ 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (upd 2)
+             (with-credentials 1)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
