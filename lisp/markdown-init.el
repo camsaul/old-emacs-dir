@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (defun cam/markdown-mode-setup ()
   (setq imenu-generic-expression markdown-imenu-generic-expression))
 (add-hook 'markdown-mode-hook 'cam/markdown-mode-setup)

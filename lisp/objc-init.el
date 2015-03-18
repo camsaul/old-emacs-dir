@@ -1,3 +1,8 @@
+;; -*- lexical-binding: t -*-
+
+(eval-when-compile
+  (require 'cc-mode))
+
 (cam/setup-autoloads
   ("find-lisp" #'find-lisp-find-files))
 

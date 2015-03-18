@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;;; json-init -- Initialization for editing JSON
 ;;; Commentary:
 

@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;;; cam-macros --- Utility macros
 ;;; Commentary:
 ;;; This gets loaded before cam-functions

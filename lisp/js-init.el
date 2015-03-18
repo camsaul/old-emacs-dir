@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;; -*- comment-column: 50; -*-
 
 ;;; js-init -- Settings for editing JavaScript
@@ -5,9 +6,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'js3-mode))
 (require 'cam-functions)
-
-(add-to-list 'auto-mode-alist '("\.js$" . js3-mode)) ; use js3-mode instead of js-mode
 
 (add-hook 'js3-mode-hook
   (lambda ()

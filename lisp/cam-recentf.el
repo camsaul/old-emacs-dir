@@ -1,4 +1,4 @@
-
+;; -*- lexical-binding: t -*-
 
 (defface cam/recentf-dir4
   '((t :background "white"

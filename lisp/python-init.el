@@ -1,10 +1,14 @@
-;;; python-init -- Setup for editing Python
+;; -*- lexical-binding: t -*-
 ;; -*- comment-column: 70; -*-
+;;; python-init -- Setup for editing Python
 
 ;;; Commentary:
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'django-mode)
+  (require 'elpy))
 (require 'cam-functions)
 
 

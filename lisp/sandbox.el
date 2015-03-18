@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;;; sandbox --- features that are "under consideration"
 ;;; Commentary:
 ;;; Code:

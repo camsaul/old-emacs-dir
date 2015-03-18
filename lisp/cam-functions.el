@@ -1,6 +1,12 @@
+;; -*- lexical-binding: t -*-
 ;;; cam-functions -- Utility function used by other init files
 ;;; Commentary:
 ;;; Code:
+
+(eval-when-compile
+  (require 'cl))
+(require 'dash)
+(require 'noflet)
 
 (defun cam/popup-init-file-menu ()
   "Show a popup menu of Emacs init files."
