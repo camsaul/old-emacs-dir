@@ -1,8 +1,7 @@
+;; -*- lexical-binding: t -*-
+;; -*- comment-column: 50; -*-
 ;;; elisp-init -- Setup for editing Emacs Lisp
 ;;; Commentary:
-
-;; -*- comment-column: 50; -*-
-
 
 (require 'cam-functions)
 
@@ -41,7 +40,10 @@
   (cam/enable-minor-modes
     (elisp-slime-nav-mode . nil)
     (flycheck-mode . " ✔")
-    (aggressive-indent-mode . nil))
+    (aggressive-indent-mode . nil)
+    (auto-complete-mode . "AC"))
+
+  (ac-emacs-lisp-mode-setup)
 
   ;; additional font-locking
   (turn-on-morlock-mode-if-desired)
@@ -73,12 +75,6 @@
          cl-lambda
          setq
          setq-default))
-
-(eval-after-load "auto-complete"
-  '(progn
-     (add-to-list 'ac-modes 'emacs-list-mode)
-     ;; (add-to-list 'ac-modes 'inferior-emacs-lisp-mode)
-     ))
 
 ;;;; FUNCTIONS
 
@@ -122,6 +118,7 @@
   (lambda ()
     (require 'company)                  ; Use company for IELM since auto-complete doesn't seen to work :/
     (company-mode 1)
+    (auto-complete-mode -1)
     (cam/declare-vars ielm-map)
     (cam/define-elisp-keys ielm-map)
     (cam/define-keys ielm-map

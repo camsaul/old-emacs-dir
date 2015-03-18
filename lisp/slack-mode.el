@@ -1,9 +1,10 @@
+;; -*- lexical-binding: t -*-
 ;;; slack-mode --- Work-in-progress implementation of a Slack client for Emacs
 ;;; Commentary:
 ;;; Code:
 
 (require 'cam-macros)
-
+'
 ;; need to install http-post-simple package (!)
 (cam/setup-autoloads ("http-post-simple" #'http-post-simple-internal))
 

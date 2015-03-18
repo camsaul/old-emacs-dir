@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;;; highlight-error-keywords -- Minor mode to add certain error keywords to major mode's font locking
 ;;; Commentary:
 ;;; Code:

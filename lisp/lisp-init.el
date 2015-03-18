@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;; -*- comment-column: 50; -*-
 
 ;;; Code:

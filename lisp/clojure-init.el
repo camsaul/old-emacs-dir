@@ -1,7 +1,12 @@
+;; -*- lexical-binding: t -*-
 ;; -*- comment-column: 60; -*-
 ;;; clojure-init - Fns + settings for editing Clojure
 ;;; Commentary:
 ;;; Code:
+
+(eval-when-compile
+  (require 'clojure-mode)
+  (require 'cider-mode))
 
 (defun cam/clojure-mode-setup ()
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."

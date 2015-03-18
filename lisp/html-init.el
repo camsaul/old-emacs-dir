@@ -1,3 +1,8 @@
+;; -*- lexical-binding: t -*-
+
+(eval-when-compile
+  (require 'nxml-mode))
+
 (cam/setup-autoloads
   ("nxml-mode" #'nxml-backward-element #'nxml-backward-up-element #'nxml-finish-element #'nxml-forward-element))
 

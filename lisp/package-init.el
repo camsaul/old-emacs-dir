@@ -1,3 +1,4 @@
+;; -*- lexical-binding: t -*-
 ;; -*- comment-column: 30; -*-
 ;;; pacakge-init -- Code to load/installs packages on startup
 

@@ -1,3 +1,8 @@
+;; -*- lexical-binding: t -*-
+
+(eval-when-compile
+  (require 'cc-mode))
+
 ;; automatically open .h files with #include without .h at the end as c++ instead of c
 ;; or open header files that have std:: somewhere in them
 (add-to-list 'magic-mode-alist

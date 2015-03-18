@@ -1,4 +1,5 @@
-;; -*- comment-column: 50; -*-
+;; -*- lexical-binding: t -*-
+;; -*- comment-column: 50 -*-
 
 ;;; init -- General Setup
 ;;; Commentary:
@@ -77,21 +78,21 @@
    global-linum-mode                              ; show line numbers on the left margin
    global-undo-tree-mode                          ; make undo work in a tree instead of linearly
    (guide-key-mode . nil)                         ; show completions for prefix keybindings
-   ido-mode
-   ido-ubiquitous-mode
-   ido-everywhere
-   ido-vertical-mode
-   flx-ido-mode                                   ; fuzzy matching for ido
-   (rainbow-mode . nil)                             ; colorize strings that represent colors e.g. #00FFFF
+   ido-mode                                       ; additional setup for ido in ido-config.el
+   (rainbow-mode . nil)                           ; colorize strings that represent colors e.g. #00FFFF
    projectile-global-mode
    recentf-mode                                   ; enable the recent files menu
    savehist-mode                                  ; save minibuffer history periodically !!! DEPRECATED this seems to make things really SLOWWWWWW
    show-paren-mode                                ; highlight matching parens
-   (undo-tree-mode . nil)                           ; already on because of global-undo-tree-mode but we can't diminish that so diminish this one instead
+   (undo-tree-mode . nil)                         ; already on because of global-undo-tree-mode but we can't diminish that so diminish this one instead
    winner-mode))                                  ; C-c <left> / C-c <right> to restore window configurations
 
 
 ;;;; GLOBAL HOOKS
+
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (kill-buffer "*scratch*")))
 
 (add-hook 'before-save-hook
   (lambda ()
@@ -117,14 +118,6 @@
       paredit-mode)
     (setq-local company-echo-delay 10)))
 
-(add-hook 'emacs-startup-hook
-  (lambda ()
-    (kill-buffer "*scratch*")))
-
-(add-hook 'dired-mode-hook
-  (lambda ()
-    (dired-hide-details-mode 1)))
-
 (add-hook 'after-change-major-mode-hook
   (lambda ()
     (cam/enable-minor-modes
@@ -132,90 +125,6 @@
       rainbow-delimiters-mode
       (rainbow-mode . nil)))
   t)
-
-;;;; GLOBAL EVAL-AFTER-LOADS
-
-(cam/eval-after-load "dired"
-  (require 'dired+)
-  (require 'dired-x)                              ; things like C-x C-j for dired-jump
-  (cam/suppress-messages
-   (toggle-diredp-find-file-reuse-dir t))         ; reuse dired buffers
-  (setq dired-recursive-copies 'always
-        dired-recursive-deletes 'always)
-  (defadvice dired-smart-shell-command (after refresh-dired-after-shell-command activate)
-    "Revert dired buffer after executing a shell command in one."
-    (revert-buffer)))
-
-;; Install editorconfig via homebrew if possible
-(cam/eval-after-load "editorconfig"
-  (unless (string-match "^EditorConfig" (shell-command-to-string "editorconfig --version"))
-    (warn "EditorConfig is not installed. This is needed by editorconfig package.")
-    (when (string= system-type
-                   "darwin")
-      (warn "Attempting to install via 'brew install editorconfig'...")
-      (call-process-shell-command "brew install editorconfig" nil nil))))
-
-(eval-after-load "multiple-cursors"
-  '(multiple-cursors-mode 1))
-
-(eval-after-load "magit"
-  '(progn
-     (cam/enable-minor-modes
-       ;; (global-magit-wip-save-mode t)          ; TODO - investigate this - automatically create a work-in-progress ref whenever saving a file under VC
-       (magit-auto-revert-mode . nil))              ; auto-revert buffers that change on disk as result of magit command
-     (defadvice magit-status (after magit-status-show-help activate)
-       (magit-key-mode-popup-dispatch)            ; show help when showing magit-status
-       (call-interactively #'other-window)        ; switch back to magit status window
-       (add-hook 'kill-buffer-hook                ; Kill all of the other magit buffers like help + *magit-process*
-         (lambda ()
-           (->> (buffer-list)
-                (mapcar #'buffer-name)
-                (-filter (-partial #'s-starts-with-p "*magit"))
-                (-filter (lambda (b)
-                           (not (string= b
-                                         (buffer-name (current-buffer))))))
-                (mapcar #'kill-buffer)))
-         nil t))
-     (cam/define-keys magit-status-mode-map
-       "s-u" #'magit-refresh)))
-
-(eval-after-load "find-things-fast"
-  '(nconc ftf-filetypes '("*.clj"                 ; extra file types to search for/through when using find-things-fast
-                          "*.css"
-                          "*.el"
-                          "*.html"
-                          "*.js"
-                          "*.java"
-                          "*.md"
-                          "*.yml")))
-
-(eval-after-load "ido"
-  '(nconc ido-ignore-directories '("node_modules"
-                                   "bower_components"
-                                   ".git")))
-
-(eval-after-load "company"                        ; shorter autocomplete delay w/ company
-  '(setq company-idle-delay 0.01                  ; default is 0.5
-         company-minimum-prefix-length 1))        ; default is 3
-
-(eval-after-load "auto-complete"
-  '(progn
-     (setq ac-delay 0.05                           ; delay before trying to auto-complete
-           ac-auto-show-menu 0.1                   ; delay before showing completions list
-           ac-quick-help-delay 0.2)                ; delay before poping up docstr
-     (ac-config-default)))
-
-(eval-after-load "git-timemachine"
-  '(defadvice git-timemachine (around git-timemachine-split-fullscreen activate)
-     "Run git-timemachine for the current buffer in a special temporary fullscreen session"
-     (window-configuration-to-register :git-timemachine-fullscreen-window-config)
-     (delete-other-windows)
-     (split-window-right)
-     (call-interactively #'other-window)
-     ad-do-it
-     (defadvice git-timemachine-quit (after git-timemachine-fullscreen-quit activate)
-       (jump-to-register :git-timemachine-fullscreen-window-config)
-       (advice-remove #'git-timemachine-quit #'git-timemachine-fullscreen-quit))))
 
 
 ;;;; GENERAL SETTINGS
@@ -301,8 +210,7 @@
 ;;;; COMMANDS TO ALWAYS RUN FULLSCREEN
 
 (mapc (lambda (args) (eval `(cam/run-fullscreen ,@args)))
-      '(("magit" magit-status)
-        ("package" list-packages package-list-packages package-list-packages-no-fetch)
+      '(("package" list-packages package-list-packages package-list-packages-no-fetch)
         ("vkill" vkill)))
 
 
@@ -360,7 +268,7 @@
   "C-M-S-k" #'backward-kill-sexp                  ; Kill sexp before current position
   "C-M-y" #'browse-kill-ring
   "C-S-k" #'cam/backward-kill-line
-  "C-c e" #'eval-and-replace                        ; eval previous elisp expression at point, replace with results
+  "C-c e" #'eval-and-replace                      ; eval previous elisp expression at point, replace with results
   "C-h m" #'discover-my-major                     ; more useful than the default help w/ C-h m
   "C-v" #'yank                                    ; yank instead of whatever it usually does
   "C-x C-b" #'helm-buffers-list                   ; this is (seemingly) better than buffer-menu or ibuffer
@@ -368,11 +276,13 @@
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
   "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs
+  "C-x b" #'helm-buffers-list
   "C-x k" #'kill-this-buffer                      ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
   "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
   "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
   "C-x z" nil                                     ; disable minimize emacs
+  "C-z" nil                                       ; disable minimize emacs
   "H-;" #'loccur-current                          ; folder current buffer to lines containing the current word
   "H-A" #'mc/mark-previous-like-this
   "H-E" #'mc/mark-next-like-this                  ; Apparently Insert = Hyper on OS X WHEN USED IN COMBINATION WITH OTHER MODIFIER KEYS!
@@ -424,32 +334,59 @@
 
 ;;;; LOAD INIT FILES
 
-(mapc (lambda (init-file)
-        (condition-case err
-            (require init-file)
-          (error (warn "%s" (error-message-string err))
-                 (switch-to-buffer "*Warnings*")
-                 (delete-other-windows)
-                 (split-window-below)
-                 (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file))))))
-      '(;; load elisp stuff first so we can at least fix errors in other files more easily
-        lisp-init
-        elisp-init
-        common-lisp-init
-        clojure-init
-        cpp-init
-        erlang-init
-        html-init
-        js-init
-        json-init
-        markdown-init
-        objc-init
-        org-init
-        perl-init
-        python-init
-        ruby-init
-        theme-init
-        sandbox))
+(defun cam/safe-require (init-file)
+  "Attempt to safely require INIT-FILE, or show any errors in a new buffer and jump to INIT-FILE."
+  (condition-case err
+      (require init-file)
+    (error (warn "%s" (error-message-string err))
+           (switch-to-buffer "*Warnings*")
+           (delete-other-windows)
+           (split-window-below)
+           (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file) ".el")))))
+
+(cam/safe-require 'theme-init)
+(cam/safe-require 'sandbox)
+
+
+;;;; LOAD CONFIG FILES FOR MINOR MODES / NON-EDITING MODES
+
+(mapc (lambda (package-name)
+        (eval-after-load package-name
+          `(cam/safe-require ',(intern (concat package-name "-init")))))
+      '("auto-complete"
+        "company"
+        "dired"
+        "editorconfig"
+        "find-things-fast"
+        "git-timemachine"
+        "ido"
+        "magit"
+        "multiple-cursors"))
+
+;;; ### LOAD CONFIG FOR LANGUAGE-SPECIFIC MAJOR MODES
+
+(add-to-list 'auto-mode-alist '("\.js$" . js3-mode))
+(add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
+(add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
+(add-to-list 'interpreter-mode-alist '("python" . django-mode))
+
+(mapc (-lambda ((file . requirement))
+        (eval-after-load file `(cam/safe-require ,requirement)))
+      '(("cc-mode" . 'cpp-init)
+        ("cc-mode" . 'objc-init)
+        ("clojure-mode" . 'clojure-init)
+        ("cperl-mode" . 'perl-init)
+        ("django-mode" . 'python-init)
+        ("elisp-mode" . 'elisp-init)
+        ("erlang-mode" . 'erlang-init)
+        ("ielm" . 'elisp-init)
+        ("js3-mode" . 'js-init)
+        ("json-mode" . 'json-init)
+        ("lisp-mode" . 'common-lisp-init)
+        ("markdown-mode" . 'markdown-init)
+        ("nxml-mode" . 'html-init)
+        ("org" . 'org-init)
+        ("ruby-mode" . 'ruby-init)))
 
 
 ;;; HACKs
@@ -458,3 +395,34 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (match 1)
+             (match-$ 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (upd 2)
+             (with-credentials 1)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

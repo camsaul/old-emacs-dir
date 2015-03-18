@@ -1,3 +1,7 @@
+;; -*- lexical-binding: t -*-
+
+;;; Code:
+
 (defun cam/ruby-mode-setup ()
   (require 'rspec-mode)
   (require 'ruby-electric)
@@ -58,3 +62,4 @@
       (end-of-line))))
 
 (provide 'ruby-init)
+;;; ruby-init.el ends here

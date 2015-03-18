@@ -1,6 +1,10 @@
+;; -*- lexical-binding: t -*-
 ;;; perl-init --- Settings for editing Perl
 ;;; Commentary:
 ;;; Code:
+
+(eval-when-compile
+  (require 'cperl-mode))
 
 (defalias 'perl-mode 'cperl-mode)       ; load cperl-mode instead of perl-mode
 (add-hook 'cperl-mode-hook
