@@ -118,7 +118,7 @@
   (lambda ()
     (require 'company)                  ; Use company for IELM since auto-complete doesn't seen to work :/
     (company-mode 1)
-    (auto-complete-mode -1)
+    (auto-complete-mode -1)             ; why is auto-complete still getting enabled?
     (cam/declare-vars ielm-map)
     (cam/define-elisp-keys ielm-map)
     (cam/define-keys ielm-map

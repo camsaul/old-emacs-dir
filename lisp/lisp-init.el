@@ -20,6 +20,11 @@
   (interactive)
   (paredit-kill 0))
 
+(defun cam/loccur-lisp-header-lines ()
+  "Use 'loccur' to show top-level markdown-style headers."
+  (interactive)
+  (loccur "^;+\s+#"))
+
 (eval-after-load 'paredit
   '(progn
      (mapc (-lambda ((cmd val))
@@ -33,10 +38,11 @@
 
 (defun cam/define-lisp-keys (mode-map)
   (cam/define-keys mode-map
-    "C-c C-d" 'elisp-slime-nav-describe-elisp-thing-at-point
-    "RET" 'reindent-then-newline-and-indent
-    "<f11>" 'paredit-mode
-    "C-S-k" 'cam/backward-paredit-kill))
+    "<f11>"   #'paredit-mode
+    "C-S-k"   #'cam/backward-paredit-kill
+    "C-c C-d" #'elisp-slime-nav-describe-elisp-thing-at-point
+    "C-c SPC" #'cam/loccur-lisp-header-lines
+    "RET"     #'reindent-then-newline-and-indent))
 
 ;; pretty-lambdas turns the word Lambda (lowercase) into a lambda. Credit: emacs-starter-kit on github
 (defun pretty-lambdas ()
