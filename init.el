@@ -1,5 +1,4 @@
-;; -*- lexical-binding: t -*-
-;; -*- comment-column: 50 -*-
+;; -*- lexical-binding: t;  comment-column: 50 -*-
 
 ;;; init -- General Setup
 ;;; Commentary:
@@ -49,6 +48,7 @@
   ("bytecomp" #'byte-recompile-file)
   ("find-things-fast" #'ftf-find-file #'ftf-grepsource)
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
+  ("helm-command" #'helm-get-mode-map-from-mode)
   ("highlight-error-keywords" #'highlight-error-keywords-mode)
   ("multiple-cursors" #'mc/mark-all-like-this #'mc/edit-lines #'mc/mark-previous-like-this #'mc/mark-next-like-this)
   ("s" #'s-replace #'s-split #'s-starts-with-p)
@@ -99,16 +99,18 @@
     (delete-trailing-whitespace)
     (set-buffer-file-coding-system 'utf-8-auto-unix)))
 
-(add-hook 'after-save-hook
-  (lambda ()
-    (executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+;; (defun cam/angry-police-captain-on-save ()
+;;   "Show a AngryPoliceCaptain.com quote"
+;;   (unless (or (active-minibuffer-window)
+;;               (minibufferp (current-buffer))
+;;               (eq major-mode 'package-menu-mode))
+;;     (with-timeout (0.25 nil)
+;;       (ignore-errors
+;;         (angry-police-captain)))))
+;; (add-hook 'after-save-hook #'cam/angry-police-captain-on-save)
 
-    ;; show a AngryPoliceCaptain.com quote
-    (unless (or (active-minibuffer-window)
-                (minibufferp (current-buffer))
-                (eq major-mode 'package-menu-mode))
-      (with-timeout (0.25 nil)
-        (angry-police-captain)))))
+(add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+
 
 ;; Enable paredit + company when evaluating elisp expressions in minibuffer
 (add-hook 'eval-expression-minibuffer-setup-hook
@@ -140,12 +142,22 @@
     apropos-do-all t                              ; apropos commands will search more extensively
     auto-revert-verbose nil
     auto-window-vscroll nil                       ; don't 'automatically adjust window to view tall lines'
+
     backup-directory-alist                        ; Write backups to  ~/.emacs.d/backups
     `(("." . ,(expand-file-name
                (concat user-emacs-directory
                        "backups"))))
+
     bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
     clean-buffer-list-delay-special 30
+
+    display-buffer-base-action                    ; default display action
+    '((display-buffer-reuse-window                ; 1) if buffer is already displayed then keep that window
+       display-buffer-in-previous-window          ; 2) otherwise attempt to display in a window where it was previously displayed
+       display-buffer-use-some-window)            ; 3) otherwise just display in some other window
+      (inhibit-same-window . t)                   ; don't display buffer in current window
+      (reusable-frames . t))                      ; consider windows on all frames
+
     echo-keystrokes 0.1                           ; shorter delay before showing keystrokes in progress
     global-auto-revert-non-file-buffers t         ; also refresh dired but be quiet about it
     inhibit-splash-screen t
@@ -164,7 +176,14 @@
                                    "A-~" "C-c"
                                    "C-h" "C-x"
                                    "M-g" "M-o")
-    mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
+
+    mouse-wheel-scroll-amount '(1                 ; only scroll one line; allow scrolling with modifier keys
+                                ((alt) . 1)
+                                ((control) . 1)
+                                ((hyper) . 1)
+                                ((meta) . 1)
+                                ((shift) . 1)
+                                ((super) . 1))
     mouse-yank-at-point t                         ; mouse yank commands yank at point instead of at click.
     nav-width 30                                  ; nav should be 30 chars wide (default is 18)
     ns-right-command-modifier 'hyper
@@ -178,6 +197,10 @@
     scroll-margin 1
     select-enable-clipboard t                     ; Use the clipboard in addition to emacs kill ring
     select-enable-primary t                       ; cutting and pasting uses the primary selection (?)
+
+    split-window-preferred-function               ; preferred function to use when splitting a window (default is split-window-sensibly)
+    #'cam/split-window-sensibly-right
+
     w32-apps-modifier 'hyper
     w32-lwindow-modifier 'super
     w32-pass-lwindow-to-system nil
@@ -324,12 +347,11 @@
 
 ;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
 
+                                                  ; ; try to delete the .elc file
+
 (let ((byte-compile-dynamic t))                   ; compile function bodies so they load lazily
-  (mapc (lambda (file)
-          (byte-recompile-file file
-                               nil                ; don't force recompile
-                               0))                ; recompile even if there's no .elc file
-        cam/init-files))
+  (mapc #'cam/safe-byte-compile cam/init-files))
+
 
 
 ;;;; LOAD INIT FILES
@@ -395,34 +417,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values
-   (quote
-    ((eval progn
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (context 2)
-             (expect 1)
-             (expect-eval-actual-first 1)
-             (expect-let 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (match 1)
-             (match-$ 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (upd 2)
-             (with-credentials 1)))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

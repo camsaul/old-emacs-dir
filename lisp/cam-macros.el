@@ -4,9 +4,10 @@
 ;;; This gets loaded before cam-functions
 ;;; Code:
 
-(defmacro cam/define-keys (keymap &rest pairs)
+(defmacro cam/define-keys (keymap-or-mode &rest pairs)
   "Map pairs of KEY -> FN.
-   If KEYMAP is non-nil,  map keys for the mode map via 'define-key'; otherwise map globally via 'global-set-key'.
+   If KEYMAP-OR-MODE is a key map or major mode, map keys for the mode map via 'define-key';
+   otherwise map globally via 'global-set-key'.
 
    KEY may be a string such as 's-b' or another function, in which case the binding(s) for that function will be remapped
    with the ['remap #'other-fn] form
@@ -16,9 +17,12 @@
       \"s-b\" #'balance-windows     ; bind s-b to balance-windows
       #'discover-my-major #'my-func ; replace keybindings to discover-my-major with ones to my-func
   "
-  (let ((def-key (if keymap `(define-key ,keymap)
-                   '(global-set-key))))
-    `(progn
+  (let* ((resolved-mode-map (cl-gensym "mode-map-"))
+         (def-key (if keymap-or-mode `(define-key ,resolved-mode-map)
+                    '(global-set-key))))
+    `(let ((,resolved-mode-map ,(when keymap-or-mode
+                                  `(if (keymapp ,keymap-or-mode) ,keymap-or-mode
+                                     (eval (helm-get-mode-map-from-mode ,keymap-or-mode))))))
        ,@(mapcar (-lambda ((key fn))
                    `(,@def-key ,(if (stringp key) (list 'kbd key)
                                   (list 'vector ''remap key))
@@ -59,7 +63,8 @@
 (put 'cam/disable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/setup-autoloads (&rest autoloads)
-  "Setup AUTOLOADS with the format (package-name-string symbol1 symbol2 ...) e.g. (cam/setup-autoloads (\"bytecomp\" byte-recompile-file))."
+  "Setup AUTOLOADS with the format (package-name-string symbol1 symbol2 ...)
+   e.g. (cam/setup-autoloads (\"bytecomp\" #'byte-recompile-file))."
   `(progn ,@(cl-reduce 'append
                        (mapcar (lambda (autoload-group)
                                  (let ((file (car autoload-group))
@@ -103,6 +108,32 @@
   "Suppress messages inside BODY."
   `(noflet ((message (&rest args) nil))
      ,@body))
+
+(defmacro cam/some-> (form &rest sexps)
+  "Similar to Clojure ->."
+  (if (not sexps) form
+    (let ((sexp (car sexps))
+          (rest-sexps (cdr sexps))
+          (form-tag (cl-gensym "form-")))
+      `(when-let ((,form-tag ,(cond ((symbolp sexp) `(,sexp ,form))
+                                    (:else          (cons (car sexp) (cons form (cdr sexp)))))))
+         (cam/some-> ,form-tag ,@rest-sexps)))))
+
+(defmacro cam/when-buffer (buffer-name-or-binding &rest body)
+  "Execute BODY if a named buffer exists. BUFFER-NAME-OR-BINDING can be either a string or a list like (binding buffer-name)"
+  (if (not (listp buffer-name-or-binding))
+      `(cam/when-buffer (_ ,buffer-name-or-binding) ,@body)
+    (cl-destructuring-bind (binding buffer-name) buffer-name-or-binding
+      `(when-let ((,binding (cam/buffer-named ,buffer-name)))
+         ,@body))))
+(put 'cam/when-buffer 'lisp-indent-function 1)
+
+(defmacro cam/unless-buffer (buffer-or-buffer-name &rest body)
+  "Execute BODY if BUFFER-OR-BUFFER-NAME doesn't exist."
+  `(unless (cam/buffer-named ,buffer-or-buffer-name)
+     ,@body))
+(put 'cam/unless-buffer 'lisp-indent-function 1)
+
 
 
 (provide 'cam-macros)

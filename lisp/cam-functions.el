@@ -84,7 +84,7 @@
   (condition-case nil
       (prin1 (eval (read (current-kill 0)))
              (current-buffer))
-    (error (message "Invalid expression")
+    (error (message "Invalid sexpession")
            (insert (current-kill 0)))))
 
 (defun cam/force-indent-region ()
@@ -131,6 +131,14 @@
                           "el")
                  (file-in-directory-p filename "~/.emacs.d/lisp"))))
     (error nil)))
+
+(defun cam/safe-byte-compile (file)
+  (condition-case _
+      (byte-recompile-file file
+                           nil            ; don't force recompile
+                           0)             ; recompile even if there's no .elc file
+    (error (ignore-errors
+             (delete-file (concat file "c"))))))
 
 (defun cam/noop (&rest args)
   "A function that ignores ARGS and doesn't do anything."
@@ -185,6 +193,50 @@
   (interactive)
   (projectile-mode 1) ; this is not always on just for performance reasons
   (projectile-recentf))
+
+(defun cam/split-window-sensibly-right (&optional window)
+  "Like split-window-sensibly, but prefers splitting the window to the right instead of below.
+   Call balance-windows after the split."
+  (let ((height (window-height window))
+        (width (window-width window)))
+    (or (unless (> (* 2.1 height) width)
+          (let ((split-height-threshold 1000))
+            (split-window-sensibly window)))
+        (split-window-sensibly window)))
+  (balance-windows))
+
+(defun cam/all-window-list ()
+  "Return all windows across every frame."
+  (-mapcat #'window-list
+           (frame-list)))
+
+(defun cam/kill-buffer-and-window (buffer-or-buffer-name)
+  "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
+  (when-let (buffer (cam/buffer-named buffer-or-buffer-name))
+    (message "BUFFER: %s" buffer)
+    (when-let (window (cam/buffer-window buffer))
+      (message "WINDOW: %s" window)
+      (delete-window window))
+    (kill-buffer buffer)))
+
+(defun cam/buffer-named (buffer-name &optional create)
+  "Find buffer with BUFFER-NAME. If BUFFER-NAME is a buffer, return as is. If CREATE is non-nil, create BUFFER if it doesn't exist."
+  (when buffer-name
+    (if (bufferp buffer-name) buffer-name
+      (or (->> (buffer-list)
+               (-first (lambda (b) (string= (buffer-name b) buffer-name))))
+          (when create
+            (get-buffer-create buffer-name))))))
+
+(defun cam/buffer-window (buffer-or-buffer-name)
+  "Return the first window displaying buffer."
+  (when buffer-or-buffer-name
+    (-first (lambda (w) (eq (window-buffer w) (cam/buffer-named buffer-or-buffer-name)))
+            (cam/all-window-list))))
+
+(defun cam/current-window (&optional buffer)
+  "Return the current window for BUFFER (defaults to current buffer)."
+  (cam/buffer-window (or buffer (current-buffer))))
 
 (provide 'cam-functions)
 ;;; cam-functions.el ends here
