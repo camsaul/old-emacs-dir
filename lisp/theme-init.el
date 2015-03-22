@@ -64,6 +64,7 @@
        ,@(when rest
            (cdr (macroexpand `(def-pl-faces ,@rest))))))) ; cdr to skip the initial progn
 
+
 (def-pl-faces
   pl-active-1 'region 'region
   pl-active-2 'secondary-selection 'secondary-selection
@@ -124,7 +125,7 @@
 ;; so they don't mask our default val
 (add-hook 'window-configuration-change-hook
   (lambda ()
-    (mapc (lambda (buffer)
+    (mapc (lambda (_)
             (when (local-variable-p 'mode-line-format)
               (kill-local-variable 'mode-line-format)))
           (buffer-list))

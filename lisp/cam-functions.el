@@ -212,26 +212,17 @@
 
 (defun cam/kill-buffer-and-window (buffer-or-buffer-name)
   "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
-  (when-let (buffer (cam/buffer-named buffer-or-buffer-name))
+  (when-let (buffer (get-buffer buffer-or-buffer-name))
     (message "BUFFER: %s" buffer)
     (when-let (window (cam/buffer-window buffer))
       (message "WINDOW: %s" window)
       (delete-window window))
     (kill-buffer buffer)))
 
-(defun cam/buffer-named (buffer-name &optional create)
-  "Find buffer with BUFFER-NAME. If BUFFER-NAME is a buffer, return as is. If CREATE is non-nil, create BUFFER if it doesn't exist."
-  (when buffer-name
-    (if (bufferp buffer-name) buffer-name
-      (or (->> (buffer-list)
-               (-first (lambda (b) (string= (buffer-name b) buffer-name))))
-          (when create
-            (get-buffer-create buffer-name))))))
-
 (defun cam/buffer-window (buffer-or-buffer-name)
   "Return the first window displaying buffer."
   (when buffer-or-buffer-name
-    (-first (lambda (w) (eq (window-buffer w) (cam/buffer-named buffer-or-buffer-name)))
+    (-first (lambda (w) (eq (window-buffer w) (get-buffer buffer-or-buffer-name)))
             (cam/all-window-list))))
 
 (defun cam/current-window (&optional buffer)

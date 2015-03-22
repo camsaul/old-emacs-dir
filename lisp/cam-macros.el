@@ -115,22 +115,23 @@
     (let ((sexp (car sexps))
           (rest-sexps (cdr sexps))
           (form-tag (cl-gensym "form-")))
-      `(when-let ((,form-tag ,(cond ((symbolp sexp) `(,sexp ,form))
-                                    (:else          (cons (car sexp) (cons form (cdr sexp)))))))
-         (cam/some-> ,form-tag ,@rest-sexps)))))
+      `(when-let ((,form-tag ,form))
+         (cam/some-> ,(cond ((symbolp sexp) `(,sexp ,form-tag))
+                            (:else          (cons (car sexp) (cons form-tag (cdr sexp)))))
+                     ,@rest-sexps)))))
 
 (defmacro cam/when-buffer (buffer-name-or-binding &rest body)
   "Execute BODY if a named buffer exists. BUFFER-NAME-OR-BINDING can be either a string or a list like (binding buffer-name)"
   (if (not (listp buffer-name-or-binding))
       `(cam/when-buffer (_ ,buffer-name-or-binding) ,@body)
     (cl-destructuring-bind (binding buffer-name) buffer-name-or-binding
-      `(when-let ((,binding (cam/buffer-named ,buffer-name)))
+      `(when-let ((,binding (get-buffer ,buffer-name)))
          ,@body))))
 (put 'cam/when-buffer 'lisp-indent-function 1)
 
 (defmacro cam/unless-buffer (buffer-or-buffer-name &rest body)
   "Execute BODY if BUFFER-OR-BUFFER-NAME doesn't exist."
-  `(unless (cam/buffer-named ,buffer-or-buffer-name)
+  `(unless (get-buffer ,buffer-or-buffer-name)
      ,@body))
 (put 'cam/unless-buffer 'lisp-indent-function 1)
 

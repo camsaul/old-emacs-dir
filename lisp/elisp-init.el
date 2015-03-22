@@ -3,6 +3,7 @@
 ;;; Commentary:
 
 (require 'cam-functions)
+(require 'cam-macros)
 
 ;;; Code:
 
@@ -14,6 +15,12 @@
 
 ;;;; GENERAL
 
+(require 'edebug)
+(edebug-Trace-fast-mode)
+(setq debug-on-error t
+      edebug-on-error t
+      edebug-all-forms t)
+
 (defvar cam/last-elisp-buffer nil)
 
 (defun cam/byte-recompile-this-file ()
@@ -22,18 +29,16 @@
 
   (when (and (buffer-file-name)
              (cam/is-init-file-p (buffer-file-name)))
-    (edebug-mode 1)
-    (edebug-Trace-fast-mode)
+    ;; (edebug-mode 1)
+    ;; (edebug-Trace-fast-mode)
     (condition-case _
         (progn
           (byte-recompile-file (buffer-file-name)
                                t  ; force recompile
                                0  ; 0 = compile even if .elc does not exist
                                t) ; load after compiling
-          (message "!")
           (eval-buffer))
       (error
-       (message "HERE!")
        (require 'edebug)
        (edebug-Trace-fast-mode)
        (let ((debug-on-error t)
@@ -76,6 +81,8 @@
   (add-hook 'after-save-hook  #'cam/byte-recompile-this-file t t)
   (add-hook 'after-save-hook
     (lambda ()
+      (auto-complete-mode -1)
+      (auto-complete-mode 1)
       (ac-emacs-lisp-mode-setup)                     ; run setup again or auto-complete doesn't pickup changes
       (setq ac-sources (-distinct ac-sources))) t t) ; clear out the the duplicate sources that have been added))
 
@@ -142,17 +149,17 @@
   "Save and compile current buffer, then switch to *ielm* (starting it if needed)."
   (interactive)
   (setq cam/last-elisp-buffer (current-buffer))
-  (cl-symbol-macrolet ((cl-buffer (cam/buffer-named "*Compile-Log*"))
+  (cl-symbol-macrolet ((cl-buffer (get-buffer "*Compile-Log*"))
                        (cl-buffer-size (cam/when-buffer (b "*Compile-Log*") (with-current-buffer b
                                                                               (line-number-at-pos (point-max))))))
-    (when (buffer-modified-p)
-      (let ((cl-buffer-original-size cl-buffer-size))
-        (save-window-excursion
-          (save-buffer))
-        (when edebug-mode
-          (call-interactively #'edebug-mode))
-        (when (and cl-buffer-original-size cl-buffer (<= (- cl-buffer-size cl-buffer-original-size) 2))
-          (cam/kill-buffer-and-window cl-buffer))))
+    (let ((cl-buffer-original-size cl-buffer-size))
+      (save-window-excursion
+        (save-buffer))
+      ;; disable edebug if it got started (?)
+      (when edebug-mode
+        (call-interactively #'edebug-mode))
+      (when (and cl-buffer-original-size cl-buffer (<= (- cl-buffer-size cl-buffer-original-size) 2))
+        (cam/kill-buffer-and-window cl-buffer)))
     (let ((compile-log-window (cam/some-> cl-buffer
                                           (display-buffer '(() (inhibit-same-window . t))))))
       (cam/unless-buffer "*ielm*"
@@ -168,7 +175,6 @@
           (switch-to-buffer-other-window "*ielm*")
           (when compile-log-window
             (set-window-dedicated-p compile-log-window nil)))))))
-
 
 ;;;; KEY MAPS
 
