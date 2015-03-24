@@ -21,7 +21,6 @@
 
 
 ;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
-(require 'async)
 (async-start
  (lambda ()
    (message "STARTING PACKAGE AUTO-UPDATE...")

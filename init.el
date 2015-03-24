@@ -61,8 +61,7 @@
   blink-cursor-mode                               ; disable blinking cursor - TODO this seem to work unless done after theme loads (?)
   indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
-  set-fringe-mode                                 ; disable fringes
-  )
+  set-fringe-mode)                                ; disable fringes
 
 
 ;;;; GLOBALLY ENABLED MINOR MODES
@@ -115,6 +114,8 @@
 ;; Enable paredit + company when evaluating elisp expressions in minibuffer
 (add-hook 'eval-expression-minibuffer-setup-hook
   (lambda ()
+    (eval-when (compile)
+      (require 'company))
     (cam/enable-minor-modes
       company-mode
       paredit-mode)
@@ -126,7 +127,7 @@
       highlight-error-keywords-mode
       rainbow-delimiters-mode
       (rainbow-mode . nil)))
-  t)
+  :append)
 
 
 ;;;; GENERAL SETTINGS
@@ -390,6 +391,7 @@
 (add-to-list 'auto-mode-alist '("\.js$" . js3-mode))
 (add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 (add-to-list 'interpreter-mode-alist '("python" . django-mode))
 
 (mapc (-lambda ((file . requirement))
@@ -417,3 +419,36 @@
 
 (provide 'init)
 ;;; init.el ends here
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval progn
+           (define-clojure-indent
+             (api-let 2)
+             (auto-parse 1)
+             (catch-api-exceptions 0)
+             (check 1)
+             (context 2)
+             (expect 1)
+             (expect-eval-actual-first 1)
+             (expect-let 1)
+             (ins 1)
+             (let-400 1)
+             (let-404 1)
+             (let-500 1)
+             (match 1)
+             (match-$ 1)
+             (macrolet 1)
+             (org-perms-case 1)
+             (upd 2)
+             (with-credentials 1)))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

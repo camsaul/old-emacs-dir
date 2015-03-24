@@ -64,14 +64,14 @@
   (setq-local edebug-all-forms t)
   (setq-local edebug-trace t)     ; display a trace of function entry and exit (?)
 
-  (add-hook 'before-save-hook #'cam/untabify-current-buffer nil t)
-  (add-hook 'after-save-hook  #'cam/byte-recompile-this-file t t)
+  (add-hook 'before-save-hook #'cam/untabify-current-buffer nil :local)
+  (add-hook 'after-save-hook  #'cam/byte-recompile-this-file :append :local)
   (add-hook 'after-save-hook
     (lambda ()
       (auto-complete-mode -1)
       (auto-complete-mode 1)
-      (ac-emacs-lisp-mode-setup)                     ; run setup again or auto-complete doesn't pickup changes
-      (setq ac-sources (-distinct ac-sources))) t t) ; clear out the the duplicate sources that have been added))
+      (ac-emacs-lisp-mode-setup)                                ; run setup again or auto-complete doesn't pickup changes
+      (setq ac-sources (-distinct ac-sources))) :append :local) ; clear out the the duplicate sources that have been added))
 
   ;; use byte-compile-dynamic when compiling files in .emacs.d
   (when (string= default-directory                ; default-directory is buffer-local dir of the current buffer
@@ -92,7 +92,8 @@
            add-hook
          cl-lambda
          setq
-         setq-default))
+         setq-default
+         with-current-buffer-window))
 
 ;;;; FUNCTIONS
 
@@ -110,6 +111,12 @@
   (interactive)
   (indent-for-tab-command)
   (ac-complete))
+
+(defun cam/ielm-clear-buffer ()
+  "Clear the ielm buffer."
+  (interactive)
+  (comint-kill-region (point-min) (point-max))
+  (ielm-return-for-effect))
 
 (defun cam/pp-macroexpand-last-sexp ()
   "Like pp-macroexpand-last-sexp, does macro expansion inline in the macroexpansion output buffer,
@@ -137,22 +144,22 @@
   (interactive)
   (setq cam/last-elisp-buffer (current-buffer))
   (cl-symbol-macrolet ((cl-buffer (get-buffer "*Compile-Log*"))
-                       (cl-buffer-size (cam/when-buffer (b "*Compile-Log*") (with-current-buffer b
-                                                                              (line-number-at-pos (point-max))))))
-    (let ((cl-buffer-original-size cl-buffer-size))
+                       (cl-buffer-tick (cam/when-buffer (b "*Compile-Log*") (with-current-buffer b
+                                                                              (buffer-modified-tick)))))
+    (let ((cl-buffer-original-tick cl-buffer-tick))
       (save-window-excursion
         (save-buffer))
       ;; disable edebug if it got started (?)
       (when edebug-mode
         (call-interactively #'edebug-mode))
-      (when (and cl-buffer-original-size cl-buffer (<= (- cl-buffer-size cl-buffer-original-size) 2))
+      (when (and cl-buffer-original-tick cl-buffer (<= (- cl-buffer-tick cl-buffer-original-tick) 2))
         (cam/kill-buffer-and-window cl-buffer)))
     (let ((compile-log-window (cam/some-> cl-buffer
                                           (display-buffer '(() (inhibit-same-window . t))))))
       (cam/unless-buffer "*ielm*"
         (save-window-excursion
           (ielm)))
-      (if (and compile-log-window (<= (length (cam/all-window-list)) 2))
+      (if (and compile-log-window (<= (length (window-list-1)) 2))
           (progn
             (select-window (split-window-sensibly compile-log-window) :norecord)
             (switch-to-buffer "*ielm*" nil :force-same-window))
@@ -160,8 +167,9 @@
           (when compile-log-window
             (set-window-dedicated-p compile-log-window t))
           (switch-to-buffer-other-window "*ielm*")
-          (set-window-dedicated-p (cam/current-window) t)
+          (set-window-dedicated-p (selected-window) t)
           (goto-char (point-max))
+          (cam/ielm-clear-buffer)
           (when compile-log-window
             (set-window-dedicated-p compile-log-window nil)))))))
 
@@ -186,9 +194,10 @@
 
 (defun cam/ielm-mode-setup ()
   (cam/elisp-mode-setup)
-  (cam/define-keys major-mode
+  (cam/define-keys inferior-emacs-lisp-mode-map
+    "<C-M-s-return>" #'cam/ielm-switch-to-last-elisp-buffer
     "RET" #'ielm-return
-    "<C-M-s-return>" #'cam/ielm-switch-to-last-elisp-buffer)
+    "C-c M-o" #'cam/ielm-clear-buffer)
   (ac-clear-variables-every-minute))
 
 (add-hook 'ielm-mode-hook #'cam/ielm-mode-setup)

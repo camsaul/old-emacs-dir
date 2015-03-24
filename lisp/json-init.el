@@ -24,7 +24,7 @@
     (add-hook 'before-save-hook
       (lambda ()
         (cam/untabify-current-buffer))
-      nil t)))
+      nil :local)))
 
 (provide 'json-init)
 ;;; json-init.el ends here

@@ -18,7 +18,7 @@
   (call-interactively #'other-window)        ; switch back to magit status window
   (add-hook 'kill-buffer-hook                ; Kill all of the other magit buffers like help + *magit-process*
     #'cam/kill-magit-buffers
-    nil t))
+    nil :local))
 
 (cam/run-fullscreen "magit" magit-status)
 

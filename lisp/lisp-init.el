@@ -13,7 +13,7 @@
     (paredit-mode . " π"))
   (pretty-lambdas)
   (set-face-background 'hl-sexp-face "#222")
-  (add-hook 'before-save-hook 'cam/untabify-current-buffer t t))
+  (add-hook 'before-save-hook 'cam/untabify-current-buffer :append :local))
 
 (defun cam/backward-paredit-kill ()
   "calls paredit-kill with prefix arg 0 which effectively makes it kill backwards."

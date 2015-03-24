@@ -101,12 +101,12 @@
                                (add-hook 'kill-buffer-hook
                                  (lambda ()
                                    (jump-to-register ,window-config))
-                                 t t))))
+                                 :append :local))))
                         fns)))))
 
 (defmacro cam/suppress-messages (&rest body)
   "Suppress messages inside BODY."
-  `(noflet ((message (&rest args) nil))
+  `(noflet ((message (&rest _) nil))
      ,@body))
 
 (defmacro cam/some-> (form &rest sexps)

@@ -224,11 +224,6 @@
         (split-window-sensibly window)))
   (balance-windows))
 
-(defun cam/all-window-list ()
-  "Return all windows across every frame."
-  (-mapcat #'window-list
-           (frame-list)))
-
 (defun cam/kill-buffer-and-window (buffer-or-buffer-name)
   "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
   (when-let ((buffer (get-buffer buffer-or-buffer-name)))
@@ -239,14 +234,10 @@
     (kill-buffer buffer)))
 
 (defun cam/buffer-window (buffer-or-buffer-name)
-  "Return the first window displaying buffer."
-  (when buffer-or-buffer-name
-    (-first (lambda (w) (eq (window-buffer w) (get-buffer buffer-or-buffer-name)))
-            (cam/all-window-list))))
-
-(defun cam/current-window (&optional buffer)
-  "Return the current window for BUFFER (defaults to current buffer)."
-  (cam/buffer-window (or buffer (current-buffer))))
+  "Return the first window displaying buffer or, nil if none exists."
+  (when-let ((buffer (get-buffer buffer-or-buffer-name)))
+    (-first (lambda (window) (eq (window-buffer window) buffer))
+            (window-list-1))))
 
 (provide 'cam-functions)
 ;;; cam-functions.el ends here
