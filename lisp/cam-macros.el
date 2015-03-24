@@ -125,8 +125,10 @@
   (if (not (listp buffer-name-or-binding))
       `(cam/when-buffer (_ ,buffer-name-or-binding) ,@body)
     (cl-destructuring-bind (binding buffer-name) buffer-name-or-binding
-      `(when-let ((,binding (get-buffer ,buffer-name)))
-         ,@body))))
+      (let ((buffer-name-tag (cl-gensym "buffer-name-")))
+        `(when-let ((,buffer-name-tag ,buffer-name))
+           (when-let ((,binding (get-buffer ,buffer-name-tag)))
+             ,@body))))))
 (put 'cam/when-buffer 'lisp-indent-function 1)
 
 (defmacro cam/unless-buffer (buffer-or-buffer-name &rest body)
