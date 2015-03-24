@@ -241,11 +241,11 @@
 
 (cam/define-keys nil
   "<A-return>" #'repeat
-  "<C-s-M-down>" #'windmove-down
+  "<C-s-M-down>" (cam/wrap-ignore-errors #'windmove-down)
   "<C-s-M-left>" #'cam/windmove-left-or-other-frame
   "<C-s-M-return>" #'other-frame
   "<C-s-M-right>" #'cam/windmove-right-or-other-frame
-  "<C-s-M-up>" #'windmove-up
+  "<C-s-M-up>" (cam/wrap-ignore-errors #'windmove-up)
   "<C-s-left>" #'next-buffer
   "<C-s-right>" #'previous-buffer
   "<H-S-left>" #'previous-buffer

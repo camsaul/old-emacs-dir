@@ -111,6 +111,25 @@
       (windmove-right)
     (error (other-frame 1))))
 
+(defun cam/complement (pred-fn)
+  "Return a version of PRED-FN that will return the opposite boolean value."
+  (lambda (&rest args)
+    (not (apply pred-fn args))))
+
+(defun cam/split-argslist (argslist)
+  "Given ARGSLIST, return a list whose car is all regular arg symbols (including &optional ones), and whose CDR is the &rest args symbol, if applicable."
+  (destructuring-bind ((_ &rest regular-args) &optional (rest-arg)) (->> argslist
+                                                                         (cons '_) ; add symbol at start so -split-on will always return two lists
+                                                                         (-remove (-partial #'eq '&optional))
+                                                                         (-split-on '&rest))
+    (cons regular-args rest-arg)))
+
+(defun cam/discover-args (f)
+  "Return argslist for F, resolving it first if it is an autoload."
+  (when (autoloadp (symbol-function f))
+    (autoload-do-load (symbol-function f)))
+  (help-function-arglist f :preserve-names-if-possible))
+
 (defun cam/switch-to-nav-buffer-other-window ()
   "Switch to the *nav* buffer"
   (interactive)
@@ -212,9 +231,9 @@
 
 (defun cam/kill-buffer-and-window (buffer-or-buffer-name)
   "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
-  (when-let (buffer (get-buffer buffer-or-buffer-name))
+  (when-let ((buffer (get-buffer buffer-or-buffer-name)))
     (message "BUFFER: %s" buffer)
-    (when-let (window (cam/buffer-window buffer))
+    (when-let ((window (cam/buffer-window buffer)))
       (message "WINDOW: %s" window)
       (delete-window window))
     (kill-buffer buffer)))

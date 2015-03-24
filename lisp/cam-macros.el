@@ -135,7 +135,31 @@
      ,@body))
 (put 'cam/unless-buffer 'lisp-indent-function 1)
 
+(defmacro cam/edebug-this (&rest body)
+  "Execute BODY inside of a edebug-instrumented function."
+  (let ((fn-tag (cl-gensym "fn-")))
+    `(progn
+       (defun ,fn-tag ()
+         ,@(mapcar #'macroexpand-all body))
+       (,fn-tag))))
 
+(defmacro cam/wrap-fn (f wrapper)
+  "Return a function that wraps F inside WRAPPER.
+   e.g. (cam/wrap-fn #'windmove-up #'ignore-errors)"
+  (-let* ((f (eval f))
+          (wrapper (eval wrapper))
+          (argslist (cam/discover-args f))
+          ((regular-args rest-arg) (cam/split-argslist argslist)))
+    `(lambda ,(help-function-arglist f :preserve-names-if-possible)
+       ,(interactive-form f)
+       (,wrapper
+        ,(if rest-arg
+             `(apply #',f ,@regular-args ,rest-arg)
+           `(,f ,@regular-args))))))
+
+(defmacro cam/wrap-ignore-errors (f)
+  "Call function F inside of an ignore-errors form."
+  `(cam/wrap-fn ,f #'ignore-errors))
 
 (provide 'cam-macros)
 ;;; cam-macros.el ends here

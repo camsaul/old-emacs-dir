@@ -15,43 +15,25 @@
 
 ;;;; GENERAL
 
-(require 'edebug)
-(edebug-Trace-fast-mode)
-(setq debug-on-error t
-      edebug-on-error t
-      edebug-all-forms t)
-
 (defvar cam/last-elisp-buffer nil)
 
 (defun cam/byte-recompile-this-file ()
   "Recompile the current Emacs Lisp file if it is an init file."
   (interactive)
-
   (when (and (buffer-file-name)
              (cam/is-init-file-p (buffer-file-name)))
-    ;; (edebug-mode 1)
-    ;; (edebug-Trace-fast-mode)
-    (condition-case _
-        (progn
-          (byte-recompile-file (buffer-file-name)
-                               t  ; force recompile
-                               0  ; 0 = compile even if .elc does not exist
-                               t) ; load after compiling
-          (eval-buffer))
-      (error
-       (require 'edebug)
-       (edebug-Trace-fast-mode)
-       (let ((debug-on-error t)
-             (edebug-on-error t)
-             (edebug-all-forms t)
-             (edebug-trace t))
-         (condition-case err
-             (eval-buffer)
-           (edebug err)))))))
+    (condition-case err
+        (byte-recompile-file (buffer-file-name)
+                             t  ; force recompile
+                             0  ; 0 = compile even if .elc does not exist
+                             t) ; load after compiling
+      (error (error (error-message-string err))
+             (edebug err)))))
 
 (defun cam/elisp-mode-setup ()
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
   (require 'lisp-init)
+  (require 'edebug)
   (require 'cl-lib-highlight)
   (require 'highlight-cl)
   (require 'morlock)
@@ -66,8 +48,8 @@
     (flycheck-mode . " ✔")
     (aggressive-indent-mode . nil)
     (auto-complete-mode . "AC"))
-
   (ac-emacs-lisp-mode-setup)
+  (edebug-Trace-fast-mode)
 
   ;; additional font-locking
   (turn-on-morlock-mode-if-desired)
@@ -75,7 +57,12 @@
   (cl-lib-highlight-initialize)
   (dash-enable-font-lock)
 
-  (setq flycheck-emacs-lisp-load-path load-path)
+  (setq flycheck-emacs-lisp-load-path load-path
+        lexical-binding t)
+  (setq-local debug-on-error t)
+  (setq-local edebug-on-error t)
+  (setq-local edebug-all-forms t)
+  (setq-local edebug-trace t)     ; display a trace of function entry and exit (?)
 
   (add-hook 'before-save-hook #'cam/untabify-current-buffer nil t)
   (add-hook 'after-save-hook  #'cam/byte-recompile-this-file t t)
@@ -173,6 +160,8 @@
           (when compile-log-window
             (set-window-dedicated-p compile-log-window t))
           (switch-to-buffer-other-window "*ielm*")
+          (set-window-dedicated-p (cam/current-window) t)
+          (goto-char (point-max))
           (when compile-log-window
             (set-window-dedicated-p compile-log-window nil)))))))
 
