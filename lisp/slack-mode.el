@@ -8,6 +8,8 @@
 ;; need to install http-post-simple package (!)
 (cam/setup-autoloads ("http-post-simple" #'http-post-simple-internal))
 
+;; (require 'http-post-simple)
+
 ;; HARASS COWORKERS BY AUTO-POSTING TO SLACK
 
 (defvar slack-channel

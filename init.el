@@ -139,6 +139,8 @@
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
+(warn "<<HERE>> (1)")
+
 (setq
     apropos-do-all t                              ; apropos commands will search more extensively
     auto-revert-verbose nil
@@ -316,12 +318,13 @@
   "M-`" #'cam/projectile-recentf
   "M-j" #'cam/join-next-line
   "M-x" #'helm-M-x
-  "S-<f10>" #'nav                                 ; Open nav buffer  ;; "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
+  "S-<f10>" #'nav                                 ; Open nav buffer
   "s-Z" #'undo-tree-redo
   "s-[" #'cam/force-unindent-region
   "s-]" #'cam/force-indent-region
   "s-b" #'balance-windows
   "s-f" #'ftf-grepsource
+  "s-h" #'git-timemachine                         ; default is ns-do-hide-emacs (minimize Emacs). Please don't ever do that :/
   "s-o" #'ftf-find-file
   "s-y" #'undo-tree-redo
   #'dabbrev-expand #'hippie-expand                ; remap dabbrev-expand bindings (M-/) to hippie-expand

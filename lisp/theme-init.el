@@ -8,6 +8,8 @@
 
 (eval-when-compile
   (require 'cl))
+(require 'moe-theme)
+(require 'powerline)
 
 ;;;; BASIC THEME CONFIG + TWEAKS
 
@@ -18,7 +20,6 @@
   "Source Code Pro-12"
   "Font to use for Emacs.")
 
-(require 'moe-theme)
 (setq moe-theme-highlight-buffer-id nil)
 (moe-dark)
 

@@ -4,6 +4,7 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'async)
 
 ;; ## DONT-PROMPT-ABOUT-KILLING
 (defvar cam/dont-prompt-about-killing-processes
