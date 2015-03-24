@@ -118,10 +118,10 @@
 
 (defun cam/split-argslist (argslist)
   "Given ARGSLIST, return a list whose car is all regular arg symbols (including &optional ones), and whose CDR is the &rest args symbol, if applicable."
-  (destructuring-bind ((_ &rest regular-args) &optional (rest-arg)) (->> argslist
-                                                                         (cons '_) ; add symbol at start so -split-on will always return two lists
-                                                                         (-remove (-partial #'eq '&optional))
-                                                                         (-split-on '&rest))
+  (cl-destructuring-bind ((_ &rest regular-args) &optional (rest-arg)) (->> argslist
+                                                                            (cons '_) ; add symbol at start so -split-on will always return two lists
+                                                                            (-remove (-partial #'eq '&optional))
+                                                                            (-split-on '&rest))
     (cons regular-args rest-arg)))
 
 (defun cam/discover-args (f)
@@ -159,7 +159,7 @@
     (error (ignore-errors
              (delete-file (concat file "c"))))))
 
-(defun cam/noop (&rest args)
+(defun cam/noop (&rest _)
   "A function that ignores ARGS and doesn't do anything."
   nil)
 

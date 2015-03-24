@@ -147,7 +147,7 @@
   "Return a function that wraps F inside WRAPPER.
    e.g. (cam/wrap-fn #'windmove-up #'ignore-errors)"
   (-let* ((f (eval f))
-          (wrapper (eval wrapper))
+          (wrapper (eval wrapper))         ; #'windmove-up comes in like (function windmove-up). Convert to windmove-up
           (argslist (cam/discover-args f))
           ((regular-args rest-arg) (cam/split-argslist argslist)))
     `(lambda ,(help-function-arglist f :preserve-names-if-possible)
