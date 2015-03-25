@@ -228,16 +228,10 @@
   "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
   (when-let ((buffer (get-buffer buffer-or-buffer-name)))
     (message "BUFFER: %s" buffer)
-    (when-let ((window (cam/buffer-window buffer)))
+    (when-let ((window (get-buffer-window buffer t)))
       (message "WINDOW: %s" window)
       (delete-window window))
     (kill-buffer buffer)))
-
-(defun cam/buffer-window (buffer-or-buffer-name)
-  "Return the first window displaying buffer or, nil if none exists."
-  (when-let ((buffer (get-buffer buffer-or-buffer-name)))
-    (-first (lambda (window) (eq (window-buffer window) buffer))
-            (window-list-1))))
 
 (provide 'cam-functions)
 ;;; cam-functions.el ends here

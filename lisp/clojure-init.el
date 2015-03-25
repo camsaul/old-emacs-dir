@@ -5,6 +5,7 @@
 
 (mapc #'require '(cam-functions
                   cam-macros
+                  s
                   lisp-init
                   clojure-mode
                   auto-complete
@@ -75,13 +76,13 @@
 (cam/define-clojure-keys cider-mode-map)
 (cam/define-clojure-keys cider-repl-mode-map)
 (cam/define-keys cider-repl-mode-map
-  "<C-M-s-return>" #'cider-switch-to-last-clojure-buffer
+  "<C-M-s-return>" #'cam/switch-to-last-clojure-buffer
   "RET" #'cider-repl-return)
 (setq cider-auto-select-error-buffer nil          ; PLEASE STOP AUTO-JUMPING TO THE ERROR BUFFER !
       cider-repl-use-clojure-font-lock t          ; REPL uses same (nicer) font locking as Clojure Mode buffers (supposedly!)
       cider-repl-use-pretty-printing t)           ; PRETTY PRINTING <3
 
-
+(defvar cam/last-clojure-buffer nil)
 
 (defmacro cam/with-cider (&rest body)
   "Evaluate the contents of BODY with a valid cider connection, starting one if neeed."
@@ -101,15 +102,27 @@
          (add-hook 'cider-connected-hook #',fn-tag :append :local)))))
 (put 'cam/with-cider 'lisp-indent-function 0)
 
+(defun cam/cider-buffer-name ()
+  "Return the name of an existing cider buffer instead of one with <2> tagged on the end."
+  (cadr (s-match "\\(\\*[^*]+\\*\\)<?.?>?" (cider-repl-buffer-name))))
+
+(defun cam/switch-to-last-clojure-buffer ()
+  (interactive)
+  (when-let ((w (get-buffer-window cam/last-clojure-buffer)))
+    (select-window w)))
+
 (defun cam/save-compile-switch-to-nrepl ()
   "Save + compile current buffer, set its namespace in the REPL and switch to the REPL (starting it if needed)."
   (interactive)
   (save-buffer)
   (cam/with-cider
-   (cider-load-buffer)
-   (call-interactively #'cider-repl-set-ns)
-   (cider-switch-to-relevant-repl-buffer)
-   (cider-repl-clear-buffer)))
+    (cider-load-buffer)
+    (call-interactively #'cider-repl-set-ns)
+    (setq cam/last-clojure-buffer (current-buffer))
+    (if-let ((w (get-buffer-window (cam/cider-buffer-name)))) ; switch to existing *cider-repl* window
+        (select-window w)                                     ; if posssible rather than creating a duplicate one
+      (cider-switch-to-relevant-repl-buffer))
+    (cider-repl-clear-buffer)))
 
 ;; (defmacro fset-test (x &rest body)
 ;;   (let ((fn-tag (cl-gensym "cam/with-cider-fn-"))
@@ -131,7 +144,7 @@
 
 (defadvice message (after cam/message-tail-messagess-buffer activate)
   "When *Messages* buffer is visible, tail it."
-  (when-let ((w (cam/buffer-window "*Messages*")))
+  (when-let ((w (get-buffer-window "*Messages*")))
     (set-window-point w (with-current-buffer "*Messages*" (point-max)))))
 
 (defun cam/pretty-fn ()

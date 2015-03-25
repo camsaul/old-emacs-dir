@@ -129,6 +129,19 @@
       (rainbow-mode . nil)))
   :append)
 
+;; When showing the recentf files list start up helm-swoop
+
+(defun cam/recentf-mode-setup ()
+  (add-hook 'window-configuration-change-hook #'cam/recentf-selected :append :local))
+
+(defun cam/recentf-selected ()
+  (when (eq (get-buffer-window "*Open Recent*") (selected-window))
+    (remove-hook 'window-configuration-change-hook #'cam/recentf-selected :local)
+    (let ((helm-swoop-pattern nil))
+      (call-interactively #'helm-swoop))))
+
+
+(add-hook 'recentf-dialog-mode-hook #'cam/recentf-mode-setup :append)
 
 ;;;; GENERAL SETTINGS
 
@@ -153,6 +166,7 @@
 
     bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
     clean-buffer-list-delay-special 30
+    custom-safe-themes t                          ; treat all themse as safe
 
     display-buffer-base-action                    ; default display action
     '((display-buffer-reuse-window                ; 1) if buffer is already displayed then keep that window
@@ -427,6 +441,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#303030" "#ff4b4b" "#d7ff5f" "#fce94f" "#5fafd7" "#d18aff" "#afd7ff" "#c6c6c6"])
+ '(custom-safe-themes
+   (quote
+    ("42ccd5eadda3546a89026b94794df7f4addadf25417b96917cf9db2f892b25a4" default)))
  '(safe-local-variable-values
    (quote
     ((eval progn

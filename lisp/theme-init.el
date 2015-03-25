@@ -1,5 +1,4 @@
-;; -*- lexical-binding: t -*-
-;; -*- comment-column: 60 -*-
+;; -*- lexical-binding: t; comment-column: 60 -*-
 
 ;;; theme-init -- Setup Emacs theme
 ;;; Commentary:
@@ -49,7 +48,7 @@
 (defun cam/-load-faces-if-needed ()
   "Define the faces we'll use in our powerline if they're not already defined."
   (condition-case _
-      (face-id 'pl-active-2)
+      (face-id 'pl-active-100)
     (error
      (cl-macrolet ((def-pl-face (name bg-color fg-color) (let ((bg (if (symbolp bg-color) (face-background bg-color)
                                                                      bg-color))
@@ -68,6 +67,7 @@
                                                               `(def-pl-face ,@face))
                                                             faces))))
        (def-pl-faces
+         (pl-color-face "#e52d2d" "#FFFFFF")
          (pl-active-1 region region)
          (pl-active-2 secondary-selection secondary-selection)
          (pl-active-3 hl-line "#DDDDDD")
@@ -90,33 +90,33 @@
      (progn
        (cam/-load-faces-if-needed)
        (let* ((active (powerline-selected-window-active))
-              (color-face (if active nil 'pl-inactive-color-face))
+              (color-face (if active 'pl-color-face 'pl-inactive-color-face))
               (face1 (if active 'pl-active-1 'pl-inactive-1))
               (face2 (if active 'pl-active-2 'pl-inactive-2))
               (face3 (if active 'pl-active-3 'pl-inactive-3))
               (lhs (list
                     (powerline-raw "EMACS " color-face 'l)
-                    (powerline-slant-left color-face face1)
+                    (powerline-curve-left color-face face1)
                     (powerline-buffer-id face1 'l)
-                    (powerline-raw (concat (if buffer-read-only " (readonly)"
-                                             (when (buffer-modified-p) "*"))
+                    (powerline-raw (concat (if buffer-read-only " [readonly]"
+                                             (when (buffer-modified-p) " [modified]"))
                                            " ") face1 '1)
-                    (powerline-slant-left face1 face2)
+                    (powerline-curve-left face1 face2)
 
                     (powerline-major-mode face2 'l)
                     (powerline-process face2)
                     (powerline-raw " " face2)
-                    (powerline-slant-left face2 face3)
+                    (powerline-curve-left face2 face3)
 
                     (powerline-minor-modes face3 'l)
                     (powerline-narrow face3 'l)
                     (powerline-raw " " face3)))
               (rhs (list
                     (powerline-raw "%n " face3)               ; 'Narrow' when narrowing is in effect
-                    (powerline-slant-left face3 face1)
+                    (powerline-curve-left face3 face1)
 
                     (powerline-raw (concat " ♠ %3l ♣  ♥ %3c ♦") face1 'r)
-                    (powerline-slant-left face1 color-face)
+                    (powerline-curve-left face1 color-face)
 
                     (powerline-raw " %M" color-face)          ; %M -> global-mode-string
                     (powerline-vc color-face 'r))))
