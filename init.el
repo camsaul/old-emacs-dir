@@ -129,19 +129,6 @@
       (rainbow-mode . nil)))
   :append)
 
-;; When showing the recentf files list start up helm-swoop
-
-(defun cam/recentf-mode-setup ()
-  (add-hook 'window-configuration-change-hook #'cam/recentf-selected :append :local))
-
-(defun cam/recentf-selected ()
-  (when (eq (get-buffer-window "*Open Recent*") (selected-window))
-    (remove-hook 'window-configuration-change-hook #'cam/recentf-selected :local)
-    (let ((helm-swoop-pattern nil))
-      (call-interactively #'helm-swoop))))
-
-
-(add-hook 'recentf-dialog-mode-hook #'cam/recentf-mode-setup :append)
 
 ;;;; GENERAL SETTINGS
 
@@ -177,6 +164,8 @@
 
     echo-keystrokes 0.1                           ; shorter delay before showing keystrokes in progress
     global-auto-revert-non-file-buffers t         ; also refresh dired but be quiet about it
+    recentf-max-menu-items 50                     ; do we need these if we're using helm-recentf ?
+    recentf-max-saved-items 50
     inhibit-splash-screen t
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
@@ -206,7 +195,6 @@
     ns-right-command-modifier 'hyper
     ns-right-control-modifier 'hyper
     ns-right-option-modifier 'alt
-    recentf-max-menu-items 50
     redisplay-dont-pause t                        ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
     require-final-newline t                       ; add final newline on save
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
@@ -314,7 +302,7 @@
   "C-x C-b" #'helm-buffers-list                   ; this is (seemingly) better than buffer-menu or ibuffer
   "C-x C-d" #'ido-dired                           ; dired instead of list directory
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
-  "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
+  "C-x C-r" #'helm-recentf                        ; display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs
   "C-x b" #'helm-buffers-list
   "C-x k" #'kill-this-buffer                      ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
@@ -399,6 +387,7 @@
         "editorconfig"
         "find-things-fast"
         "git-timemachine"
+        "helm"
         "ido"
         "magit"
         "multiple-cursors"))
