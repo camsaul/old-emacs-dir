@@ -84,7 +84,7 @@
   (condition-case nil
       (prin1 (eval (read (current-kill 0)))
              (current-buffer))
-    (error (message "Invalid expression")
+    (error (message "Invalid sexpession")
            (insert (current-kill 0)))))
 
 (defun cam/force-indent-region ()
@@ -111,6 +111,25 @@
       (windmove-right)
     (error (other-frame 1))))
 
+(defun cam/complement (pred-fn)
+  "Return a version of PRED-FN that will return the opposite boolean value."
+  (lambda (&rest args)
+    (not (apply pred-fn args))))
+
+(defun cam/split-argslist (argslist)
+  "Given ARGSLIST, return a list whose car is all regular arg symbols (including &optional ones), and whose CDR is the &rest args symbol, if applicable."
+  (cl-destructuring-bind ((_ &rest regular-args) &optional (rest-arg)) (->> argslist
+                                                                            (cons '_) ; add symbol at start so -split-on will always return two lists
+                                                                            (-remove (-partial #'eq '&optional))
+                                                                            (-split-on '&rest))
+    (cons regular-args rest-arg)))
+
+(defun cam/discover-args (f)
+  "Return argslist for F, resolving it first if it is an autoload."
+  (when (autoloadp (symbol-function f))
+    (autoload-do-load (symbol-function f)))
+  (help-function-arglist f :preserve-names-if-possible))
+
 (defun cam/switch-to-nav-buffer-other-window ()
   "Switch to the *nav* buffer"
   (interactive)
@@ -132,7 +151,15 @@
                  (file-in-directory-p filename "~/.emacs.d/lisp"))))
     (error nil)))
 
-(defun cam/noop (&rest args)
+(defun cam/safe-byte-compile (file)
+  (condition-case _
+      (byte-recompile-file file
+                           nil            ; don't force recompile
+                           0)             ; recompile even if there's no .elc file
+    (error (ignore-errors
+             (delete-file (concat file "c"))))))
+
+(defun cam/noop (&rest _)
   "A function that ignores ARGS and doesn't do anything."
   nil)
 
@@ -185,6 +212,26 @@
   (interactive)
   (projectile-mode 1) ; this is not always on just for performance reasons
   (projectile-recentf))
+
+(defun cam/split-window-sensibly-right (&optional window)
+  "Like split-window-sensibly, but prefers splitting the window to the right instead of below.
+   Call balance-windows after the split."
+  (let ((height (window-height window))
+        (width (window-width window)))
+    (or (unless (> (* 2.1 height) width)
+          (let ((split-height-threshold 1000))
+            (split-window-sensibly window)))
+        (split-window-sensibly window)))
+  (balance-windows))
+
+(defun cam/kill-buffer-and-window (buffer-or-buffer-name)
+  "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
+  (when-let ((buffer (get-buffer buffer-or-buffer-name)))
+    (message "BUFFER: %s" buffer)
+    (when-let ((window (get-buffer-window buffer t)))
+      (message "WINDOW: %s" window)
+      (delete-window window))
+    (kill-buffer buffer)))
 
 (provide 'cam-functions)
 ;;; cam-functions.el ends here

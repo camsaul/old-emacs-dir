@@ -4,6 +4,7 @@
 ;;; Commentary:
 ;;; Code:
 
+(require 'async)
 
 ;; ## DONT-PROMPT-ABOUT-KILLING
 (defvar cam/dont-prompt-about-killing-processes
@@ -21,7 +22,6 @@
 
 
 ;; ;; AUTO-UPDATE PACKAGES ON LAUNCH ? YOU CRAY !
-(require 'async)
 (async-start
  (lambda ()
    (message "STARTING PACKAGE AUTO-UPDATE...")

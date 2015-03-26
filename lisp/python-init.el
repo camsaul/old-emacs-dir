@@ -173,8 +173,8 @@
     (lambda ()
       (cam/untabify-current-buffer)
       (cam/run-autopep8))
-    nil t)
-  (add-hook 'after-save-hook 'run-isort nil t))
+    nil :local)
+  (add-hook 'after-save-hook 'run-isort nil :local))
 
 (defalias 'cam/python-mode-setup 'cam/django-mode-setup)
 (add-hook 'inferior-python-mode-hook 'cam/python-mode-setup)

@@ -1,5 +1,4 @@
-;; -*- lexical-binding: t -*-
-;; -*- comment-column: 50 -*-
+;; -*- lexical-binding: t;  comment-column: 50 -*-
 
 ;;; init -- General Setup
 ;;; Commentary:
@@ -49,6 +48,7 @@
   ("bytecomp" #'byte-recompile-file)
   ("find-things-fast" #'ftf-find-file #'ftf-grepsource)
   ("loccur" #'loccur #'loccur-current #'loccur-previous-match)
+  ("helm-command" #'helm-get-mode-map-from-mode)
   ("highlight-error-keywords" #'highlight-error-keywords-mode)
   ("multiple-cursors" #'mc/mark-all-like-this #'mc/edit-lines #'mc/mark-previous-like-this #'mc/mark-next-like-this)
   ("s" #'s-replace #'s-split #'s-starts-with-p)
@@ -61,8 +61,7 @@
   blink-cursor-mode                               ; disable blinking cursor - TODO this seem to work unless done after theme loads (?)
   indent-tabs-mode                                ; disable indentation w/ tabs
   line-number-mode                                ; line numbers on the modeline
-  set-fringe-mode                                 ; disable fringes
-  )
+  set-fringe-mode)                                ; disable fringes
 
 
 ;;;; GLOBALLY ENABLED MINOR MODES
@@ -99,20 +98,24 @@
     (delete-trailing-whitespace)
     (set-buffer-file-coding-system 'utf-8-auto-unix)))
 
-(add-hook 'after-save-hook
-  (lambda ()
-    (executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+;; (defun cam/angry-police-captain-on-save ()
+;;   "Show a AngryPoliceCaptain.com quote"
+;;   (unless (or (active-minibuffer-window)
+;;               (minibufferp (current-buffer))
+;;               (eq major-mode 'package-menu-mode))
+;;     (with-timeout (0.25 nil)
+;;       (ignore-errors
+;;         (angry-police-captain)))))
+;; (add-hook 'after-save-hook #'cam/angry-police-captain-on-save)
 
-    ;; show a AngryPoliceCaptain.com quote
-    (unless (or (active-minibuffer-window)
-                (minibufferp (current-buffer))
-                (eq major-mode 'package-menu-mode))
-      (with-timeout (0.25 nil)
-        (angry-police-captain)))))
+(add-hook 'after-save-hook #'executable-make-buffer-file-executable-if-script-p) ; if we're saving a script, give it permissions to execute
+
 
 ;; Enable paredit + company when evaluating elisp expressions in minibuffer
 (add-hook 'eval-expression-minibuffer-setup-hook
   (lambda ()
+    (eval-when (compile)
+      (require 'company))
     (cam/enable-minor-modes
       company-mode
       paredit-mode)
@@ -124,7 +127,7 @@
       highlight-error-keywords-mode
       rainbow-delimiters-mode
       (rainbow-mode . nil)))
-  t)
+  :append)
 
 
 ;;;; GENERAL SETTINGS
@@ -136,18 +139,33 @@
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
+(warn "<<HERE>> (1)")
+
 (setq
     apropos-do-all t                              ; apropos commands will search more extensively
     auto-revert-verbose nil
     auto-window-vscroll nil                       ; don't 'automatically adjust window to view tall lines'
+
     backup-directory-alist                        ; Write backups to  ~/.emacs.d/backups
     `(("." . ,(expand-file-name
                (concat user-emacs-directory
                        "backups"))))
+
     bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
     clean-buffer-list-delay-special 30
+    custom-safe-themes t                          ; treat all themse as safe
+
+    display-buffer-base-action                    ; default display action
+    '((display-buffer-reuse-window                ; 1) if buffer is already displayed then keep that window
+       display-buffer-in-previous-window          ; 2) otherwise attempt to display in a window where it was previously displayed
+       display-buffer-use-some-window)            ; 3) otherwise just display in some other window
+      (inhibit-same-window . t)                   ; don't display buffer in current window
+      (reusable-frames . t))                      ; consider windows on all frames
+
     echo-keystrokes 0.1                           ; shorter delay before showing keystrokes in progress
     global-auto-revert-non-file-buffers t         ; also refresh dired but be quiet about it
+    recentf-max-menu-items 50                     ; do we need these if we're using helm-recentf ?
+    recentf-max-saved-items 50
     inhibit-splash-screen t
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
@@ -164,13 +182,19 @@
                                    "A-~" "C-c"
                                    "C-h" "C-x"
                                    "M-g" "M-o")
-    mouse-wheel-scroll-amount '(1 ((shift) . 1 ))
+
+    mouse-wheel-scroll-amount '(1                 ; only scroll one line; allow scrolling with modifier keys
+                                ((alt) . 1)
+                                ((control) . 1)
+                                ((hyper) . 1)
+                                ((meta) . 1)
+                                ((shift) . 1)
+                                ((super) . 1))
     mouse-yank-at-point t                         ; mouse yank commands yank at point instead of at click.
     nav-width 30                                  ; nav should be 30 chars wide (default is 18)
     ns-right-command-modifier 'hyper
     ns-right-control-modifier 'hyper
     ns-right-option-modifier 'alt
-    recentf-max-menu-items 50
     redisplay-dont-pause t                        ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
     require-final-newline t                       ; add final newline on save
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
@@ -178,6 +202,10 @@
     scroll-margin 1
     select-enable-clipboard t                     ; Use the clipboard in addition to emacs kill ring
     select-enable-primary t                       ; cutting and pasting uses the primary selection (?)
+
+    split-window-preferred-function               ; preferred function to use when splitting a window (default is split-window-sensibly)
+    #'cam/split-window-sensibly-right
+
     w32-apps-modifier 'hyper
     w32-lwindow-modifier 'super
     w32-pass-lwindow-to-system nil
@@ -218,11 +246,11 @@
 
 (cam/define-keys nil
   "<A-return>" #'repeat
-  "<C-s-M-down>" #'windmove-down
+  "<C-s-M-down>" (cam/wrap-ignore-errors #'windmove-down)
   "<C-s-M-left>" #'cam/windmove-left-or-other-frame
   "<C-s-M-return>" #'other-frame
   "<C-s-M-right>" #'cam/windmove-right-or-other-frame
-  "<C-s-M-up>" #'windmove-up
+  "<C-s-M-up>" (cam/wrap-ignore-errors #'windmove-up)
   "<C-s-left>" #'next-buffer
   "<C-s-right>" #'previous-buffer
   "<H-S-left>" #'previous-buffer
@@ -274,7 +302,7 @@
   "C-x C-b" #'helm-buffers-list                   ; this is (seemingly) better than buffer-menu or ibuffer
   "C-x C-d" #'ido-dired                           ; dired instead of list directory
   "C-x C-g" #'keyboard-quit                       ; Quit commands that I started typing with C-x
-  "C-x C-r" #'recentf-open-files                  ; display recent files (overrides open file in read-only mode)
+  "C-x C-r" #'helm-recentf                        ; display recent files (overrides open file in read-only mode)
   "C-x C-z" nil                                   ; disable minimize emacs
   "C-x b" #'helm-buffers-list
   "C-x k" #'kill-this-buffer                      ; kill-this-buffer instead of kill-buffer (prompts for which buffer)
@@ -292,12 +320,13 @@
   "M-`" #'cam/projectile-recentf
   "M-j" #'cam/join-next-line
   "M-x" #'helm-M-x
-  "S-<f10>" #'nav                                 ; Open nav buffer  ;; "M-x" #'smex                                    ; smex is IDO-mode like M-x behavior
+  "S-<f10>" #'nav                                 ; Open nav buffer
   "s-Z" #'undo-tree-redo
   "s-[" #'cam/force-unindent-region
   "s-]" #'cam/force-indent-region
   "s-b" #'balance-windows
   "s-f" #'ftf-grepsource
+  "s-h" #'git-timemachine                         ; default is ns-do-hide-emacs (minimize Emacs). Please don't ever do that :/
   "s-o" #'ftf-find-file
   "s-y" #'undo-tree-redo
   #'dabbrev-expand #'hippie-expand                ; remap dabbrev-expand bindings (M-/) to hippie-expand
@@ -324,12 +353,11 @@
 
 ;;;; RECOMPILE .EL FILES IN .EMACS.D AS NEEDED
 
+                                                  ; ; try to delete the .elc file
+
 (let ((byte-compile-dynamic t))                   ; compile function bodies so they load lazily
-  (mapc (lambda (file)
-          (byte-recompile-file file
-                               nil                ; don't force recompile
-                               0))                ; recompile even if there's no .elc file
-        cam/init-files))
+  (mapc #'cam/safe-byte-compile cam/init-files))
+
 
 
 ;;;; LOAD INIT FILES
@@ -359,6 +387,7 @@
         "editorconfig"
         "find-things-fast"
         "git-timemachine"
+        "helm"
         "ido"
         "magit"
         "multiple-cursors"))
@@ -368,6 +397,7 @@
 (add-to-list 'auto-mode-alist '("\.js$" . js3-mode))
 (add-to-list 'auto-mode-alist '("\\.py\\'" . django-mode))
 (add-to-list 'auto-mode-alist '("\\.pl\\'" . cperl-mode))
+(add-to-list 'auto-mode-alist '("\.cljs$" . clojure-mode))
 (add-to-list 'interpreter-mode-alist '("python" . django-mode))
 
 (mapc (-lambda ((file . requirement))
@@ -400,6 +430,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#303030" "#ff4b4b" "#d7ff5f" "#fce94f" "#5fafd7" "#d18aff" "#afd7ff" "#c6c6c6"])
+ '(custom-safe-themes
+   (quote
+    ("42ccd5eadda3546a89026b94794df7f4addadf25417b96917cf9db2f892b25a4" default)))
  '(safe-local-variable-values
    (quote
     ((eval progn
@@ -407,6 +442,7 @@
              (api-let 2)
              (auto-parse 1)
              (catch-api-exceptions 0)
+             (check 1)
              (context 2)
              (expect 1)
              (expect-eval-actual-first 1)
@@ -414,6 +450,7 @@
              (ins 1)
              (let-400 1)
              (let-404 1)
+             (let-500 1)
              (match 1)
              (match-$ 1)
              (macrolet 1)

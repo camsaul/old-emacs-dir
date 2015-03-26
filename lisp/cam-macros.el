@@ -4,9 +4,10 @@
 ;;; This gets loaded before cam-functions
 ;;; Code:
 
-(defmacro cam/define-keys (keymap &rest pairs)
+(defmacro cam/define-keys (keymap-or-mode &rest pairs)
   "Map pairs of KEY -> FN.
-   If KEYMAP is non-nil,  map keys for the mode map via 'define-key'; otherwise map globally via 'global-set-key'.
+   If KEYMAP-OR-MODE is a key map or major mode, map keys for the mode map via 'define-key';
+   otherwise map globally via 'global-set-key'.
 
    KEY may be a string such as 's-b' or another function, in which case the binding(s) for that function will be remapped
    with the ['remap #'other-fn] form
@@ -16,9 +17,12 @@
       \"s-b\" #'balance-windows     ; bind s-b to balance-windows
       #'discover-my-major #'my-func ; replace keybindings to discover-my-major with ones to my-func
   "
-  (let ((def-key (if keymap `(define-key ,keymap)
-                   '(global-set-key))))
-    `(progn
+  (let* ((resolved-mode-map (cl-gensym "mode-map-"))
+         (def-key (if keymap-or-mode `(define-key ,resolved-mode-map)
+                    '(global-set-key))))
+    `(let ((,resolved-mode-map ,(when keymap-or-mode
+                                  `(if (keymapp ,keymap-or-mode) ,keymap-or-mode
+                                     (eval (helm-get-mode-map-from-mode ,keymap-or-mode))))))
        ,@(mapcar (-lambda ((key fn))
                    `(,@def-key ,(if (stringp key) (list 'kbd key)
                                   (list 'vector ''remap key))
@@ -59,7 +63,8 @@
 (put 'cam/disable-minor-modes 'lisp-indent-function 0)
 
 (defmacro cam/setup-autoloads (&rest autoloads)
-  "Setup AUTOLOADS with the format (package-name-string symbol1 symbol2 ...) e.g. (cam/setup-autoloads (\"bytecomp\" byte-recompile-file))."
+  "Setup AUTOLOADS with the format (package-name-string symbol1 symbol2 ...)
+   e.g. (cam/setup-autoloads (\"bytecomp\" #'byte-recompile-file))."
   `(progn ,@(cl-reduce 'append
                        (mapcar (lambda (autoload-group)
                                  (let ((file (car autoload-group))
@@ -96,14 +101,67 @@
                                (add-hook 'kill-buffer-hook
                                  (lambda ()
                                    (jump-to-register ,window-config))
-                                 t t))))
+                                 :append :local))))
                         fns)))))
 
 (defmacro cam/suppress-messages (&rest body)
   "Suppress messages inside BODY."
-  `(noflet ((message (&rest args) nil))
+  `(noflet ((message (&rest _) nil))
      ,@body))
 
+(defmacro cam/some-> (form &rest sexps)
+  "Similar to Clojure ->."
+  (if (not sexps) form
+    (let ((sexp (car sexps))
+          (rest-sexps (cdr sexps))
+          (form-tag (cl-gensym "form-")))
+      `(when-let ((,form-tag ,form))
+         (cam/some-> ,(cond ((symbolp sexp) `(,sexp ,form-tag))
+                            (:else          (cons (car sexp) (cons form-tag (cdr sexp)))))
+                     ,@rest-sexps)))))
+
+(defmacro cam/when-buffer (buffer-name-or-binding &rest body)
+  "Execute BODY if a named buffer exists. BUFFER-NAME-OR-BINDING can be either a string or a list like (binding buffer-name)"
+  (if (not (listp buffer-name-or-binding))
+      `(cam/when-buffer (_ ,buffer-name-or-binding) ,@body)
+    (cl-destructuring-bind (binding buffer-name) buffer-name-or-binding
+      (let ((buffer-name-tag (cl-gensym "buffer-name-")))
+        `(when-let ((,buffer-name-tag ,buffer-name))
+           (when-let ((,binding (get-buffer ,buffer-name-tag)))
+             ,@body))))))
+(put 'cam/when-buffer 'lisp-indent-function 1)
+
+(defmacro cam/unless-buffer (buffer-or-buffer-name &rest body)
+  "Execute BODY if BUFFER-OR-BUFFER-NAME doesn't exist."
+  `(unless (get-buffer ,buffer-or-buffer-name)
+     ,@body))
+(put 'cam/unless-buffer 'lisp-indent-function 1)
+
+(defmacro cam/edebug-this (&rest body)
+  "Execute BODY inside of a edebug-instrumented function."
+  (let ((fn-tag (cl-gensym "fn-")))
+    `(progn
+       (defun ,fn-tag ()
+         ,@(mapcar #'macroexpand-all body))
+       (,fn-tag))))
+
+(defmacro cam/wrap-fn (f wrapper)
+  "Return a function that wraps F inside WRAPPER.
+   e.g. (cam/wrap-fn #'windmove-up #'ignore-errors)"
+  (-let* ((f (eval f))
+          (wrapper (eval wrapper))         ; #'windmove-up comes in like (function windmove-up). Convert to windmove-up
+          (argslist (cam/discover-args f))
+          ((regular-args rest-arg) (cam/split-argslist argslist)))
+    `(lambda ,(help-function-arglist f :preserve-names-if-possible)
+       ,(interactive-form f)
+       (,wrapper
+        ,(if rest-arg
+             `(apply #',f ,@regular-args ,rest-arg)
+           `(,f ,@regular-args))))))
+
+(defmacro cam/wrap-ignore-errors (f)
+  "Call function F inside of an ignore-errors form."
+  `(cam/wrap-fn ,f #'ignore-errors))
 
 (provide 'cam-macros)
 ;;; cam-macros.el ends here

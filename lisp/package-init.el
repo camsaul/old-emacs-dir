@@ -104,7 +104,6 @@
     pyflakes                  ; run the python pyflakes checker putting hits in a grep buffer
     pymacs                    ; Interface between Emacs Lisp and Python
     python                    ; Python's flying circus support for Emacs
-    python-magic              ; outline mode extension for python mode
     python-pep8               ; minor mode for running `pep8'
     rainbow-delimiters        ; Highlight nested parens, brackets, braces a different color at each depth.
     rainbow-mode              ; Colorize color names in buffers
