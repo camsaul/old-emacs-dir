@@ -233,5 +233,10 @@
       (delete-window window))
     (kill-buffer buffer)))
 
+(defun cam/toggle-window-dedicated-p ()
+  "Toggle whether the selected window is dedicated to its buffer."
+  (interactive)
+  (set-window-dedicated-p (selected-window) (not (window-dedicated-p))))
+
 (provide 'cam-functions)
 ;;; cam-functions.el ends here

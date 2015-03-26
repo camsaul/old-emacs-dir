@@ -98,8 +98,12 @@
                     (powerline-raw "EMACS " color-face 'l)
                     (powerline-curve-left color-face face1)
                     (powerline-buffer-id face1 'l)
-                    (powerline-raw (concat (if buffer-read-only " [readonly]"
-                                             (when (buffer-modified-p) " [modified]"))
+                    (powerline-raw (concat (when (buffer-modified-p)
+                                             " [modified]")
+                                           (when buffer-read-only
+                                             " [readonly]")
+                                           (when (window-dedicated-p (get-buffer-window))
+                                             " [dedicated]")
                                            " ") face1 '1)
                     (powerline-curve-left face1 face2)
 

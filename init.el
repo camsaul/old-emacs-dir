@@ -309,6 +309,7 @@
   "C-x o" #'ace-window                            ; override default other-buffer; this is much more useful
   "C-x r r" #'register-list                       ; overrides copy-rectangle-to-register, which I don't think I will ever use
   "C-x u" nil                                     ; disable emacs default keybinding for undo, use C-z instead
+  "C-x w" #'cam/toggle-window-dedicated-p
   "C-x z" nil                                     ; disable minimize emacs
   "C-z" nil                                       ; disable minimize emacs
   "H-;" #'loccur-current                          ; folder current buffer to lines containing the current word
@@ -425,41 +426,3 @@
 
 (provide 'init)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#303030" "#ff4b4b" "#d7ff5f" "#fce94f" "#5fafd7" "#d18aff" "#afd7ff" "#c6c6c6"])
- '(custom-safe-themes
-   (quote
-    ("42ccd5eadda3546a89026b94794df7f4addadf25417b96917cf9db2f892b25a4" default)))
- '(safe-local-variable-values
-   (quote
-    ((eval progn
-           (define-clojure-indent
-             (api-let 2)
-             (auto-parse 1)
-             (catch-api-exceptions 0)
-             (check 1)
-             (context 2)
-             (expect 1)
-             (expect-eval-actual-first 1)
-             (expect-let 1)
-             (ins 1)
-             (let-400 1)
-             (let-404 1)
-             (let-500 1)
-             (match 1)
-             (match-$ 1)
-             (macrolet 1)
-             (org-perms-case 1)
-             (upd 2)
-             (with-credentials 1)))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
