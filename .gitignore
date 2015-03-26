@@ -18,3 +18,5 @@ history
 *places
 async-*.log
 projectile-bookmarks.eld
+.custom.el
+recentf

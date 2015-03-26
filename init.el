@@ -153,7 +153,9 @@
 
     bm-cycle-all-buffers t                        ; visual bookmarks bm-next and bm-previous should cycle all buffers
     clean-buffer-list-delay-special 30
-    custom-safe-themes t                          ; treat all themse as safe
+    custom-file (concat user-emacs-directory      ; write customizations to ~/.emacs.d/.custom.el instead of to init.el
+                        ".custom.el")
+    custom-safe-themes t                          ; treat all themes as safe
 
     display-buffer-base-action                    ; default display action
     '((display-buffer-reuse-window                ; 1) if buffer is already displayed then keep that window
@@ -337,8 +339,8 @@
 
 (defvar cam/init-files
   (-filter 'cam/is-init-file-p
-           (cons "~/.emacs.d/init.el"
-                 (directory-files "~/.emacs.d/lisp"
+           (cons (concat user-emacs-directory "init.el")
+                 (directory-files (concat user-emacs-directory "lisp")
                                   t ; return file's absolute (full) name
                                   "^[^#.].*.el$")))
   "All the Emacs Lisp init files in my ~/.emacs.d directory.")
@@ -371,7 +373,7 @@
            (switch-to-buffer "*Warnings*")
            (delete-other-windows)
            (split-window-below)
-           (find-file (concat "~/.emacs.d/lisp/" (symbol-name init-file) ".el")))))
+           (find-file (concat user-emacs-directory "lisp/" (symbol-name init-file) ".el")))))
 
 (cam/safe-require 'theme-init)
 (cam/safe-require 'sandbox)
@@ -423,6 +425,10 @@
 ;;; HACKs
 
 (blink-cursor-mode -1) ; doesn't seem to work if we try to do it before loading theme-init (?)
+
+;; Load customizations
+(ignore-errors
+  (load-file custom-file))
 
 (provide 'init)
 ;;; init.el ends here
