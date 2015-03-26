@@ -22,6 +22,7 @@
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
   (cam/lisp-mode-setup)
   (cam/enable-minor-modes
+    (aggressive-indent-mode . "AI")
     clj-refactor-mode
     (subword-mode . nil))       ; enable CamelCase support for editor movement
   (cam/pretty-fn))
