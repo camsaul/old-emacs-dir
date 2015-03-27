@@ -9,7 +9,7 @@
 
 (defun cam/eshell-setup ()
   (cam/define-keys eshell-mode-map
-    "C-x M-o" #'cam/eshell-clear))
+    "C-c M-o" #'cam/eshell-clear))
 
 (add-hook 'eshell-mode-hook #'cam/eshell-setup)
 
