@@ -388,6 +388,7 @@
         "company"
         "dired"
         "editorconfig"
+        "eshell"
         "find-things-fast"
         "git-timemachine"
         "helm"
