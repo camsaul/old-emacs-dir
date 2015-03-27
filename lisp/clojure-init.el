@@ -85,6 +85,11 @@
 
 (defvar cam/last-clojure-buffer nil)
 
+;; Delete trailing whitespace added by auto-complete before evaluating something in cider-repl
+(advice-add #'cider-repl-return :before (lambda ()
+                                          (interactive)
+                                          (call-interactively #'delete-trailing-whitespace)))
+
 (defmacro cam/with-cider (&rest body)
   "Evaluate the contents of BODY with a valid cider connection, starting one if neeed."
   (let ((fn-tag '--with-cider-fn--;; (cl-gensym "cam/with-cider-fn-")
