@@ -7,8 +7,10 @@
 
 (eval-when-compile
   (require 'cl))
-(require 'moe-theme)
-(require 'powerline)
+(mapc #'require '(cam-functions
+                  cam-macros
+                  moe-theme
+                  powerline))
 
 ;;;; BASIC THEME CONFIG + TWEAKS
 
