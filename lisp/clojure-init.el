@@ -22,7 +22,6 @@
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
   (cam/lisp-mode-setup)
   (cam/enable-minor-modes
-    (aggressive-indent-mode . "AI")
     clj-refactor-mode
     (subword-mode . nil))       ; enable CamelCase support for editor movement
   (cam/pretty-fn))
@@ -37,8 +36,13 @@
   (cam/enable-minor-modes
     eldoc-mode))
 
+(defun cam/cider-repl-mode-setup ()
+  (cam/cider-mode-setup)
+  (cam/enable-minor-modes
+    (aggressive-indent-mode . "AI")))
+
 (add-hook 'cider-mode-hook #'cam/cider-mode-setup)
-(add-hook 'cider-repl-mode-hook #'cam/cider-mode-setup)
+(add-hook 'cider-repl-mode-hook #'cam/cider-repl-mode-setup)
 
 ;; custom keyboard shortcuts
 (defun cam/define-clojure-keys (mode-map)
@@ -148,10 +152,10 @@
 ;; (run-hooks 'test-hook)
 ;; test-hook
 
-(defadvice message (after cam/message-tail-messagess-buffer activate)
-  "When *Messages* buffer is visible, tail it."
-  (when-let ((w (get-buffer-window "*Messages*")))
-    (set-window-point w (with-current-buffer "*Messages*" (point-max)))))
+;; (defadvice message (after cam/message-tail-messagess-buffer activate)
+;;   "When *Messages* buffer is visible, tail it."
+;;   (when-let ((w (get-buffer-window "*Messages*")))
+;;     (set-window-point w (with-current-buffer "*Messages*" (point-max)))))
 
 (defun cam/pretty-fn ()
   "turns fn into a fancy f symbol. credit: emacs-starter-kit on github"
