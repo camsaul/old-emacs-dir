@@ -1,8 +1,11 @@
 ;; -*- lexical-binding: t; comment-column: 50; -*-
 
 ;;; Commentary:
-;;; Just put at the end of .bash_profile:
-;;; emacsclient -nw --eval '(eshell)' || emacs -nw --eval '(progn (server-start) (eshell))'
+;;; 1.  put at the end of .bash_profile:
+;;;     emacsclient -nw --eval '(eshell)' || emacs -nw --eval '(progn (server-start) (eshell))'
+;;;
+;;; 2.  (OS X) (Terminal -> Settings -> Shell) Add 'emacsclient' to list of processes not to prompt before closing
+;;;
 ;;; <3
 
 ;;; Code:
