@@ -25,6 +25,8 @@
   (cam/define-keys eshell-mode-map
     "C-c M-o" #'cam/eshell-clear)
 
+  (linum-mode -1)
+
   ;; Aliases
   ;; I would imagine there's some better way to do this
   (eshell-command "alias clear cam/eshell-clear"))
