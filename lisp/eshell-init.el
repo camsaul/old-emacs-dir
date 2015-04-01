@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 ;;; 1.  put at the end of .bash_profile:
-;;;     emacsclient -nw --eval '(eshell)' || emacs -nw --eval '(progn (server-start) (eshell))'
+;;;     emacsclient -nw --create-frame --eval "(ignore-errors (eshell :create-new-session))" || emacs -nw --eval '(progn (server-start) (eshell))'
 ;;;
 ;;; 2.  (OS X) (Terminal -> Settings -> Shell) Add 'emacsclient' to list of processes not to prompt before closing
 ;;;
