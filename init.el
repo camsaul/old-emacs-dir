@@ -139,8 +139,6 @@
 (set-selection-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 
-(warn "<<HERE>> (1)")
-
 (setq
     apropos-do-all t                              ; apropos commands will search more extensively
     auto-revert-verbose nil

@@ -1,5 +1,4 @@
-;; -*- lexical-binding: t -*-
-;; -*- comment-column: 50; -*-
+;; -*- lexical-binding: t; comment-column: 50; -*-
 
 ;;; find-things-fast-init -- Setup for find-things-fast
 ;;; Commentary:

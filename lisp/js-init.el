@@ -8,14 +8,17 @@
 
 (eval-when-compile
   (require 'js3-mode))
-(require 'cam-functions)
+(mapc #'require '(cam-functions
+                  cam-macros
+                  flycheck
+                  web-beautify))
 
 (add-hook 'js3-mode-hook
   (lambda ()
-    (require 'web-beautify)
     (cam/declare-vars highlight-parentheses-mode)
     (cam/enable-minor-modes
       (company-mode . " ¢")
+      (flycheck-mode . " ✔")
       highlight-parentheses-mode
       ;; aggressive-indent-mode
       )
