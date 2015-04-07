@@ -11,7 +11,7 @@
           (funcall mode -1)))
       '(scroll-bar-mode
         tool-bar-mode))
-(unless (string= system-type "darwin")
+(unless (string= window-system "ns") ; only show menu bar on Mac OS X in GUI mode
   (menu-bar-mode -1))
 (toggle-frame-maximized)
 
