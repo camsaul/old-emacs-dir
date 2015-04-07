@@ -20,3 +20,4 @@ async-*.log
 projectile-bookmarks.eld
 .custom.el
 recentf
+/ido.last
