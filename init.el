@@ -1,4 +1,4 @@
-;; -*- lexical-binding: t;  comment-column: 50 -*-
+;; -*- lexical-binding: t; comment-column: 50 -*-
 
 ;;; init -- General Setup
 ;;; Commentary:
@@ -6,6 +6,11 @@
 
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 
+;; number of bytes of consing before garbage collection. Default is ~800k, use 32MB instead
+;; Set this first so we don't end up doing GC ~25 times while init.el loads
+(setq gc-cons-threshold (* 1024 1024 32))
+
+;; Disable scroll-bar-mode and tool-bar-mode if the functions exist. Do this first before frame is drawn
 (mapc (lambda (mode)
         (when (boundp mode)
           (funcall mode -1)))
@@ -30,7 +35,7 @@
 (mapc #'require '(cl                              ; Common Lisp functions like cl-flet and stuffffff
                   package-init                    ; needs to be loaded before we can load ELPA packages like dash or powerline
                   dash                            ; load this next so cam-functions can build on it
-                  dash-functional                 ; TODO - should we just load "s" and "f" here too ?
+                  ;; dash-functional                 ; TODO - should we just load "s" and "f" here too ?
                   noflet                          ; noflet lets you temporarily override function definitions
                   cam-macros                      ; my own helper macros
                   cam-functions                   ; my own helper functions
@@ -169,7 +174,6 @@
     inhibit-splash-screen t
     inhibit-startup-screen t
     locale-coding-system 'utf-8-auto-unix
-    gc-cons-threshold (* 1024 1024 32)            ; number of bytes of consing before garbage collection. Default is ~800k, use 32MB instead
     guide-key/idle-delay 1.0                      ; delay before showing the guide-key popup
     guide-key/recursive-key-sequence-flag t       ; e.g. specifying C-x below means to also show guides for things like C-x r
     guide-key/guide-key-sequence '("<f12>" "<f1>" ; prefixes to show guides for
