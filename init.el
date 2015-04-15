@@ -1,14 +1,9 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
-;; -*- lexical-binding: t; comment-column: 50 -*-
-
-;;; init -- General Setup
+;;; init -- General Setup -*- lexical-binding: t; comment-column: 50 -*-
 ;;; Commentary:
 ;;; Code:
+
+;; package.el keeps trying to insert this line
+;;(package-initialize)
 
 ;;;; DISABLE MENU/SCROLLBAR/TOOLBAR ASAP SO THEY DON'T FLASH
 
@@ -38,15 +33,15 @@
 
 ;;;; PACKAGES TO ALWAYS REQUIRE ON LAUNCH
 
-(mapc #'require '(cl                              ; Common Lisp functions like cl-flet and stuffffff
-                  package-init                    ; needs to be loaded before we can load ELPA packages like dash or powerline
-                  dash                            ; load this next so cam-functions can build on it
-                  ;; dash-functional                 ; TODO - should we just load "s" and "f" here too ?
-                  noflet                          ; noflet lets you temporarily override function definitions
-                  cam-macros                      ; my own helper macros
-                  cam-functions                   ; my own helper functions
-                  powerline                       ; powerline is the port of VIM powerline (pretty Emacs modeline)
-                  saveplace))                     ; open files in the same location as you last closed them
+(eval-when-compile
+  (require 'cl))
+(require 'package-init)                 ; needs to be loaded first so we can load ELPA packages
+(require 'dash)                         ; load this next so cam-functions can build on it
+(require 'noflet)                       ; noflet lets you temporarily override function definitions
+(require 'cam-macros)                   ; helper macros
+(require 'cam-functions)                ; helper functions
+(require 'powerline)                    ; port of VIM powerline (pretty modeline)
+(require 'saveplace)                    ; open files in the same location as you last closed them
 
 
 ;;;; SETUP AUTOLOADS FOR FUNCTIONS THAT NEED IT
