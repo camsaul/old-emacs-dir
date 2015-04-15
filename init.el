@@ -1,3 +1,9 @@
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 ;; -*- lexical-binding: t; comment-column: 50 -*-
 
 ;;; init -- General Setup
@@ -199,7 +205,6 @@
     ns-right-command-modifier 'hyper
     ns-right-control-modifier 'hyper
     ns-right-option-modifier 'alt
-    redisplay-dont-pause t                        ; don't pause screen drawing whenever input is detected - causes screen tearning, unneccessary
     require-final-newline t                       ; add final newline on save
     revert-without-query '(".*")                  ; disable revert-buffer confirmation prompts
     save-interprogram-paste-before-kill t         ; save clipboard strings (from other programs besides Emacs) into kill ring before replacing them in Emacs
