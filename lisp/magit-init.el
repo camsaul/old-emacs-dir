@@ -1,13 +1,11 @@
-;; -*- lexical-binding: t -*-
-;; -*- comment-column: 50; -*-
+;;; magit-init -- setup for magit -*- lexical-binding: t; comment-column: 50; -*-
 
 ;;; magit-init -- Setup for magit
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile
-  (require 'cam-functions)
-  (require 'cam-macros))
+(require 'cam-functions)
+(require 'cam-macros)
 (require 'magit)
 
 (cam/enable-minor-modes
@@ -25,6 +23,8 @@
 (cam/define-keys magit-status-mode-map
   "V" #'cam/visit-pull-request-url
   "s-u" #'magit-refresh)
+
+(setq magit-last-seen-setup-instructions "1.4.0")
 
 (defun cam/kill-magit-buffers ()
   "Kill all magit buffers."
