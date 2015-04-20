@@ -1,11 +1,10 @@
-;; -*- lexical-binding: t -*-
+;;; org-init -- org-mode config -*- lexical-binding: t -*-
 
 ;;; Commentary:
 ;;; Code:
 
-(eval-when-compile
-  (require 'org))
 (require 'cam-functions)
+(require 'org)
 
 ;; set global agenda files
 (setq org-support-shift-select nil)
@@ -19,7 +18,7 @@
   "C-c c" #'cam/org-insert-code-block)
 
 (defun cam/org-insert-code-block (language)
-  "Insert a new Org code block and start editing it."
+  "Insert a new Org code block for LANGUAGE and start editing it."
   (interactive "sLanguage: ")
   (org-return-indent)
   (insert "#+BEGIN_SRC " language)
