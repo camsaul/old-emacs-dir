@@ -1,8 +1,9 @@
-;; -*- lexical-binding: t -*-
-;;; cam-macros --- Utility macros
+;;; cam-macros --- Utility macros -*- lexical-binding: t -*-
 ;;; Commentary:
 ;;; This gets loaded before cam-functions
 ;;; Code:
+
+(require 'helm-command)
 
 (defmacro cam/define-keys (keymap-or-mode &rest pairs)
   "Map pairs of KEY -> FN.
