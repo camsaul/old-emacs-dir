@@ -1,6 +1,4 @@
-;; -*- lexical-binding: t; comment-column: 60 -*-
-
-;;; theme-init -- Setup Emacs theme
+;;; theme-init -- Setup Emacs theme -*- lexical-binding: t; comment-column: 60 -*-
 ;;; Commentary:
 
 ;;; Code:

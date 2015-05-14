@@ -116,7 +116,7 @@
     (let ((sexp (car sexps))
           (rest-sexps (cdr sexps))
           (form-tag (cl-gensym "form-")))
-      `(when-let ((,form-tag ,form))
+      `(-when-let ((,form-tag ,form))
          (cam/some-> ,(cond ((symbolp sexp) `(,sexp ,form-tag))
                             (:else          (cons (car sexp) (cons form-tag (cdr sexp)))))
                      ,@rest-sexps)))))
@@ -127,8 +127,8 @@
       `(cam/when-buffer (_ ,buffer-name-or-binding) ,@body)
     (cl-destructuring-bind (binding buffer-name) buffer-name-or-binding
       (let ((buffer-name-tag (cl-gensym "buffer-name-")))
-        `(when-let ((,buffer-name-tag ,buffer-name))
-           (when-let ((,binding (get-buffer ,buffer-name-tag)))
+        `(-when-let ((,buffer-name-tag ,buffer-name))
+           (-when-let ((,binding (get-buffer ,buffer-name-tag)))
              ,@body))))))
 (put 'cam/when-buffer 'lisp-indent-function 1)
 

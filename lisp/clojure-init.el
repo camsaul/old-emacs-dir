@@ -1,22 +1,21 @@
-;; -*- lexical-binding: t; comment-column: 60; -*-
-;;; clojure-init - Fns + settings for editing Clojure
+;;; clojure-init -- Fns + settings for editing Clojure -*- lexical-binding: t; comment-column: 60; -*-
 ;;; Commentary:
 ;;; Code:
 
-(mapc #'require '(cam-functions
-                  cam-macros
-                  s
-                  lisp-init
-                  clojure-mode
-                  auto-complete
-                  ac-cider
-                  cider-mode
-                  cider-repl
-                  clj-refactor
-                  clojure-cheatsheet
-                  clojure-mode-extra-font-locking))
 (eval-when-compile
   (require 'cl))
+(require 'cam-functions)
+(require 'cam-macros)
+(require 's)
+(require 'lisp-init)
+(require 'clojure-mode)
+(require 'auto-complete)
+(require 'ac-cider)
+(require 'cider-mode)
+(require 'cider-repl)
+(require 'clj-refactor)
+(require 'clojure-cheatsheet)
+(require 'clojure-mode-extra-font-locking)
 
 (defun cam/clojure-mode-setup ()
   "Setup for clojure-mode, cider-mode, and cider-repl-mode."
@@ -118,7 +117,7 @@
 
 (defun cam/switch-to-last-clojure-buffer ()
   (interactive)
-  (when-let ((w (get-buffer-window cam/last-clojure-buffer)))
+  (-when-let ((w (get-buffer-window cam/last-clojure-buffer)))
     (select-window w)))
 
 (defun cam/save-compile-switch-to-nrepl ()
@@ -129,7 +128,7 @@
     (cider-load-buffer)
     (call-interactively #'cider-repl-set-ns)
     (setq cam/last-clojure-buffer (current-buffer))
-    (if-let ((w (get-buffer-window (cam/cider-buffer-name)))) ; switch to existing *cider-repl* window
+    (-if-let ((w (get-buffer-window (cam/cider-buffer-name)))) ; switch to existing *cider-repl* window
         (select-window w)                                     ; if posssible rather than creating a duplicate one
       (cider-switch-to-relevant-repl-buffer))
     (cider-repl-clear-buffer)))
@@ -154,7 +153,7 @@
 
 ;; (defadvice message (after cam/message-tail-messagess-buffer activate)
 ;;   "When *Messages* buffer is visible, tail it."
-;;   (when-let ((w (get-buffer-window "*Messages*")))
+;;   (-when-let ((w (get-buffer-window "*Messages*")))
 ;;     (set-window-point w (with-current-buffer "*Messages*" (point-max)))))
 
 (defun cam/pretty-fn ()

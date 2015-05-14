@@ -1,9 +1,18 @@
-;; -*- lexical-binding: t; comment-column: 50; -*-
-;;; elisp-init -- Setup for editing Emacs Lisp
+;;; elisp-init -- Setup for editing Emacs Lisp -*- lexical-binding: t; comment-column: 50; -*-
 ;;; Commentary:
 
 (require 'cam-functions)
 (require 'cam-macros)
+
+(require 'lisp-mode)
+(require 'ielm)
+
+(require 'auto-complete)
+(require 'cl-lib-highlight)
+(require 'edebug)
+(require 'highlight-cl)
+(require 'lisp-init)
+(require 'morlock)
 
 ;;; Code:
 
@@ -32,13 +41,6 @@
 
 (defun cam/elisp-mode-setup ()
   "Code to be ran on \"emacs-lisp-mode-hook\" and \"ielm-mode-hook\"."
-  (require 'lisp-init)
-  (require 'edebug)
-  (require 'cl-lib-highlight)
-  (require 'highlight-cl)
-  (require 'morlock)
-  (require 'auto-complete)
-
   (cam/declare-vars cam/define-elisp-keys
                     flycheck-emacs-lisp-load-path)
   (cam/lisp-mode-setup)
@@ -193,6 +195,7 @@
 ;;;; IELM SPECIFIC
 
 (defun cam/ielm-mode-setup ()
+  "Setup to perform when starting ielm-mode."
   (cam/elisp-mode-setup)
   (cam/define-keys inferior-emacs-lisp-mode-map
     "<C-M-s-return>" #'cam/ielm-switch-to-last-elisp-buffer

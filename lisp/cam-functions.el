@@ -226,9 +226,9 @@
 
 (defun cam/kill-buffer-and-window (buffer-or-buffer-name)
   "Kill BUFFER-OR-BUFFER-NAME's window (if it has one), then kill buffer."
-  (when-let ((buffer (get-buffer buffer-or-buffer-name)))
+  (-when-let ((buffer (get-buffer buffer-or-buffer-name)))
     (message "BUFFER: %s" buffer)
-    (when-let ((window (get-buffer-window buffer t)))
+    (-when-let ((window (get-buffer-window buffer t)))
       (message "WINDOW: %s" window)
       (delete-window window))
     (kill-buffer buffer)))

@@ -363,7 +363,12 @@
 (let ((byte-compile-dynamic t))                   ; compile function bodies so they load lazily
   (mapc #'cam/safe-byte-compile cam/init-files))
 
-
+(defun recompile-all ()
+  (mapc (lambda (filename)
+          (find-file filename)
+          (cam/byte-recompile-this-file)
+          (kill-buffer))
+        cam/init-files))
 
 ;;;; LOAD INIT FILES
 
